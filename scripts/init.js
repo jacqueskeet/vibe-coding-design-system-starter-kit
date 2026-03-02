@@ -19,7 +19,12 @@ import { spawnSync } from 'child_process';
 
 // Local lib imports — these only use Node builtins, safe without npm install
 import { validatePrefix, applyPrefix } from './lib/prefix.js';
-import { pruneFrameworks, cleanupAgentConfigs } from './lib/prune.js';
+import {
+  pruneFrameworks,
+  cleanupAgentConfigs,
+  cleanupReadme,
+  cleanupCursorRules,
+} from './lib/prune.js';
 import { configureMcp } from './lib/mcp.js';
 import { runSetup } from './lib/build-runner.js';
 import {
@@ -489,10 +494,19 @@ async function execute(answers) {
   if (toRemove.length > 0) {
     console.log('\n  Pruning unused frameworks...\n');
     try {
+      // B1. Remove directories, guides, update package.json + vitest
       const pruneLog = pruneFrameworks(toRemove, ROOT);
       for (const entry of pruneLog) console.log(`  ✓ ${entry}`);
 
-      // Best-effort agent config cleanup
+      // B2. Clean up README (packages, architecture, repo structure, integration table)
+      const readmeLog = cleanupReadme(toRemove, ROOT);
+      for (const entry of readmeLog) console.log(`  ✓ ${entry}`);
+
+      // B3. Clean up Cursor rules (globs, framework examples)
+      const cursorLog = cleanupCursorRules(toRemove, ROOT);
+      for (const entry of cursorLog) console.log(`  ✓ ${entry}`);
+
+      // B4. Best-effort agent config cleanup (CLAUDE.md, AGENTS.md, etc.)
       const configLog = cleanupAgentConfigs(toRemove, ROOT);
       for (const entry of configLog) console.log(`  ✓ ${entry}`);
     } catch (err) {
