@@ -41,7 +41,7 @@ node tools/figma-cli/src/index.js variables export --format tailwind
 **Workflow — Sync Figma variables to token JSON:**
 1. Export variables with `variables list`
 2. Map exported values to `packages/tokens/src/primitives/` and `packages/tokens/src/semantic/`
-3. Run `pnpm --filter @ds/tokens build` to regenerate platform outputs
+3. Run `pnpm --filter @vcds/tokens build` to regenerate platform outputs
 4. Verify generated CSS vars match Figma values
 
 ### Design Token Creation
@@ -187,7 +187,7 @@ When using figma-cli alongside this design system starter kit, follow this patte
 1. **Analyze first** — Run `analyze colors`, `analyze typography`, `analyze spacing` to understand the Figma file
 2. **Lint** — Run `lint` to catch a11y issues at the design level
 3. **Extract tokens** — Export variables and map to `packages/tokens/src/`
-4. **Build tokens** — `pnpm --filter @ds/tokens build`
+4. **Build tokens** — `pnpm --filter @vcds/tokens build`
 5. **Inspect components** — Use `inspect` and `tree` to read component structure
 6. **Generate code** — Use blueprints in `/blueprints/` as structural templates, populate with Figma data
 7. **Export assets** — Export icons as SVG, images as PNG

@@ -42,7 +42,7 @@ Each component is a separate package — install only what you need.
 import * as dialog from '@zag-js/dialog';
 import { useMachine, normalizeProps, Portal } from '@zag-js/react';
 import { useId } from 'react';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 export function DsDialog({ title, description, children }) {
   const service = useMachine(dialog.machine, { id: useId() });
@@ -105,7 +105,7 @@ export function DsDialog({ title, description, children }) {
 import * as dialog from '@zag-js/dialog';
 import { useMachine, normalizeProps } from '@zag-js/vue';
 import { computed } from 'vue';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 defineProps<{ title: string; description: string }>();
 
@@ -153,6 +153,6 @@ If you start with Zag.js and later want less boilerplate, switching to Ark UI is
 - Zag.js is framework-agnostic — works with React, Vue, Svelte, Solid, and any framework
 - Each machine is a separate package — keeps bundle size minimal
 - The `api.get*Props()` pattern spreads ARIA attributes, event handlers, and data attributes
-- Combine with your BEM classes via the `cls()` helper from `@ds/shared/prefix`
+- Combine with your BEM classes via the `cls()` helper from `@vcds/shared/prefix`
 - All styling uses `var(--vcds-*)` tokens from `packages/css-components`
 - Always verify a11y with axe-core after integrating each component

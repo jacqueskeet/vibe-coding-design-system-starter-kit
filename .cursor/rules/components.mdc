@@ -79,7 +79,7 @@ defineOptions({ name: 'DsComponent' });
     <slot />
   </element>
 </template>
-<!-- No <style> — all styles come from @ds/css-components -->
+<!-- No <style> — all styles come from @vcds/css-components -->
 ```
 
 ### Svelte (`packages/svelte/`)
@@ -93,7 +93,7 @@ defineOptions({ name: 'DsComponent' });
 <element class="{prefix}-component {prefix}-component--{variant} {prefix}-component--{size}" {...rest}>
   {@render children?.()}
 </element>
-<!-- No <style> — all styles come from @ds/css-components -->
+<!-- No <style> — all styles come from @vcds/css-components -->
 ```
 
 ## Shared Rules (All Frameworks)

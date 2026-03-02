@@ -42,14 +42,14 @@ space-4                 →  spacing-md                  →  input-padding-x
 All visual styles live in `packages/css-components/` as BEM-structured SCSS. Framework packages are thin wrappers — they map props to BEM classes and add interactivity. They MUST NOT define their own styles.
 
 ```
-@ds/tokens → @ds/css-components → @ds/react / @ds/vue / @ds/svelte / @ds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
 ```
 
 ### Creating a New Component — ALWAYS follow this order:
 
 1. SCSS first → `packages/css-components/src/components/_name.scss`
 2. Register → Add `@use 'components/name';` to index.scss
-3. Build CSS → `pnpm --filter @ds/css-components build`
+3. Build CSS → `pnpm --filter @vcds/css-components build`
 4. HTML reference → `packages/html/examples/name.html`
 5. Framework wrappers → React, Vue, Svelte (BEM classes, no styles)
 6. Tests + Stories
@@ -99,9 +99,9 @@ Vue uses `.vue` SFCs, Svelte uses `.svelte` — no `<style>` blocks.
 
 ```bash
 pnpm install                             # Install all dependencies
-pnpm --filter @ds/tokens build           # Build tokens to all platforms
-pnpm --filter @ds/css-components build   # Build shared component CSS
-pnpm --filter @ds/docs dev               # Start Storybook dev server
+pnpm --filter @vcds/tokens build           # Build tokens to all platforms
+pnpm --filter @vcds/css-components build   # Build shared component CSS
+pnpm --filter @vcds/docs dev               # Start Storybook dev server
 pnpm build                               # Build everything (tokens → CSS → frameworks)
 pnpm test                                # Run all tests
 pnpm changeset                           # Create a changeset for versioning

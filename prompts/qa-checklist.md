@@ -10,8 +10,8 @@ Use these prompts to run quality checks after component creation, token changes,
 Run a full QA check on the [ComponentName] component.
 
 Step 1 — SCSS:
-1. Build: pnpm --filter @ds/css-components build
-2. Lint: pnpm --filter @ds/css-components lint
+1. Build: pnpm --filter @vcds/css-components build
+2. Lint: pnpm --filter @vcds/css-components lint
 3. Read packages/css-components/src/components/_[component-name].scss
 4. Verify BEM naming uses #{cfg.$prefix}-[component-name] pattern
 5. Verify all values use semantic tokens (var(--#{cfg.$prefix}-*)) — no hex, no raw px, no primitives
@@ -27,7 +27,7 @@ Step 2 — HTML reference:
 Step 3 — Framework wrappers (all three):
 For each of React, Vue, Svelte:
 1. Verify file exists in packages/{react,vue,svelte}/src/components/[ComponentName]/
-2. Verify it imports cls or DS_PREFIX from @ds/shared/prefix
+2. Verify it imports cls or DS_PREFIX from @vcds/shared/prefix
 3. Verify NO hardcoded prefix strings
 4. Verify NO <style> blocks, NO CSS Modules, NO inline styles for visuals
 5. Verify props map to BEM classes correctly
@@ -49,9 +49,9 @@ Step 5 — Types:
 3. Svelte: Props interface in <script lang="ts">
 
 Step 6 — Tests:
-1. Run: pnpm --filter @ds/react test
-2. Run: pnpm --filter @ds/vue test
-3. Run: pnpm --filter @ds/svelte test
+1. Run: pnpm --filter @vcds/react test
+2. Run: pnpm --filter @vcds/vue test
+3. Run: pnpm --filter @vcds/svelte test
 4. Verify each test covers: rendering, variants, sizes, interactions, prefix, axe-core
 
 Step 7 — Story:
@@ -77,7 +77,7 @@ Report issues as: [PASS] or [FAIL] with file path, line number, and fix recommen
 Run a QA check on design tokens after changes to [describe what changed].
 
 Step 1 — Build:
-pnpm --filter @ds/tokens build
+pnpm --filter @vcds/tokens build
 Verify no errors in the console output.
 
 Step 2 — Theme completeness:
@@ -228,8 +228,8 @@ Report each item as: [PASS], [FAIL] with WCAG criterion, or [N/A] with justifica
 ```
 Quick QA check on the SCSS for [ComponentName] only (no framework wrappers).
 
-1. pnpm --filter @ds/css-components build — compiles without errors
-2. pnpm --filter @ds/css-components lint — passes stylelint
+1. pnpm --filter @vcds/css-components build — compiles without errors
+2. pnpm --filter @vcds/css-components lint — passes stylelint
 3. Read packages/css-components/src/components/_[component-name].scss
 4. Check: @use '../config' as cfg; present
 5. Check: All selectors use .#{cfg.$prefix}-[component-name] pattern
@@ -279,9 +279,9 @@ Check the following are identical across all three:
    - Click suppressed when loading in all three
 
 5. Prefix usage:
-   - React: imports cls from @ds/shared/prefix
-   - Vue: imports DS_PREFIX from @ds/shared/prefix
-   - Svelte: imports DS_PREFIX from @ds/shared/prefix
+   - React: imports cls from @vcds/shared/prefix
+   - Vue: imports DS_PREFIX from @vcds/shared/prefix
+   - Svelte: imports DS_PREFIX from @vcds/shared/prefix
    - None hardcode the prefix string
 
 Report mismatches as: [MISMATCH] framework1 vs framework2, prop/behavior, expected vs actual.

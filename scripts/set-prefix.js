@@ -19,7 +19,7 @@
  * The prefix flows automatically to:
  *   - Style Dictionary → CSS custom properties (--{prefix}-color-*)
  *   - CSS components → BEM classes (.{prefix}-button)
- *   - Framework wrappers → class strings via @ds/shared
+ *   - Framework wrappers → class strings via @vcds/shared
  */
 
 import { validatePrefix, applyPrefix, readCurrentPrefix } from './lib/prefix.js';
@@ -74,5 +74,5 @@ console.log(`
   Your CSS will now use:
     Classes:    .${newPrefix}-button, .${newPrefix}-button--primary
     Variables:  --${newPrefix}-color-action-primary
-    JS:         import { DS_PREFIX } from '@ds/shared'  // "${newPrefix}"
+    JS:         import { DS_PREFIX } from '@vcds/shared'  // "${newPrefix}"
 `);

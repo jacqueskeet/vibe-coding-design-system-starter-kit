@@ -1,10 +1,10 @@
 {
-  "name": "@ds/html",
+  "name": "@vcds/html",
   "version": "0.0.1",
   "description": "HTML reference markup for the design system — no framework required",
   "private": true,
   "dependencies": {
-    "@ds/css-components": "workspace:*",
-    "@ds/tokens": "workspace:*"
+    "@vcds/css-components": "workspace:*",
+    "@vcds/tokens": "workspace:*"
   }
 }

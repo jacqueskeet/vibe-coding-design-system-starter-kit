@@ -11,12 +11,12 @@ Multi-framework design system monorepo with a **CSS-first base layer**. All visu
 
 ## Configurable Prefix
 
-All class names and CSS variables use a configurable prefix (default: `vcds`). Defined in `/ds.config.json`. Change: `node scripts/set-prefix.js <prefix>`. Use `cls()` from `@ds/shared/prefix` in JS — never hardcode the prefix.
+All class names and CSS variables use a configurable prefix (default: `vcds`). Defined in `/ds.config.json`. Change: `node scripts/set-prefix.js <prefix>`. Use `cls()` from `@vcds/shared/prefix` in JS — never hardcode the prefix.
 
 ## Architecture
 
 ```
-@ds/tokens → @ds/css-components → @ds/react / @ds/vue / @ds/svelte / @ds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
 ```
 
 ## Code Generation Rules
@@ -51,13 +51,13 @@ All class names and CSS variables use a configurable prefix (default: `vcds`). D
 - Use `<script setup lang="ts">` pattern
 - Prefix component names with `Ds` (e.g., `DsButton`)
 - Use array class binding: `:class="['vcds-button', 'vcds-button--primary']"`
-- NO `<style>` block — all styles come from @ds/css-components
+- NO `<style>` block — all styles come from @vcds/css-components
 
 ### Svelte
 
 - Use Svelte 5 runes: `$props()`, `$state()`, `$derived()`
 - Use `{@render children?.()}` for slot content
-- NO `<style>` block — all styles come from @ds/css-components
+- NO `<style>` block — all styles come from @vcds/css-components
 
 ## Token Pattern
 

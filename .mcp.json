@@ -32,7 +32,7 @@
       "env": {
         "STORYBOOK_URL": "http://localhost:6006"
       },
-      "_setup": "Start Storybook first with: pnpm --filter @ds/docs dev"
+      "_setup": "Start Storybook first with: pnpm --filter @vcds/docs dev"
     },
     "playwright": {
       "command": "npx",

@@ -26,7 +26,7 @@ Svelte is not supported by Headless UI — build Svelte equivalents using native
 
 ```tsx
 import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 export function DsDialog({ isOpen, onClose, title, description, children }) {
   return (
@@ -96,7 +96,7 @@ export function DsDialog({ isOpen, onClose, title, description, children }) {
 
 <script setup lang="ts">
 import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/vue';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 defineProps<{ isOpen: boolean; title: string; description: string }>();
 defineEmits<{ close: [] }>();

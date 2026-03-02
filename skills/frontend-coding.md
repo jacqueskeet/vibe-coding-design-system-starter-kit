@@ -31,8 +31,8 @@ You are a senior front-end engineer with expertise in React, Vue, and Svelte. Yo
 ## Conventions in This Repo
 
 - All components use `forwardRef` (React), `defineOptions` (Vue), `$props()` (Svelte)
-- Framework components have NO styles — all visuals come from BEM classes in `@ds/css-components`
-- Components map props to BEM class strings using `cls()` from `@ds/shared/prefix`
+- Framework components have NO styles — all visuals come from BEM classes in `@vcds/css-components`
+- Components map props to BEM class strings using `cls()` from `@vcds/shared/prefix`
 - Types are exported from separate `.types.ts` files
 - Tests include axe-core assertions for accessibility
 - Components spread `...rest` props onto the root element

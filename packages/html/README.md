@@ -1,17 +1,17 @@
-# @ds/html
+# @vcds/html
 
 Reference HTML markup for the design system. No JavaScript framework required.
 
-This package provides example HTML files showing how to use `@ds/css-components` classes directly. Use these as copy-paste references for static sites, CMSs (WordPress, Magento, etc.), email templates, server-rendered pages, or any project that doesn't use a JS framework.
+This package provides example HTML files showing how to use `@vcds/css-components` classes directly. Use these as copy-paste references for static sites, CMSs (WordPress, Magento, etc.), email templates, server-rendered pages, or any project that doesn't use a JS framework.
 
 ## Quick Start
 
 ```html
 <!-- 1. Include token CSS custom properties -->
-<link rel="stylesheet" href="path/to/@ds/tokens/platforms/web/variables.css" />
+<link rel="stylesheet" href="path/to/@vcds/tokens/platforms/web/variables.css" />
 
 <!-- 2. Include component CSS -->
-<link rel="stylesheet" href="path/to/@ds/css-components/dist/index.css" />
+<link rel="stylesheet" href="path/to/@vcds/css-components/dist/index.css" />
 
 <!-- 3. Use BEM classes in your markup -->
 <button class="vcds-button vcds-button--primary vcds-button--md">

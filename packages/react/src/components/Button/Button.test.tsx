@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from './Button';
-import { DS_PREFIX } from '@ds/shared/prefix';
+import { DS_PREFIX } from '@vcds/shared/prefix';
 
 expect.extend(toHaveNoViolations);
 

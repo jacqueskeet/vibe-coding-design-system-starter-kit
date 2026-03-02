@@ -1,5 +1,5 @@
 {
-  "name": "@ds/docs",
+  "name": "@vcds/docs",
   "version": "0.0.1",
   "description": "Storybook documentation site for the design system",
   "private": true,
@@ -9,9 +9,9 @@
     "test:storybook": "test-storybook"
   },
   "dependencies": {
-    "@ds/css-components": "workspace:*",
-    "@ds/react": "workspace:*",
-    "@ds/tokens": "workspace:*"
+    "@vcds/css-components": "workspace:*",
+    "@vcds/react": "workspace:*",
+    "@vcds/tokens": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.4.0",

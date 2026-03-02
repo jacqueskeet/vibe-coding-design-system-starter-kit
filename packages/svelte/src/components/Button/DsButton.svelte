@@ -1,12 +1,12 @@
 <!--
   DsButton — Primary interactive element for triggering actions.
 
-  Styles come from @ds/css-components (BEM classes with configurable prefix).
+  Styles come from @vcds/css-components (BEM classes with configurable prefix).
   Prefix is defined in /ds.config.json — change with: node scripts/set-prefix.js
 -->
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { DS_PREFIX } from '@ds/shared/prefix';
+  import { DS_PREFIX } from '@vcds/shared/prefix';
 
   type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
   type ButtonSize = 'sm' | 'md' | 'lg';
@@ -99,4 +99,4 @@
   {/if}
 </button>
 
-<!-- No <style> block — all styles come from @ds/css-components -->
+<!-- No <style> block — all styles come from @vcds/css-components -->

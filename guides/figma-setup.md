@@ -300,7 +300,7 @@ Regardless of which integration you choose, the recommended workflow is:
 1. **Inspect in Figma** — Use Figma Console MCP or figma-cli to extract exact values
 2. **Map to tokens** — Match Figma values to existing primitive tokens
 3. **Create semantic tokens** — If new semantic mappings are needed, add them
-4. **Build tokens** — `pnpm --filter @ds/tokens build`
+4. **Build tokens** — `pnpm --filter @vcds/tokens build`
 5. **Generate components** — Use Figma MCP or figma-cli to generate component code
 6. **Verify** — Compare the coded component against the Figma design
 7. **Test** — Run a11y checks and visual regression tests

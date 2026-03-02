@@ -1,10 +1,10 @@
 <!--
   BLUEPRINT: Vue Component Wrapper (CSS-First Architecture)
   Thin wrapper — maps props to BEM classes. NO <style> block.
-  Uses DS_PREFIX from @ds/shared for the configurable prefix.
+  Uses DS_PREFIX from @vcds/shared for the configurable prefix.
 -->
 <script setup lang="ts">
-import { DS_PREFIX } from '@ds/shared/prefix';
+import { DS_PREFIX } from '@vcds/shared/prefix';
 
 export interface Ds{{ComponentName}}Props {
   variant?: string;
@@ -33,4 +33,4 @@ const p = DS_PREFIX;
   </element>
 </template>
 
-<!-- No <style> block — all styles from @ds/css-components -->
+<!-- No <style> block — all styles from @vcds/css-components -->

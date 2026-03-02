@@ -1,15 +1,15 @@
-# @ds/css-components
+# @vcds/css-components
 
 The visual foundation of the design system. All component styles live here as BEM-structured SCSS, compiled to plain CSS. Every framework package (React, Vue, Svelte) imports this as a dependency — they are thin wrappers that map props to these class names.
 
 ## Architecture
 
 ```
-@ds/tokens              ← CSS custom properties (colors, spacing, typography)
-  └── @ds/css-components  ← BEM classes consuming those properties (THIS PACKAGE)
-        ├── @ds/react     ← Props → class names + interactivity
-        ├── @ds/vue       ← Props → class names + interactivity
-        ├── @ds/svelte    ← Props → class names + interactivity
+@vcds/tokens              ← CSS custom properties (colors, spacing, typography)
+  └── @vcds/css-components  ← BEM classes consuming those properties (THIS PACKAGE)
+        ├── @vcds/react     ← Props → class names + interactivity
+        ├── @vcds/vue       ← Props → class names + interactivity
+        ├── @vcds/svelte    ← Props → class names + interactivity
         └── Plain HTML    ← Use classes directly
 ```
 
@@ -17,11 +17,11 @@ The visual foundation of the design system. All component styles live here as BE
 
 ### In framework packages
 
-Framework packages declare `@ds/css-components` as a dependency and import the compiled CSS:
+Framework packages declare `@vcds/css-components` as a dependency and import the compiled CSS:
 
 ```tsx
 // In a framework package's entry point or layout
-import '@ds/css-components/dist/index.css';
+import '@vcds/css-components/dist/index.css';
 ```
 
 ### In plain HTML
@@ -29,7 +29,7 @@ import '@ds/css-components/dist/index.css';
 Link the compiled stylesheet and apply BEM classes:
 
 ```html
-<link rel="stylesheet" href="node_modules/@ds/css-components/dist/index.css" />
+<link rel="stylesheet" href="node_modules/@vcds/css-components/dist/index.css" />
 
 <button class="vcds-button vcds-button--primary vcds-button--md">
   Save changes
@@ -51,7 +51,7 @@ All classes follow BEM with a `ds-` prefix:
 ## Building
 
 ```bash
-pnpm --filter @ds/css-components build
+pnpm --filter @vcds/css-components build
 ```
 
 This compiles `src/index.scss` → `dist/index.css` (minified) and `dist/index.expanded.css` (readable).
@@ -62,11 +62,11 @@ This compiles `src/index.scss` → `dist/index.css` (minified) and `dist/index.e
 2. Add `@use 'components/component-name';` to `src/index.scss`
 3. Follow BEM naming: `.vcds-component-name`, `.vcds-component-name--variant`
 4. Use ONLY token CSS custom properties — no hardcoded values
-5. Build: `pnpm --filter @ds/css-components build`
+5. Build: `pnpm --filter @vcds/css-components build`
 
 ## Token Usage
 
-All values must come from `@ds/tokens` CSS custom properties:
+All values must come from `@vcds/tokens` CSS custom properties:
 
 ```scss
 // ✅ Correct — uses semantic token

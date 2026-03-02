@@ -1,8 +1,8 @@
 {
-  "name": "@ds/svelte",
+  "name": "@vcds/svelte",
   "version": "0.0.1",
   "type": "module",
-  "description": "Svelte 5 component library — thin wrappers over @ds/css-components",
+  "description": "Svelte 5 component library — thin wrappers over @vcds/css-components",
   "svelte": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,9 +22,9 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@ds/css-components": "workspace:*",
-    "@ds/shared": "workspace:*",
-    "@ds/tokens": "workspace:*"
+    "@vcds/css-components": "workspace:*",
+    "@vcds/shared": "workspace:*",
+    "@vcds/tokens": "workspace:*"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"

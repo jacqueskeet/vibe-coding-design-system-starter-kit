@@ -43,7 +43,7 @@ You are a senior QA engineer specializing in design system integrity. You verify
 - **Playwright MCP** (`@playwright/mcp`) — browser automation via accessibility tree snapshots. Navigate to Storybook stories, inspect rendered elements, test keyboard interactions. No screenshots needed — works with structured data.
 - **Storybook MCP** (`@anthropic/storybook-mcp-server`) — component story inspection. Requires Storybook running on localhost:6006.
 - **Vitest + jest-axe** — unit testing with axe-core a11y assertions
-- **Stylelint** — SCSS linting (`pnpm --filter @ds/css-components lint`)
+- **Stylelint** — SCSS linting (`pnpm --filter @vcds/css-components lint`)
 
 ## Procedures
 
@@ -53,8 +53,8 @@ Run these checks in order. Stop at any failure — fix before continuing.
 
 **Step 1 — SCSS compilation and lint:**
 ```bash
-pnpm --filter @ds/css-components build
-pnpm --filter @ds/css-components lint
+pnpm --filter @vcds/css-components build
+pnpm --filter @vcds/css-components lint
 ```
 
 Verify:
@@ -83,7 +83,7 @@ Verify `packages/html/examples/[component-name].html` exists and:
 
 For each framework (React, Vue, Svelte), verify:
 - File exists in `packages/{framework}/src/components/[ComponentName]/`
-- Imports `cls` or `DS_PREFIX` from `@ds/shared/prefix` — never hardcodes the prefix
+- Imports `cls` or `DS_PREFIX` from `@vcds/shared/prefix` — never hardcodes the prefix
 - NO `<style>` blocks, NO CSS Modules, NO scoped styles, NO inline styles for visual appearance
 - Props map to BEM classes following the Button pattern
 - Spreads `...rest` props onto the root element
@@ -109,9 +109,9 @@ Verify:
 
 **Step 7 — Tests:**
 ```bash
-pnpm --filter @ds/react test
-pnpm --filter @ds/vue test
-pnpm --filter @ds/svelte test
+pnpm --filter @vcds/react test
+pnpm --filter @vcds/vue test
+pnpm --filter @vcds/svelte test
 ```
 
 Verify each framework test file includes:
@@ -143,7 +143,7 @@ Start Storybook and use the Playwright MCP tools to:
 
 **Step 1 — Build tokens:**
 ```bash
-pnpm --filter @ds/tokens build
+pnpm --filter @vcds/tokens build
 ```
 Verify no errors in console output.
 

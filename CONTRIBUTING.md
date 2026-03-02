@@ -20,7 +20,7 @@ pnpm dev
 This project uses a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. Framework packages (React, Vue, Svelte) are thin wrappers that map props to BEM class names. The HTML package provides reference markup for use without a framework.
 
 ```
-@ds/tokens → @ds/css-components → @ds/react / @ds/vue / @ds/svelte / @ds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
 ```
 
 ## Branching
@@ -51,7 +51,7 @@ docs: update Figma setup guide
 2. Reference the golden Button: `packages/css-components/src/components/_button.scss`
 3. Create: `packages/css-components/src/components/_component-name.scss`
 4. Register: add `@use 'components/component-name';` to `src/index.scss`
-5. Build: `pnpm --filter @ds/css-components build`
+5. Build: `pnpm --filter @vcds/css-components build`
 
 ### Step 2: HTML reference
 
@@ -92,9 +92,9 @@ Vue (`.vue`, no `<style>`) and Svelte (`.svelte`, no `<style>`) follow the same 
 
 1. Edit JSON files in `packages/tokens/src/`
 2. Add values for ALL THREE themes: light, dark, high-contrast
-3. Run `pnpm --filter @ds/tokens build`
+3. Run `pnpm --filter @vcds/tokens build`
 4. Verify output in `packages/tokens/platforms/`
-5. Rebuild CSS: `pnpm --filter @ds/css-components build`
+5. Rebuild CSS: `pnpm --filter @vcds/css-components build`
 6. Create a changeset: `pnpm changeset`
 
 ## Pull Request Checklist

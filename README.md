@@ -149,25 +149,25 @@ design-system-starter/
 
 ## Packages
 
-### `@ds/tokens`
+### `@vcds/tokens`
 Design tokens defined in JSON, built via **Style Dictionary** to multiple platforms:
 - **Web** → CSS custom properties, SCSS variables, JS/TS modules
 - **iOS** → Swift enums, UIKit extensions
 - **Android** → Kotlin objects, XML resources
 
-### `@ds/css-components` ← **New: the base layer**
+### `@vcds/css-components` ← **New: the base layer**
 BEM-structured CSS component library. This is the single source of truth for all visual design. Every framework package consumes these classes — they never define their own styles.
 
-### `@ds/css`
+### `@vcds/css`
 Global CSS generated from tokens, plus a CSS reset, utility classes, and theme files (light / dark / high-contrast).
 
-### `@ds/react` · `@ds/vue` · `@ds/svelte`
-Thin framework wrappers that map props to `@ds/css-components` BEM classes and add interactivity (events, state, slots/children). Components include accessible markup (WCAG 2.2 AA), TypeScript types / prop validation, unit tests, and Storybook stories.
+### `@vcds/react` · `@vcds/vue` · `@vcds/svelte`
+Thin framework wrappers that map props to `@vcds/css-components` BEM classes and add interactivity (events, state, slots/children). Components include accessible markup (WCAG 2.2 AA), TypeScript types / prop validation, unit tests, and Storybook stories.
 
-### `@ds/html`
-Reference HTML markup showing how to use `@ds/css-components` directly — no JavaScript framework required. Perfect for static sites, CMSs, email templates, or server-rendered pages.
+### `@vcds/html`
+Reference HTML markup showing how to use `@vcds/css-components` directly — no JavaScript framework required. Perfect for static sites, CMSs, email templates, or server-rendered pages.
 
-### `@ds/docs`
+### `@vcds/docs`
 Storybook 8 instance documenting all components across frameworks with usage examples, props tables, and accessibility notes.
 
 ---
@@ -200,20 +200,20 @@ No find-and-replace needed. Framework wrappers read the prefix at build time.
 ## Architecture
 
 ```
-Layer 1: @ds/tokens              ← Universal. Compiles to ALL platforms.
+Layer 1: @vcds/tokens              ← Universal. Compiles to ALL platforms.
             │
             ├── Web: CSS custom properties, SCSS variables
             ├── iOS: Swift enums, UIKit extensions
             └── Android: Kotlin objects, XML resources
 
-Layer 2: @ds/css-components      ← Web base layer. BEM classes from tokens.
+Layer 2: @vcds/css-components      ← Web base layer. BEM classes from tokens.
             │
-            ├── @ds/react        ← Props → BEM classes + React interactivity
-            ├── @ds/vue          ← Props → BEM classes + Vue interactivity
-            ├── @ds/svelte       ← Props → BEM classes + Svelte interactivity
-            └── @ds/html         ← Use BEM classes directly (no framework)
+            ├── @vcds/react        ← Props → BEM classes + React interactivity
+            ├── @vcds/vue          ← Props → BEM classes + Vue interactivity
+            ├── @vcds/svelte       ← Props → BEM classes + Svelte interactivity
+            └── @vcds/html         ← Use BEM classes directly (no framework)
 
-Mobile:  @ds/tokens → iOS / Android / React Native (skip CSS layer)
+Mobile:  @vcds/tokens → iOS / Android / React Native (skip CSS layer)
 ```
 
 ## Design Tokens

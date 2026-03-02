@@ -26,7 +26,7 @@ This is a multi-framework design system monorepo. It produces component librarie
 The prefix is defined in `/ds.config.json` (default: `vcds`). It flows to:
 - CSS custom properties: `--vcds-color-action-primary`
 - BEM classes: `.vcds-button`, `.vcvcds-button--primary`
-- JS constant: `DS_PREFIX` from `@ds/shared/prefix`
+- JS constant: `DS_PREFIX` from `@vcds/shared/prefix`
 
 **Change prefix:** `node scripts/set-prefix.js <new-prefix>` then `pnpm build`
 
@@ -37,12 +37,12 @@ The prefix is defined in `/ds.config.json` (default: `vcds`). It flows to:
 This repo uses a **CSS-first base layer** pattern. All visual styles live in `packages/css-components/` as BEM-structured SCSS. Framework packages are thin wrappers that map props to these shared BEM classes.
 
 ```
-@ds/tokens              → CSS custom properties (universal)
-  └── @ds/css-components  → BEM classes (web base layer)
-        ├── @ds/react     → Props → class names + interactivity
-        ├── @ds/vue       → Props → class names + interactivity
-        ├── @ds/svelte    → Props → class names + interactivity
-        └── @ds/html      → Use classes directly
+@vcds/tokens              → CSS custom properties (universal)
+  └── @vcds/css-components  → BEM classes (web base layer)
+        ├── @vcds/react     → Props → class names + interactivity
+        ├── @vcds/vue       → Props → class names + interactivity
+        ├── @vcds/svelte    → Props → class names + interactivity
+        └── @vcds/html      → Use classes directly
 ```
 
 **Rules:**
@@ -55,13 +55,13 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
 
 ```bash
 pnpm install                             # Install all dependencies
-pnpm --filter @ds/tokens build           # Build tokens to all platforms
-pnpm --filter @ds/css-components build   # Build shared component CSS
-pnpm --filter @ds/css build              # Generate CSS from tokens
-pnpm --filter @ds/react build            # Build React component library
-pnpm --filter @ds/vue build              # Build Vue component library
-pnpm --filter @ds/svelte build           # Build Svelte component library
-pnpm --filter @ds/docs dev               # Start Storybook dev server
+pnpm --filter @vcds/tokens build           # Build tokens to all platforms
+pnpm --filter @vcds/css-components build   # Build shared component CSS
+pnpm --filter @vcds/css build              # Generate CSS from tokens
+pnpm --filter @vcds/react build            # Build React component library
+pnpm --filter @vcds/vue build              # Build Vue component library
+pnpm --filter @vcds/svelte build           # Build Svelte component library
+pnpm --filter @vcds/docs dev               # Start Storybook dev server
 pnpm build                               # Build everything (tokens → CSS → frameworks)
 pnpm test                                # Run all tests
 pnpm lint                                # Lint all packages
@@ -96,7 +96,7 @@ Token files live in `packages/tokens/src/`:
 
 1. **SCSS first** → `packages/css-components/src/components/_component-name.scss`
 2. **Register** → Add `@use 'components/component-name';` to index.scss
-3. **Build CSS** → `pnpm --filter @ds/css-components build`
+3. **Build CSS** → `pnpm --filter @vcds/css-components build`
 4. **HTML reference** → `packages/html/examples/component-name.html`
 5. **Framework wrappers** → React, Vue, Svelte (apply BEM classes, no styles)
 6. **Tests + Stories**
@@ -166,7 +166,7 @@ Before creating a new component, reference the blueprints:
 
 When adding or modifying tokens:
 1. Edit the JSON files in `packages/tokens/src/`
-2. Run `pnpm --filter @ds/tokens build`
+2. Run `pnpm --filter @vcds/tokens build`
 3. Verify generated output in `packages/tokens/platforms/`
 4. Update CSS in `packages/css/` if needed
 5. Check that all components still render correctly

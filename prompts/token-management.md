@@ -18,7 +18,7 @@ Steps:
 2. Add the semantic mapping to packages/tokens/src/semantic/light.json
 3. Add the semantic mapping to packages/tokens/src/semantic/dark.json
 4. Add the semantic mapping to packages/tokens/src/semantic/high-contrast.json
-5. Run the token build: pnpm --filter @ds/tokens build
+5. Run the token build: pnpm --filter @vcds/tokens build
 6. Verify the output in packages/tokens/platforms/web/tokens.css
 
 Follow the existing naming convention: {category}-{property}-{element}-{variant}-{state}
@@ -67,7 +67,7 @@ Reference the token structure in packages/tokens/src/ for available tokens.
 ```
 The design tokens have been modified. Please:
 
-1. Run pnpm --filter @ds/tokens build
+1. Run pnpm --filter @vcds/tokens build
 2. Check that packages/tokens/platforms/web/tokens.css generated correctly
 3. Verify the dark theme overrides in tokens-dark.css
 4. Verify the high-contrast overrides in tokens-high-contrast.css

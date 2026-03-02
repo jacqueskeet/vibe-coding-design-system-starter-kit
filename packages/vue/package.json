@@ -1,7 +1,7 @@
 {
-  "name": "@ds/vue",
+  "name": "@vcds/vue",
   "version": "0.0.1",
-  "description": "Vue 3 component library — thin wrappers over @ds/css-components",
+  "description": "Vue 3 component library — thin wrappers over @vcds/css-components",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,9 +14,9 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@ds/css-components": "workspace:*",
-    "@ds/shared": "workspace:*",
-    "@ds/tokens": "workspace:*"
+    "@vcds/css-components": "workspace:*",
+    "@vcds/shared": "workspace:*",
+    "@vcds/tokens": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

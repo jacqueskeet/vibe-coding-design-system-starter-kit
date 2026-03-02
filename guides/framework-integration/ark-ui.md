@@ -29,7 +29,7 @@ pnpm add @ark-ui/svelte
 ```tsx
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 export function DsDialog({ title, description, children, ...props }) {
   return (
@@ -81,7 +81,7 @@ export function DsDialog({ title, description, children, ...props }) {
 
 <script setup lang="ts">
 import { Dialog } from '@ark-ui/vue/dialog';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 defineProps<{ title: string; description: string }>();
 </script>
@@ -92,7 +92,7 @@ defineProps<{ title: string; description: string }>();
 ```svelte
 <script lang="ts">
   import { Dialog } from '@ark-ui/svelte/dialog';
-  import { cls } from '@ds/shared/prefix';
+  import { cls } from '@vcds/shared/prefix';
 
   export let title: string;
   export let description: string;
@@ -149,7 +149,7 @@ All three frameworks share the same SCSS from `packages/css-components` — the 
 ## Notes
 
 - Ark UI is newer than Radix — community and ecosystem are smaller but growing
-- The compound component pattern works well with the `cls()` helper from `@ds/shared/prefix`
+- The compound component pattern works well with the `cls()` helper from `@vcds/shared/prefix`
 - Style all parts using BEM classes from `packages/css-components` with `var(--vcds-*)` tokens
 - Always verify a11y with axe-core after integrating each component
 - See [Zag.js guide](./zag.md) if you prefer lower-level state machine access

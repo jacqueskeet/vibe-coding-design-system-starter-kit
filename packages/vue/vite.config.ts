@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: (format) => format === 'es' ? 'index.mjs' : 'index.js',
     },
     rollupOptions: {
-      external: ['vue', '@ds/css-components', '@ds/tokens', '@ds/shared/prefix'],
+      external: ['vue', '@vcds/css-components', '@vcds/tokens', '@vcds/shared/prefix'],
     },
   },
 });

@@ -26,13 +26,13 @@ importers:
 
   packages/css:
     dependencies:
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
 
   packages/css-components:
     dependencies:
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -48,13 +48,13 @@ importers:
 
   packages/docs:
     dependencies:
-      '@ds/css-components':
+      '@vcds/css-components':
         specifier: workspace:*
         version: link:../css-components
-      '@ds/react':
+      '@vcds/react':
         specifier: workspace:*
         version: link:../react
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -85,22 +85,22 @@ importers:
 
   packages/html:
     dependencies:
-      '@ds/css-components':
+      '@vcds/css-components':
         specifier: workspace:*
         version: link:../css-components
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
 
   packages/react:
     dependencies:
-      '@ds/css-components':
+      '@vcds/css-components':
         specifier: workspace:*
         version: link:../css-components
-      '@ds/shared':
+      '@vcds/shared':
         specifier: workspace:*
         version: link:../shared
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -145,13 +145,13 @@ importers:
 
   packages/svelte:
     dependencies:
-      '@ds/css-components':
+      '@vcds/css-components':
         specifier: workspace:*
         version: link:../css-components
-      '@ds/shared':
+      '@vcds/shared':
         specifier: workspace:*
         version: link:../shared
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -179,13 +179,13 @@ importers:
 
   packages/vue:
     dependencies:
-      '@ds/css-components':
+      '@vcds/css-components':
         specifier: workspace:*
         version: link:../css-components
-      '@ds/shared':
+      '@vcds/shared':
         specifier: workspace:*
         version: link:../shared
-      '@ds/tokens':
+      '@vcds/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:

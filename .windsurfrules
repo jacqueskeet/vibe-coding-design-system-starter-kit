@@ -11,14 +11,14 @@ Multi-framework design system monorepo (React + Vue + Svelte + HTML/CSS) with a 
 ## Architecture
 
 ```
-@ds/tokens → @ds/css-components → @ds/react / @ds/vue / @ds/svelte / @ds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
 ```
 
 
 ## Configurable Prefix
 
 Defined in `/ds.config.json` (default: `vcds`). Change: `node scripts/set-prefix.js <new-prefix>` then `pnpm build`.
-CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@ds/shared/prefix`.
+CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@vcds/shared/prefix`.
 
 ## Critical Rules
 
@@ -33,7 +33,7 @@ CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@ds/shared/p
 
 1. SCSS → `packages/css-components/src/components/_name.scss` (BEM, tokens only)
 2. Register → Add `@use 'components/name';` to `src/index.scss`
-3. Build → `pnpm --filter @ds/css-components build`
+3. Build → `pnpm --filter @vcds/css-components build`
 4. HTML → `packages/html/examples/name.html` (reference markup)
 5. Wrappers → React, Vue, Svelte (props → BEM classes, NO styles)
 6. Tests + Stories
@@ -48,9 +48,9 @@ CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@ds/shared/p
 
 ```
 pnpm build                                # Build all (tokens → CSS → frameworks)
-pnpm --filter @ds/tokens build            # Build tokens
-pnpm --filter @ds/css-components build    # Build component CSS
-pnpm --filter @ds/docs dev               # Start Storybook
+pnpm --filter @vcds/tokens build            # Build tokens
+pnpm --filter @vcds/css-components build    # Build component CSS
+pnpm --filter @vcds/docs dev               # Start Storybook
 pnpm test                                # Run all tests
 pnpm changeset                           # Version changes
 ```

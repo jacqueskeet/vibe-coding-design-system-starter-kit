@@ -1,5 +1,5 @@
-import '@ds/tokens/css';
-import '@ds/css-components';
+import '@vcds/tokens/css';
+import '@vcds/css-components';
 
 import type { Preview } from '@storybook/react';
 

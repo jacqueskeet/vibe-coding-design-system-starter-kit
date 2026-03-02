@@ -4,10 +4,10 @@
   "commit": false,
   "fixed": [],
   "linked": [
-    ["@ds/react", "@ds/vue", "@ds/svelte"]
+    ["@vcds/react", "@vcds/vue", "@vcds/svelte"]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ds/docs"]
+  "ignore": ["@vcds/docs"]
 }

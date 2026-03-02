@@ -626,7 +626,7 @@ function printSuccess({ name, prefix, selectedFws, figma, ide, removingAll }) {
   );
 
   console.log(
-    '\n  Note: Internal packages use the @ds/ scope. You can change this'
+    '\n  Note: Internal packages use the @vcds/ scope. You can change this'
   );
   console.log('  when you\'re ready to publish to npm.\n');
 

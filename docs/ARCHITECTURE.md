@@ -64,7 +64,7 @@ weeks on infrastructure. The monorepo is pre-wired — tokens, CSS, frameworks,
 Storybook, CI/CD, accessibility, versioning.
 
 **Teams using CMSs without JS frameworks** (WordPress, Magento/Page Builder,
-static sites, email templates). The `@ds/html` package and `@ds/css-components`
+static sites, email templates). The `@vcds/html` package and `@vcds/css-components`
 give them a complete component library with zero JavaScript dependency.
 
 ### Secondary audiences
@@ -146,20 +146,20 @@ and Storybook stories. New components are created by following this example.
 │  Layer 0: ds.config.json                                    │
 │  Source of truth for prefix, DS name, metadata              │
 ├─────────────────────────────────────────────────────────────┤
-│  Layer 1: @ds/tokens                                        │
+│  Layer 1: @vcds/tokens                                        │
 │  JSON → Style Dictionary → CSS vars, SCSS, JS, Swift, XML  │
 │  Universal. Compiles to every platform.                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Layer 2: @ds/css-components                                │
+│  Layer 2: @vcds/css-components                                │
 │  BEM SCSS consuming token CSS vars → compiled CSS           │
 │  Web-only. The visual source of truth for all web UI.       │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 3: Framework packages                                │
-│  @ds/react, @ds/vue, @ds/svelte, @ds/html                  │
+│  @vcds/react, @vcds/vue, @vcds/svelte, @vcds/html                  │
 │  Thin wrappers. Props → BEM classes. No styles.             │
 ├─────────────────────────────────────────────────────────────┤
-│  Layer 4: @ds/docs                                          │
-│  Storybook 8. Consumes @ds/react for stories.               │
+│  Layer 4: @vcds/docs                                          │
+│  Storybook 8. Consumes @vcds/react for stories.               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -180,19 +180,19 @@ components. CSS components know nothing about React. This means:
 ```
 ds.config.json (prefix)
   │
-  ├──→ @ds/tokens (reads prefix, generates --{prefix}-* vars)
+  ├──→ @vcds/tokens (reads prefix, generates --{prefix}-* vars)
   │      │
-  │      ├──→ @ds/css-components (imports _config.scss with $prefix)
+  │      ├──→ @vcds/css-components (imports _config.scss with $prefix)
   │      │      │
-  │      │      ├──→ @ds/react   (imports @ds/shared for cls() helper)
-  │      │      ├──→ @ds/vue     (imports @ds/shared for DS_PREFIX)
-  │      │      ├──→ @ds/svelte  (imports @ds/shared for DS_PREFIX)
-  │      │      ├──→ @ds/html    (uses literal prefix in markup)
-  │      │      └──→ @ds/docs    (imports @ds/react + @ds/css-components)
+  │      │      ├──→ @vcds/react   (imports @vcds/shared for cls() helper)
+  │      │      ├──→ @vcds/vue     (imports @vcds/shared for DS_PREFIX)
+  │      │      ├──→ @vcds/svelte  (imports @vcds/shared for DS_PREFIX)
+  │      │      ├──→ @vcds/html    (uses literal prefix in markup)
+  │      │      └──→ @vcds/docs    (imports @vcds/react + @vcds/css-components)
   │      │
-  │      └──→ @ds/css (global reset, themes, utilities from tokens)
+  │      └──→ @vcds/css (global reset, themes, utilities from tokens)
   │
-  └──→ @ds/shared (exports DS_PREFIX constant + cls() helper)
+  └──→ @vcds/shared (exports DS_PREFIX constant + cls() helper)
 ```
 
 ### The monorepo structure
@@ -303,7 +303,7 @@ any ancestor element.
 
 ### What it is
 
-`@ds/css-components` is a standalone CSS component library written in
+`@vcds/css-components` is a standalone CSS component library written in
 BEM-structured SCSS. It consumes token CSS custom properties and compiles to
 plain CSS. It has no JavaScript dependencies.
 
@@ -378,7 +378,7 @@ updated. All SCSS recompiles with the new prefix automatically.
 2. Import config: `@use '../config' as cfg;`
 3. Use `#{cfg.$prefix}` for all class names and token references
 4. Register: add `@use 'components/component-name';` to `src/index.scss`
-5. Build: `pnpm --filter @ds/css-components build`
+5. Build: `pnpm --filter @vcds/css-components build`
 
 The blueprint at `blueprints/scss/Component.blueprint.scss` provides the
 annotated template.
@@ -423,7 +423,7 @@ find-and-replace. No missed references.
 Framework components never hardcode prefix strings. They import a helper:
 
 ```typescript
-import { DS_PREFIX, cls } from '@ds/shared/prefix';
+import { DS_PREFIX, cls } from '@vcds/shared/prefix';
 
 cls('button')                    // → 'vcds-button'
 cls('button', 'primary')         // → 'vcds-button--primary'
@@ -459,15 +459,15 @@ Framework packages provide:
 
 Framework packages never:
 - Define visual styles (no CSS, no style attributes, no CSS Modules, no scoped styles)
-- Import stylesheets (the consuming app imports `@ds/css-components` at the entry point)
-- Hardcode the prefix string (they import `cls()` or `DS_PREFIX` from `@ds/shared`)
+- Import stylesheets (the consuming app imports `@vcds/css-components` at the entry point)
+- Hardcode the prefix string (they import `cls()` or `DS_PREFIX` from `@vcds/shared`)
 
 ### The pattern
 
 **React** uses `forwardRef` with the `cls()` helper:
 
 ```tsx
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 const classNames = [
   cls('button'),
@@ -504,11 +504,11 @@ components normally:
 
 ```tsx
 // App entry point
-import '@ds/tokens/platforms/web/tokens.css';
-import '@ds/css-components/dist/index.css';
+import '@vcds/tokens/platforms/web/tokens.css';
+import '@vcds/css-components/dist/index.css';
 
 // In components
-import { Button } from '@ds/react';
+import { Button } from '@vcds/react';
 
 <Button variant="primary" size="md" onClick={save}>Save</Button>
 ```
@@ -744,23 +744,23 @@ need.** The other two are complementary options for specific workflows.
 ### Build order (critical)
 
 ```
-Step 1: @ds/tokens
+Step 1: @vcds/tokens
         Style Dictionary reads ds.config.json for prefix,
         compiles JSON → CSS vars, SCSS, JS, Swift, XML
 
-Step 2: @ds/css-components
+Step 2: @vcds/css-components
         Sass compiler reads _config.scss for $prefix,
         compiles SCSS → dist/index.css (minified) + dist/index.expanded.css
 
-Step 3: @ds/css
+Step 3: @vcds/css
         Compiles global CSS from token variables
 
-Step 4: @ds/react, @ds/vue, @ds/svelte (parallel)
+Step 4: @vcds/react, @vcds/vue, @vcds/svelte (parallel)
         TypeScript compilation, bundling
-        Each imports @ds/shared for the prefix constant
+        Each imports @vcds/shared for the prefix constant
 
-Step 5: @ds/docs
-        Storybook builds from @ds/react components + @ds/css-components styles
+Step 5: @vcds/docs
+        Storybook builds from @vcds/react components + @vcds/css-components styles
 ```
 
 The root `pnpm build` command enforces this order. Steps 1 and 2 must complete
@@ -788,7 +788,7 @@ before anything else. Steps 4 can run in parallel.
 2. Register in `src/index.scss`
 3. Run `pnpm build:css` — new component classes are in `dist/index.css`
 4. Create HTML example in `packages/html/examples/`
-5. Create React/Vue/Svelte wrappers (import `cls()` from `@ds/shared`)
+5. Create React/Vue/Svelte wrappers (import `cls()` from `@vcds/shared`)
 6. Create Storybook stories
 7. Run `pnpm build` to verify everything compiles
 
@@ -799,10 +799,10 @@ before anything else. Steps 4 can run in parallel.
 ### Adding a new framework (e.g., Angular, Solid, Web Components)
 
 1. Create `packages/{framework}/` with a `package.json`
-2. Add `@ds/css-components`, `@ds/shared`, and `@ds/tokens` as dependencies
-3. Create components that import `cls()` or `DS_PREFIX` from `@ds/shared`
+2. Add `@vcds/css-components`, `@vcds/shared`, and `@vcds/tokens` as dependencies
+3. Create components that import `cls()` or `DS_PREFIX` from `@vcds/shared`
 4. Map framework-specific props/directives to BEM class strings
-5. Do not define any styles — all visuals come from `@ds/css-components`
+5. Do not define any styles — all visuals come from `@vcds/css-components`
 6. Create a blueprint in `blueprints/{framework}/`
 7. Add an agent config file if the framework has its own IDE
 
@@ -854,7 +854,7 @@ limits adoption. The CSS-first approach makes multi-framework support cheap
 since visual styles are shared.
 
 ### D2: CSS-first base layer over co-located styles
-**Decision:** All visual styles in `@ds/css-components`, not in framework components.
+**Decision:** All visual styles in `@vcds/css-components`, not in framework components.
 **Reasoning:** Eliminates style duplication (previously, the same button styles
 existed in three framework files). Guarantees visual parity. Enables HTML/CSS-only
 usage. Follows the pattern proven by Carbon, Primer, Lightning, and Spectrum.

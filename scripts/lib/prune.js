@@ -41,9 +41,9 @@ const AGENT_CONFIG_FILES = [
  */
 function buildScript(removed, removingAll) {
   const base = [
-    'pnpm --filter @ds/tokens build',
-    'pnpm --filter @ds/css-components build',
-    'pnpm --filter @ds/css build',
+    'pnpm --filter @vcds/tokens build',
+    'pnpm --filter @vcds/css-components build',
+    'pnpm --filter @vcds/css build',
   ];
 
   if (removingAll) {
@@ -52,9 +52,9 @@ function buildScript(removed, removingAll) {
 
   // Build exclusion filters for the -r (recursive) tail
   const excludeFilters = [
-    "--filter='!@ds/tokens'",
-    "--filter='!@ds/css-components'",
-    "--filter='!@ds/css'",
+    "--filter='!@vcds/tokens'",
+    "--filter='!@vcds/css-components'",
+    "--filter='!@vcds/css'",
   ];
 
   return [...base, `pnpm -r ${excludeFilters.join(' ')} build`].join(' && ');
@@ -153,11 +153,11 @@ export function cleanupAgentConfigs(toRemove, root) {
           `^- \\*\\*${cap}\\*\\*:.*\\n`,
           'gm'
         );
-        // Lines like: ├── @ds/react     → Props → ...
-        const treeLine = new RegExp(`^.*[├└]── @ds/${fw}.*\\n`, 'gm');
-        // Lines like: pnpm --filter @ds/react build
+        // Lines like: ├── @vcds/react     → Props → ...
+        const treeLine = new RegExp(`^.*[├└]── @vcds/${fw}.*\\n`, 'gm');
+        // Lines like: pnpm --filter @vcds/react build
         const cmdLine = new RegExp(
-          `^pnpm --filter @ds/${fw} build.*\\n`,
+          `^pnpm --filter @vcds/${fw} build.*\\n`,
           'gm'
         );
         // Lines like: │   ├── react/           # React — thin wrappers ...

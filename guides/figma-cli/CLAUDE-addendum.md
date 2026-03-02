@@ -45,7 +45,7 @@ When the user asks to build a component from Figma:
 3. Use `lint --rules color-contrast` to verify a11y in the design
 4. Map Figma values to tokens in `packages/tokens/src/`
 5. Generate component code using blueprints in `/blueprints/`
-6. Build tokens if new ones were added: `pnpm --filter @ds/tokens build`
+6. Build tokens if new ones were added: `pnpm --filter @vcds/tokens build`
 
 ### Safety
 

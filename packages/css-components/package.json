@@ -1,5 +1,5 @@
 {
-  "name": "@ds/css-components",
+  "name": "@vcds/css-components",
   "version": "0.0.1",
   "description": "BEM-based CSS component library — the visual foundation consumed by all framework packages",
   "main": "dist/index.css",
@@ -10,7 +10,7 @@
     "lint": "stylelint 'src/**/*.scss'"
   },
   "dependencies": {
-    "@ds/tokens": "workspace:*"
+    "@vcds/tokens": "workspace:*"
   },
   "devDependencies": {
     "sass": "^1.80.0",
@@ -18,6 +18,6 @@
     "stylelint-config-standard-scss": "^13.0.0"
   },
   "peerDependencies": {
-    "@ds/tokens": "workspace:*"
+    "@vcds/tokens": "workspace:*"
   }
 }

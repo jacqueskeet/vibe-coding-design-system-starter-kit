@@ -2,12 +2,12 @@
 /**
  * DsButton — Primary interactive element for triggering actions.
  *
- * Styles come from @ds/css-components (BEM classes with configurable prefix).
+ * Styles come from @vcds/css-components (BEM classes with configurable prefix).
  * Prefix is defined in /ds.config.json — change with: node scripts/set-prefix.js
  */
 
 import { computed } from 'vue';
-import { DS_PREFIX } from '@ds/shared/prefix';
+import { DS_PREFIX } from '@vcds/shared/prefix';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -82,4 +82,4 @@ function handleClick(event: MouseEvent) {
   </button>
 </template>
 
-<!-- No <style> block — all styles come from @ds/css-components -->
+<!-- No <style> block — all styles come from @vcds/css-components -->

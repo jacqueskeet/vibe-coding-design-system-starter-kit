@@ -25,13 +25,13 @@ This is a multi-framework design system monorepo. It produces component librarie
 
 ```bash
 pnpm install                             # Install all dependencies
-pnpm --filter @ds/tokens build           # Build tokens to all platforms
-pnpm --filter @ds/css-components build   # Build shared component CSS
-pnpm --filter @ds/css build              # Build global CSS from tokens
-pnpm --filter @ds/react build            # Build React component library
-pnpm --filter @ds/vue build              # Build Vue component library
-pnpm --filter @ds/svelte build           # Build Svelte component library
-pnpm --filter @ds/docs dev               # Start Storybook dev server
+pnpm --filter @vcds/tokens build           # Build tokens to all platforms
+pnpm --filter @vcds/css-components build   # Build shared component CSS
+pnpm --filter @vcds/css build              # Build global CSS from tokens
+pnpm --filter @vcds/react build            # Build React component library
+pnpm --filter @vcds/vue build              # Build Vue component library
+pnpm --filter @vcds/svelte build           # Build Svelte component library
+pnpm --filter @vcds/docs dev               # Start Storybook dev server
 pnpm build                               # Build everything (tokens → CSS → frameworks)
 pnpm test                                # Run all tests
 pnpm lint                                # Lint all packages
@@ -68,7 +68,7 @@ It flows through every layer automatically:
 ```
 ds.config.json  →  Style Dictionary tokens  (--vcds-color-*, --vcds-spacing-*)
                 →  SCSS _config.scss         (.vcds-button, .vcvcds-button--primary)
-                →  JS/TS @ds/shared          (DS_PREFIX = 'vcds', cls() helper)
+                →  JS/TS @vcds/shared          (DS_PREFIX = 'vcds', cls() helper)
 ```
 
 **Change prefix:** `node scripts/set-prefix.js <new-prefix>` then `pnpm build`
@@ -80,7 +80,7 @@ ds.config.json  →  Style Dictionary tokens  (--vcds-color-*, --vcds-spacing-*)
 - Animations: `@keyframes vcds-button-spin`
 
 **Rules for agents:**
-- ALWAYS use the `cls()` helper from `@ds/shared/prefix` in framework components
+- ALWAYS use the `cls()` helper from `@vcds/shared/prefix` in framework components
 - NEVER hardcode the prefix string in framework wrappers
 - In SCSS, use `#{cfg.$prefix}` interpolation (import `_config.scss` as `cfg`)
 - HTML reference pages use the literal prefix — update when prefix changes
@@ -90,12 +90,12 @@ ds.config.json  →  Style Dictionary tokens  (--vcds-color-*, --vcds-spacing-*)
 This repo uses a **CSS-first base layer** pattern. All visual styles live in `packages/css-components/` as BEM-structured SCSS. Framework packages are thin wrappers that map props to these shared BEM classes.
 
 ```
-@ds/tokens              → CSS custom properties (universal)
-  └── @ds/css-components  → BEM classes (web base layer)
-        ├── @ds/react     → Props → class names + interactivity
-        ├── @ds/vue       → Props → class names + interactivity
-        ├── @ds/svelte    → Props → class names + interactivity
-        └── @ds/html      → Use classes directly
+@vcds/tokens              → CSS custom properties (universal)
+  └── @vcds/css-components  → BEM classes (web base layer)
+        ├── @vcds/react     → Props → class names + interactivity
+        ├── @vcds/vue       → Props → class names + interactivity
+        ├── @vcds/svelte    → Props → class names + interactivity
+        └── @vcds/html      → Use classes directly
 ```
 
 **Rules:**
@@ -110,7 +110,7 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
 
 1. **SCSS first** → Create `packages/css-components/src/components/_component-name.scss`
 2. **Register** → Add `@use 'components/component-name';` to `packages/css-components/src/index.scss`
-3. **Build CSS** → `pnpm --filter @ds/css-components build`
+3. **Build CSS** → `pnpm --filter @vcds/css-components build`
 4. **HTML reference** → Create `packages/html/examples/component-name.html`
 5. **Framework wrappers** → Create thin React, Vue, Svelte wrappers that apply BEM classes
 6. **Tests** → Unit + axe-core for each framework wrapper
@@ -184,7 +184,7 @@ The `/prompts/` directory contains tested, reusable prompts for common tasks. Re
 
 When adding or modifying tokens:
 1. Edit the JSON files in `packages/tokens/src/`
-2. Run `pnpm --filter @ds/tokens build`
+2. Run `pnpm --filter @vcds/tokens build`
 3. Verify generated output in `packages/tokens/platforms/`
 4. Update CSS in `packages/css/` if needed
 5. Check that all components still render correctly

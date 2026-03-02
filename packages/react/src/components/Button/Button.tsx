@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 import type { ButtonProps } from './Button.types';
-import { DS_PREFIX, cls } from '@ds/shared/prefix';
+import { DS_PREFIX, cls } from '@vcds/shared/prefix';
 
 /**
  * Button — Primary interactive element for triggering actions.
  *
- * Styles come from @ds/css-components (BEM classes with configurable prefix).
+ * Styles come from @vcds/css-components (BEM classes with configurable prefix).
  * Prefix is defined in /ds.config.json — change with: node scripts/set-prefix.js
  *
  * @example

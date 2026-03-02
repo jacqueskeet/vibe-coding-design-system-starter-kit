@@ -1,4 +1,4 @@
-# @ds/tokens
+# @vcds/tokens
 
 Design tokens for the design system, built with [Style Dictionary](https://amzn.github.io/style-dictionary/).
 
@@ -70,7 +70,7 @@ platforms/
 ### Web (CSS)
 
 ```css
-@import '@ds/tokens/css';
+@import '@vcds/tokens/css';
 
 .my-element {
   color: var(--ds-color-text-primary);
@@ -82,7 +82,7 @@ platforms/
 ### Web (JavaScript/TypeScript)
 
 ```ts
-import { colorActionPrimary, spacingMd } from '@ds/tokens';
+import { colorActionPrimary, spacingMd } from '@vcds/tokens';
 ```
 
 ### Theming

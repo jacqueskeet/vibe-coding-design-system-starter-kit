@@ -1,5 +1,5 @@
 {
-  "name": "@ds/css",
+  "name": "@vcds/css",
   "version": "0.0.1",
   "description": "Global CSS — reset, themes, utility classes generated from design tokens",
   "main": "dist/global.css",
@@ -8,6 +8,6 @@
     "build": "sass src/global.css dist/global.css --style=compressed --no-source-map"
   },
   "dependencies": {
-    "@ds/tokens": "workspace:*"
+    "@vcds/tokens": "workspace:*"
   }
 }

@@ -1,8 +1,8 @@
 /**
  * BLUEPRINT: React Component Wrapper (CSS-First Architecture)
  *
- * Thin wrapper — maps React props to BEM classes from @ds/css-components.
- * Uses DS_PREFIX from @ds/shared for the configurable prefix.
+ * Thin wrapper — maps React props to BEM classes from @vcds/css-components.
+ * Uses DS_PREFIX from @vcds/shared for the configurable prefix.
  * NO styles in this file.
  *
  * Steps:
@@ -14,7 +14,7 @@
 
 import { forwardRef } from 'react';
 import type { {{ComponentName}}Props } from './{{ComponentName}}.types';
-import { cls } from '@ds/shared/prefix';
+import { cls } from '@vcds/shared/prefix';
 
 export const {{ComponentName}} = forwardRef<HTMLElement, {{ComponentName}}Props>(
   (
