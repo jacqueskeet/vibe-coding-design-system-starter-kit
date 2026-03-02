@@ -53,8 +53,61 @@ const AGENT_CONFIG_FILES = [
   'AGENTS.md',
   '.cursor/rules/components.mdc',
   '.cursor/rules/design-system.mdc',
+  '.cursor/rules/tokens.mdc',
   '.windsurfrules',
   '.antigravity/rules.md',
+  '.github/copilot-instructions.md',
+];
+
+/**
+ * IDE choice → which IDE-specific dirs/files to KEEP.
+ * Everything not in the "keep" list gets deleted.
+ * 'other' = keep everything (null signals no pruning).
+ *
+ * Note: .github/ dir is NEVER deleted because it contains CI workflows.
+ *       Only .github/copilot-instructions.md is removed when Copilot isn't chosen.
+ * Note: AGENTS.md is read by both OpenCode and Google Antigravity.
+ */
+const IDE_KEEP_MAP = {
+  cursor: {
+    dirs: ['.cursor'],
+    files: [],
+  },
+  'cursor-claude': {
+    dirs: ['.cursor'],
+    files: ['CLAUDE.md'],
+  },
+  claude: {
+    dirs: [],
+    files: ['CLAUDE.md'],
+  },
+  windsurf: {
+    dirs: [],
+    files: ['.windsurfrules'],
+  },
+  copilot: {
+    dirs: [],
+    files: ['.github/copilot-instructions.md'],
+  },
+  antigravity: {
+    dirs: ['.antigravity'],
+    files: ['AGENTS.md'], // Antigravity also reads AGENTS.md
+  },
+  opencode: {
+    dirs: [],
+    files: ['AGENTS.md'],
+  },
+  other: null, // keep everything
+};
+
+/** All IDE-specific directories (that are ONLY for IDE config) */
+const ALL_IDE_DIRS = ['.cursor', '.antigravity'];
+
+/** All IDE-specific files */
+const ALL_IDE_FILES = [
+  'CLAUDE.md',
+  'AGENTS.md',
+  '.windsurfrules',
   '.github/copilot-instructions.md',
 ];
 
@@ -435,6 +488,48 @@ export function cleanupCursorRules(toRemove, root) {
   if (updated !== content) {
     writeFileSync(rulePath, updated, 'utf-8');
     log.push('Updated .cursor/rules/components.mdc');
+  }
+
+  return log;
+}
+
+// ── IDE config pruning ─────────────────────────────────────────────
+
+/**
+ * Delete IDE-specific folders and files that don't belong to the chosen IDE.
+ *
+ * If ideChoice is 'other', nothing is deleted (user wants all configs).
+ * For any other choice, we keep only the relevant dirs/files and remove the rest.
+ *
+ * @param {string} ideChoice — e.g. 'cursor', 'cursor-claude', 'claude', etc.
+ * @param {string} root      — absolute path to repo root
+ * @returns {string[]} Log of removed items.
+ */
+export function pruneIdeConfigs(ideChoice, root) {
+  const log = [];
+  const keep = IDE_KEEP_MAP[ideChoice];
+
+  // 'other' or unknown → keep everything
+  if (keep === null || keep === undefined) return log;
+
+  // Remove directories not in the keep list
+  for (const dir of ALL_IDE_DIRS) {
+    if (!keep.dirs.includes(dir)) {
+      const abs = resolve(root, dir);
+      if (existsSync(abs)) {
+        rmSync(abs, { recursive: true, force: true });
+        log.push(`Removed ${dir}/`);
+      }
+    }
+  }
+
+  // Remove files not in the keep list
+  for (const file of ALL_IDE_FILES) {
+    if (!keep.files.includes(file)) {
+      if (removeFile(resolve(root, file))) {
+        log.push(`Removed ${file}`);
+      }
+    }
   }
 
   return log;

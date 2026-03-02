@@ -345,12 +345,64 @@ bash_prune_frameworks() {
   fi
 }
 
+bash_prune_ide() {
+  local ide_choice="$1"
+
+  # 'other' = keep everything
+  [ "$ide_choice" = "other" ] && return 0
+
+  # Map IDE choice → what to KEEP
+  local keep_dirs="" keep_files=""
+  case "$ide_choice" in
+    cursor)
+      keep_dirs=".cursor"
+      ;;
+    cursor-claude)
+      keep_dirs=".cursor"
+      keep_files="CLAUDE.md"
+      ;;
+    claude)
+      keep_files="CLAUDE.md"
+      ;;
+    windsurf)
+      keep_files=".windsurfrules"
+      ;;
+    copilot)
+      keep_files=".github/copilot-instructions.md"
+      ;;
+    antigravity)
+      keep_dirs=".antigravity"
+      keep_files="AGENTS.md"
+      ;;
+    opencode)
+      keep_files="AGENTS.md"
+      ;;
+  esac
+
+  # Remove IDE dirs not in keep list
+  for dir in .cursor .antigravity; do
+    if [[ "$keep_dirs" != *"$dir"* ]] && [ -d "${ROOT}/${dir}" ]; then
+      rm -rf "${ROOT}/${dir}"
+      ok "Removed ${dir}/"
+    fi
+  done
+
+  # Remove IDE files not in keep list
+  for file in CLAUDE.md AGENTS.md .windsurfrules .github/copilot-instructions.md; do
+    if [[ "$keep_files" != *"$file"* ]] && [ -f "${ROOT}/${file}" ]; then
+      rm -f "${ROOT}/${file}"
+      ok "Removed ${file}"
+    fi
+  done
+}
+
 bash_write_marker() {
   local name="$1"
   local prefix="$2"
   local keep_react="$3"
   local keep_vue="$4"
   local keep_svelte="$5"
+  local ide="${6:-other}"
 
   local fws=""
   [ "$keep_react" = true ]  && fws="${fws}\"react\", "
@@ -365,7 +417,7 @@ bash_write_marker() {
   "prefix": "${prefix}",
   "frameworks": [${fws}],
   "figma": "skip",
-  "ide": "other",
+  "ide": "${ide}",
   "configuredBy": "bash",
   "note": "Configured without Node.js. Run pnpm install && pnpm build when ready."
 }
@@ -436,12 +488,43 @@ bash_configure() {
   [ "$keep_svelte" = true ] && fw_label="${fw_label}Svelte, "
   fw_label="${fw_label}HTML/CSS"
 
+  # ── 4. IDE ──
+  echo ""
+  echo -e "  Unused IDE configs are removed to keep the project clean."
+  echo -e "  Choose ${BOLD}8${RESET} to keep all configs."
+  echo ""
+  echo -e "    ${BOLD}1)${RESET} Cursor"
+  echo -e "    ${BOLD}2)${RESET} Cursor + Claude Code"
+  echo -e "    ${BOLD}3)${RESET} Claude Code"
+  echo -e "    ${BOLD}4)${RESET} Windsurf"
+  echo -e "    ${BOLD}5)${RESET} VS Code (Copilot)"
+  echo -e "    ${BOLD}6)${RESET} Google Antigravity"
+  echo -e "    ${BOLD}7)${RESET} OpenCode"
+  echo -e "    ${BOLD}8)${RESET} Other / multiple (keep all)"
+  echo ""
+  read -p "  Which IDE? [2]: " ide_input
+  ide_input="${ide_input:-2}"
+
+  local ide_choice="cursor-claude"
+  local ide_label="Cursor + Claude Code"
+  case "$ide_input" in
+    1) ide_choice="cursor";        ide_label="Cursor" ;;
+    2) ide_choice="cursor-claude"; ide_label="Cursor + Claude Code" ;;
+    3) ide_choice="claude";        ide_label="Claude Code" ;;
+    4) ide_choice="windsurf";      ide_label="Windsurf" ;;
+    5) ide_choice="copilot";       ide_label="VS Code (Copilot)" ;;
+    6) ide_choice="antigravity";   ide_label="Google Antigravity" ;;
+    7) ide_choice="opencode";      ide_label="OpenCode" ;;
+    8) ide_choice="other";         ide_label="Other / multiple (keep all)" ;;
+  esac
+
   # ── Confirm ──
   echo ""
   echo -e "  ${BOLD}─────────────────────────────────${RESET}"
   echo -e "  Design system:  ${ds_name}"
   echo -e "  Prefix:         ${prefix}"
   echo -e "  Frameworks:     ${fw_label}"
+  echo -e "  IDE:            ${ide_label}"
   echo -e "  ${BOLD}─────────────────────────────────${RESET}"
   echo ""
   read -p "  Proceed with setup? [Y/n] " -n 1 -r
@@ -472,7 +555,14 @@ bash_configure() {
     bash_prune_frameworks "$keep_react" "$keep_vue" "$keep_svelte"
   fi
 
-  bash_write_marker "$ds_name" "$prefix" "$keep_react" "$keep_vue" "$keep_svelte"
+  if [ "$ide_choice" != "other" ]; then
+    echo ""
+    echo -e "  ${BOLD}Cleaning up IDE configs...${RESET}"
+    echo ""
+    bash_prune_ide "$ide_choice"
+  fi
+
+  bash_write_marker "$ds_name" "$prefix" "$keep_react" "$keep_vue" "$keep_svelte" "$ide_choice"
 
   # ── Success ──
   echo ""

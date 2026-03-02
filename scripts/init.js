@@ -24,6 +24,7 @@ import {
   cleanupAgentConfigs,
   cleanupReadme,
   cleanupCursorRules,
+  pruneIdeConfigs,
 } from './lib/prune.js';
 import { configureMcp } from './lib/mcp.js';
 import { runSetup } from './lib/build-runner.js';
@@ -282,8 +283,9 @@ async function gatherAnswers() {
   });
 
   // 4. IDE (asked before Figma so we can show DS CLI for Claude/OpenCode)
-  console.log('\n  Your IDE choice determines which config file we highlight.');
-  console.log('  All config files are always included — you can switch IDEs anytime.\n');
+  console.log('\n  Your IDE choice determines which agent config files to keep.');
+  console.log('  Unused IDE configs are removed to keep the project clean.');
+  console.log('  Choose "Other / multiple" to keep all configs.\n');
 
   const ide = await select({
     message: 'Which IDE will you primarily use?',
@@ -519,7 +521,19 @@ async function execute(answers) {
     }
   }
 
-  // ── Phase B2: Update workspace to match selected frameworks ────
+  // ── Phase B2: Prune unused IDE configs ──────────────────────────
+  if (ide !== 'other') {
+    console.log('\n  Cleaning up IDE configs...\n');
+    try {
+      const ideLog = pruneIdeConfigs(ide, ROOT);
+      for (const entry of ideLog) console.log(`  ✓ ${entry}`);
+      if (ideLog.length === 0) console.log('  ✓ No unused IDE configs to remove');
+    } catch (err) {
+      console.error(`\n  ⚠  IDE config cleanup partially failed: ${err.message}`);
+    }
+  }
+
+  // ── Phase B3: Update workspace to match selected frameworks ────
   const finalPackages = buildWorkspacePackageList(selectedFws);
   try {
     writeWorkspaceYaml(ROOT, finalPackages);
