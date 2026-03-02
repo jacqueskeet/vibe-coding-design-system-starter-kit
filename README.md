@@ -40,7 +40,7 @@ A **vibe coding-ready design system monorepo** — everything you need to build,
 - **🏗️ CSS-First Architecture** — BEM-structured SCSS is the single source of truth; framework packages are thin wrappers
 - **🤖 AI Agent Integration** — Pre-configured rules for Cursor, Claude Code, Windsurf, GitHub Copilot, Google Antigravity, and OpenCode
 - **♿ Accessibility** — WCAG 2.2 AA baked in with checklists, patterns, axe-core testing, and focus management
-- **🧙 Interactive Setup** — Run `npm run init` and a setup wizard configures naming, prefix, frameworks, Figma, and IDE integration
+- **🧙 Interactive Setup** — Run `./setup.sh` and a setup wizard detects prerequisites, installs what's missing, then configures naming, prefix, frameworks, Figma, and IDE integration
 
 ---
 
@@ -52,12 +52,13 @@ git clone https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.g
 cd vibe-coding-design-system-starter-kit
 
 # 2. Run the setup wizard
-npm run init
+./setup.sh
 ```
 
-That's it. The setup wizard walks you through naming, prefix, framework selection,
-Figma integration, and IDE configuration — then installs dependencies and builds
-everything automatically.
+That's it. The setup script checks for Node.js and pnpm (and helps you install them
+if missing), then launches the interactive wizard for naming, prefix, framework
+selection, Figma integration, and IDE configuration — then installs dependencies
+and builds everything automatically.
 
 After setup, start building:
 
@@ -68,7 +69,7 @@ pnpm -w test    # Run tests
 ```
 
 <details>
-<summary>Manual setup (without the wizard)</summary>
+<summary>Manual setup (requires Node.js 20+ and pnpm already installed)</summary>
 
 ```bash
 pnpm install
@@ -131,6 +132,7 @@ design-system-starter/
 ├── testing/             # Visual regression + a11y test configs
 ├── docs/                # Architecture deep-dive, design principles, decision log
 │   └── ARCHITECTURE.md  # ← Read this first for full system context
+├── setup.sh             # ← Bootstrap: detects/installs Node, pnpm, then runs wizard
 ├── scripts/
 │   ├── set-prefix.js    # ← CLI to change prefix everywhere
 │   └── setup-figma-cli.js
