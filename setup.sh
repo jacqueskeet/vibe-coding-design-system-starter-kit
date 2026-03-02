@@ -185,9 +185,9 @@ main() {
   local pnpm_ok=false
 
   # ── Check Node.js ──
-  local node_version
-  node_version=$(check_node 2>/dev/null)
-  local node_status=$?
+  # Use || to prevent set -e from killing the script on non-zero exit
+  local node_version node_status=0
+  node_version=$(check_node 2>/dev/null) || node_status=$?
 
   if [ $node_status -eq 0 ]; then
     ok "Node.js v${node_version}"
@@ -201,9 +201,8 @@ main() {
   fi
 
   # ── Check pnpm ──
-  local pnpm_version
-  pnpm_version=$(check_pnpm 2>/dev/null)
-  local pnpm_status=$?
+  local pnpm_version pnpm_status=0
+  pnpm_version=$(check_pnpm 2>/dev/null) || pnpm_status=$?
 
   if [ $pnpm_status -eq 0 ]; then
     ok "pnpm v${pnpm_version}"
@@ -219,7 +218,7 @@ main() {
   # ── Check git (informational) ──
   if has_command git; then
     local git_version
-    git_version=$(git --version 2>/dev/null | sed 's/git version //')
+    git_version=$(git --version 2>/dev/null | sed 's/git version //') || true
     ok "git v${git_version}"
   fi
 
