@@ -7,12 +7,10 @@ This guide is written for both **human contributors** and **AI agents**. Follow 
 ## Getting Started
 
 ```bash
-git clone https://github.com/your-org/design-system-starter.git
-cd design-system-starter
-pnpm install
-pnpm build:tokens
-pnpm build:css
-pnpm dev
+git clone https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.git my-design-system
+cd my-design-system
+./setup.sh            # Interactive setup wizard
+pnpm dev              # Start Storybook
 ```
 
 ## Architecture

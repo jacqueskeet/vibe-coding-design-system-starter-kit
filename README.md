@@ -47,9 +47,9 @@ A **vibe coding-ready design system monorepo** — everything you need to build,
 ## Quick Start
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.git
-cd vibe-coding-design-system-starter-kit
+# 1. Clone into your project folder (replace "my-design-system" with your name)
+git clone https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.git my-design-system
+cd my-design-system
 
 # 2. Run the setup wizard
 ./setup.sh
@@ -59,6 +59,9 @@ That's it. The setup script checks for Node.js and pnpm (and helps you install t
 if missing), then launches the interactive wizard for naming, prefix, framework
 selection, Figma integration, and IDE configuration — then installs dependencies
 and builds everything automatically.
+
+> **Tip:** The folder name you choose (`my-design-system` above) is just your local directory.
+> The setup wizard will ask for your design system's actual name and configure everything for you.
 
 After setup, start building:
 
