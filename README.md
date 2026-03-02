@@ -10,8 +10,8 @@ Pull this repo into **Cursor**, **Claude Code**, **Windsurf**, **GitHub Copilot*
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-org/design-system-starter.git
-cd design-system-starter
+git clone https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.git
+cd vibe-coding-design-system-starter-kit
 
 # 2. Run the setup wizard
 npm run init
@@ -216,11 +216,16 @@ See [prompts/](./prompts/) for a full library of tested prompts.
 
 ## Framework Integration
 
-| Framework | Guide |
-|-----------|-------|
-| **shadcn/ui** | [guides/framework-integration/shadcn.md](./guides/framework-integration/shadcn.md) |
-| **Radix UI** | [guides/framework-integration/radix.md](./guides/framework-integration/radix.md) |
-| **Base UI** | [guides/framework-integration/base-ui.md](./guides/framework-integration/base-ui.md) |
+Optional guides for layering headless component libraries on top of this design system:
+
+| Library | Frameworks | Guide |
+|---------|-----------|-------|
+| **Ark UI** | React, Vue, Svelte | [guides/framework-integration/ark-ui.md](./guides/framework-integration/ark-ui.md) |
+| **Headless UI** | React, Vue | [guides/framework-integration/headless-ui.md](./guides/framework-integration/headless-ui.md) |
+| **Radix UI** | React | [guides/framework-integration/radix.md](./guides/framework-integration/radix.md) |
+| **shadcn/ui** | React | [guides/framework-integration/shadcn.md](./guides/framework-integration/shadcn.md) |
+| **Base UI** | React | [guides/framework-integration/base-ui.md](./guides/framework-integration/base-ui.md) |
+| **Zag.js** | Framework-agnostic | [guides/framework-integration/zag.md](./guides/framework-integration/zag.md) |
 
 ---
 
