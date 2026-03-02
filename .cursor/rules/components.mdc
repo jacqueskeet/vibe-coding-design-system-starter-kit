@@ -1,0 +1,110 @@
+---
+description: Rules for building components — CSS-first, then framework wrappers
+globs: ["packages/css-components/**/*", "packages/html/**/*", "packages/react/**/*", "packages/vue/**/*", "packages/svelte/**/*"]
+---
+
+# Component Development Rules — CSS-First Architecture
+
+## Step 1: SCSS Component (`packages/css-components/`)
+
+ALL visual styles go here first. This is the single source of truth.
+
+```scss
+// _component-name.scss — BEM naming with configurable prefix
+.{prefix}-component {
+  display: flex;
+  padding: var(--vcds-spacing-md);
+  background: var(--vcds-color-surface-primary);
+  border-radius: var(--vcds-radius-md);
+  font-family: var(--vcds-font-family-sans);
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--vcds-focus-ring);
+  }
+}
+
+.{prefix}-component--primary { /* variant */ }
+.{prefix}-component--sm { /* size */ }
+.{prefix}-component__header { /* sub-element */ }
+```
+
+After creating, register: `@use 'components/component-name';` in `src/index.scss`
+
+## Step 2: HTML Reference (`packages/html/examples/`)
+
+Create a standalone HTML page showing all variants with BEM classes. No JS required.
+
+## Step 3: Framework Wrappers (thin — NO styles)
+
+### React (`packages/react/`)
+
+```tsx
+// Thin wrapper — maps props to BEM classes. NO CSS imports, NO style files.
+import { forwardRef } from 'react';
+import type { ComponentProps } from './Component.types';
+
+export const Component = forwardRef<HTMLElement, ComponentProps>(
+  ({ variant = 'default', size = 'md', className, children, ...rest }, ref) => {
+    const classNames = [
+      '{prefix}-component',
+      `{prefix}-component--${variant}`,
+      `{prefix}-component--${size}`,
+      className ?? '',
+    ].filter(Boolean).join(' ');
+
+    return (
+      <element ref={ref} className={classNames} {...rest}>
+        {children}
+      </element>
+    );
+  }
+);
+Component.displayName = 'Component';
+```
+
+### Vue (`packages/vue/`)
+
+```vue
+<!-- Thin wrapper — NO <style> block -->
+<script setup lang="ts">
+withDefaults(defineProps<{ variant?: string; size?: string }>(), {
+  variant: 'default', size: 'md',
+});
+defineOptions({ name: 'DsComponent' });
+</script>
+
+<template>
+  <element :class="['{prefix}-component', `{prefix}-component--${variant}`, `{prefix}-component--${size}`]">
+    <slot />
+  </element>
+</template>
+<!-- No <style> — all styles come from @ds/css-components -->
+```
+
+### Svelte (`packages/svelte/`)
+
+```svelte
+<!-- Thin wrapper — NO <style> block -->
+<script lang="ts">
+  let { variant = 'default', size = 'md', children, ...rest }: Props = $props();
+</script>
+
+<element class="{prefix}-component {prefix}-component--{variant} {prefix}-component--{size}" {...rest}>
+  {@render children?.()}
+</element>
+<!-- No <style> — all styles come from @ds/css-components -->
+```
+
+## Shared Rules (All Frameworks)
+
+- ALWAYS start with SCSS in `packages/css-components/` — CSS-first
+- ALWAYS create HTML reference page before framework wrappers
+- Framework wrappers MUST NOT contain `<style>` blocks, CSS Modules, or style imports
+- ALWAYS use BEM classes: `.{prefix}-{component}`, `.{prefix}-{component}--{variant}`
+- ALWAYS use semantic tokens via `var(--vcds-*)` — no hardcoded values
+- ALWAYS include ARIA attributes and keyboard handling
+- ALWAYS create a types file with exported interface
+- ALWAYS write tests with axe-core assertions
+- ALWAYS create Storybook stories for all variants and states
+- ALWAYS provide a `className`/`class` prop for composition

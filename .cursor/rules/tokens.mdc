@@ -1,0 +1,58 @@
+---
+description: Rules for working with design tokens
+globs: ["packages/tokens/**/*", "packages/css/**/*"]
+---
+
+# Design Token Rules
+
+## Token Architecture
+
+Tokens follow a three-tier hierarchy:
+
+```
+PRIMITIVE (raw values)  →  SEMANTIC (intent)         →  COMPONENT (usage)
+blue-500                →  color-action-primary       →  button-bg-default
+```
+
+## File Organization
+
+- `packages/tokens/src/primitives/` — Raw values (colors, spacing scales, font stacks)
+- `packages/tokens/src/semantic/` — Theme-mapped tokens (light.json, dark.json, high-contrast.json)
+- Output: `packages/tokens/platforms/` — Built artifacts per platform
+
+## Naming Convention
+
+All tokens use kebab-case with this pattern:
+`{category}-{property}-{element}-{variant}-{state}`
+
+Examples:
+- `color-action-primary` (semantic)
+- `color-action-primary-hover` (semantic + state)
+- `color-surface-default` (semantic)
+- `spacing-md` (semantic)
+- `font-size-heading-lg` (semantic)
+
+## Adding a New Token
+
+1. Add to the appropriate primitives file if the raw value doesn't exist
+2. Map it in `semantic/light.json` (and `dark.json`, `high-contrast.json`)
+3. Run `pnpm --filter @ds/tokens build`
+4. Verify output in `packages/tokens/platforms/`
+5. If it affects components, update the CSS in `packages/css/`
+
+## Style Dictionary Config
+
+The build config is in `packages/tokens/style-dictionary.config.js`. It outputs:
+- CSS custom properties (web)
+- SCSS variables (web)
+- JS/TS module exports (web)
+- Swift enums (iOS)
+- Kotlin objects (Android)
+- XML resources (Android)
+
+## Rules
+
+- NEVER modify files in `packages/tokens/platforms/` — they are generated
+- ALWAYS ensure color tokens meet WCAG 2.2 AA contrast ratios
+- ALWAYS provide values for all three themes (light, dark, high-contrast)
+- Use `rem` for spacing and typography, not `px`

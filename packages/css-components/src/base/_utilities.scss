@@ -1,0 +1,22 @@
+// ─── Shared Utilities ────────────────────────────────────────────
+
+@use '../config' as cfg;
+
+// Visually hidden but still accessible to screen readers
+.#{cfg.$prefix}-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Focus ring — shared focus style token
+.#{cfg.$prefix}-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: var(--#{cfg.$prefix}-focus-ring);
+}

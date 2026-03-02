@@ -1,0 +1,23 @@
+{
+  "name": "@ds/css-components",
+  "version": "0.0.1",
+  "description": "BEM-based CSS component library — the visual foundation consumed by all framework packages",
+  "main": "dist/index.css",
+  "files": ["dist"],
+  "scripts": {
+    "build": "sass src/index.scss dist/index.css --style=compressed --no-source-map && sass src/index.scss dist/index.expanded.css --style=expanded --no-source-map",
+    "build:watch": "sass src/index.scss dist/index.css --watch",
+    "lint": "stylelint 'src/**/*.scss'"
+  },
+  "dependencies": {
+    "@ds/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard-scss": "^13.0.0"
+  },
+  "peerDependencies": {
+    "@ds/tokens": "workspace:*"
+  }
+}

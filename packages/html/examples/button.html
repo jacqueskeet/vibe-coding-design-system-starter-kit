@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button — Design System HTML Reference</title>
+
+  <!--
+    In production, link to the built CSS:
+    <link rel="stylesheet" href="node_modules/@ds/tokens/platforms/web/variables.css" />
+    <link rel="stylesheet" href="node_modules/@ds/css-components/dist/index.css" />
+
+    For this example, we use relative paths:
+  -->
+  <link rel="stylesheet" href="../../tokens/platforms/web/variables.css" />
+  <link rel="stylesheet" href="../../css-components/dist/index.css" />
+
+  <style>
+    /* Example page layout only — not part of the design system */
+    body { font-family: system-ui, sans-serif; padding: 2rem; background: var(--ds-color-surface-primary, #fff); color: var(--ds-color-text-primary, #1a1a1a); }
+    .example-section { margin-bottom: 2rem; }
+    .example-section h2 { font-size: 1.25rem; margin-bottom: 1rem; color: var(--ds-color-text-secondary, #666); }
+    .example-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+  <h1>Button Component — HTML Reference</h1>
+  <p>
+    Pure HTML + CSS usage of the design system button.
+    No JavaScript framework required. All styling comes from
+    <code>@ds/css-components</code>.
+  </p>
+
+  <!-- ─── Variants ────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Variants</h2>
+    <div class="example-row">
+      <button class="vcds-button vcds-button--primary vcds-button--md">Primary</button>
+      <button class="vcds-button vcds-button--secondary vcds-button--md">Secondary</button>
+      <button class="vcds-button vcds-button--ghost vcds-button--md">Ghost</button>
+      <button class="vcds-button vcds-button--danger vcds-button--md">Danger</button>
+    </div>
+  </div>
+
+  <!-- ─── Sizes ───────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Sizes</h2>
+    <div class="example-row">
+      <button class="vcds-button vcds-button--primary vcds-button--sm">Small</button>
+      <button class="vcds-button vcds-button--primary vcds-button--md">Medium</button>
+      <button class="vcds-button vcds-button--primary vcds-button--lg">Large</button>
+    </div>
+  </div>
+
+  <!-- ─── Full Width ──────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Full Width</h2>
+    <button class="vcds-button vcds-button--primary vcds-button--md vcds-button--full-width">
+      Full Width Button
+    </button>
+  </div>
+
+  <!-- ─── Disabled ────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Disabled</h2>
+    <div class="example-row">
+      <button class="vcds-button vcds-button--primary vcds-button--md" aria-disabled="true">
+        Primary Disabled
+      </button>
+      <button class="vcds-button vcds-button--secondary vcds-button--md" aria-disabled="true">
+        Secondary Disabled
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── With Icons ──────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>With Icons</h2>
+    <div class="example-row">
+      <button class="vcds-button vcds-button--primary vcds-button--md">
+        <span class="vcds-button__icon-left" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </span>
+        <span class="vcds-button__label">Add item</span>
+      </button>
+
+      <button class="vcds-button vcds-button--secondary vcds-button--md">
+        <span class="vcds-button__label">Next</span>
+        <span class="vcds-button__icon-right" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── Loading ─────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Loading</h2>
+    <div class="example-row">
+      <button class="vcds-button vcds-button--primary vcds-button--md vcds-button--loading" aria-disabled="true" aria-busy="true">
+        <span class="vcds-button__spinner" aria-hidden="true">
+          <svg class="vcds-button__spinner-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="31.42 31.42" />
+          </svg>
+        </span>
+        <span class="vcds-button__label--hidden">Saving...</span>
+        <span class="vcds-button__sr-only">Loading</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── As Link ─────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>As Link (anchor tag)</h2>
+    <div class="example-row">
+      <a href="#" class="vcds-button vcds-button--primary vcds-button--md" role="button">
+        Link styled as button
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

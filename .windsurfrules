@@ -1,0 +1,70 @@
+# Design System Starter Kit — Windsurf Rules
+
+> **Start here:** `docs/ARCHITECTURE.md` contains the full architectural context —
+> design principles, layer model, token system, prefix mechanics, Figma integration,
+> build chain, and decision log. Read it first for the "why" behind these rules.
+
+## Project Context
+
+Multi-framework design system monorepo (React + Vue + Svelte + HTML/CSS) with a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. Framework packages are thin wrappers. Design tokens built via Style Dictionary. Target: WCAG 2.2 AA.
+
+## Architecture
+
+```
+@ds/tokens → @ds/css-components → @ds/react / @ds/vue / @ds/svelte / @ds/html
+```
+
+
+## Configurable Prefix
+
+Defined in `/ds.config.json` (default: `vcds`). Change: `node scripts/set-prefix.js <new-prefix>` then `pnpm build`.
+CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@ds/shared/prefix`.
+
+## Critical Rules
+
+1. **CSS-first** — ALL component styles go in `packages/css-components/src/components/`. Framework wrappers MUST NOT contain `<style>` blocks or CSS Modules.
+2. **BEM naming** — `.{prefix}-{component}`, `.{prefix}-{component}--{variant}`, `.{prefix}-{component}__{element}`.
+3. **Tokens over hardcoded values** — ALWAYS use `var(--vcds-{category}-{name})` in SCSS. Never hardcode colors, spacing, or typography.
+4. **Semantic tokens only** — Components reference semantic tokens (e.g., `color-action-primary`), never primitives (e.g., `blue-500`).
+5. **Accessibility first** — Every interactive component needs keyboard handling, ARIA attributes, visible focus indicators, and axe-core tests.
+6. **Blueprint-driven** — Start with `/blueprints/scss/` for SCSS, then `/blueprints/{framework}/` for wrappers.
+
+## Creating a Component — Order Matters
+
+1. SCSS → `packages/css-components/src/components/_name.scss` (BEM, tokens only)
+2. Register → Add `@use 'components/name';` to `src/index.scss`
+3. Build → `pnpm --filter @ds/css-components build`
+4. HTML → `packages/html/examples/name.html` (reference markup)
+5. Wrappers → React, Vue, Svelte (props → BEM classes, NO styles)
+6. Tests + Stories
+
+## Framework Patterns
+
+- **React**: forwardRef, string class names (`'{prefix}-button vcds-button--primary'`), NO CSS Modules
+- **Vue**: `<script setup lang="ts">`, array class binding, NO scoped styles, `Ds` prefix
+- **Svelte**: Svelte 5 runes (`$props()`), `class:` directives, NO `<style>` block
+
+## Key Commands
+
+```
+pnpm build                                # Build all (tokens → CSS → frameworks)
+pnpm --filter @ds/tokens build            # Build tokens
+pnpm --filter @ds/css-components build    # Build component CSS
+pnpm --filter @ds/docs dev               # Start Storybook
+pnpm test                                # Run all tests
+pnpm changeset                           # Version changes
+```
+
+## Decision Capture
+
+Read `DECISIONS.md` before starting any task. Apply every documented decision to your output. After completing a task that established a new repeatable pattern (variant naming, token scale, accessibility convention, etc.), suggest the user document it in `DECISIONS.md` so it's applied consistently going forward.
+
+## Resources
+
+- SCSS Blueprint: `/blueprints/scss/`
+- Framework Blueprints: `/blueprints/{react,vue,svelte}/`
+- HTML Blueprint: `/blueprints/html-css/`
+- Prompts: `/prompts/`
+- A11y checklists: `/a11y/checklists/`
+- Token source: `packages/tokens/src/`
+- CSS components source: `packages/css-components/src/`

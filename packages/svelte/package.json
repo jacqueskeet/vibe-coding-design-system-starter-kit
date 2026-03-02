@@ -1,0 +1,39 @@
+{
+  "name": "@ds/svelte",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Svelte 5 component library — thin wrappers over @ds/css-components",
+  "svelte": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "svelte": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "svelte-package",
+    "dev": "svelte-package --watch",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@ds/css-components": "workspace:*",
+    "@ds/shared": "workspace:*",
+    "@ds/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^2.3.0",
+    "@testing-library/svelte": "^5.0.0",
+    "svelte": "^5.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}

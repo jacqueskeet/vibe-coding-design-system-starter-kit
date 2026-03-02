@@ -1,0 +1,9 @@
+// ─── Design System Configuration ─────────────────────────────────
+// This file is the SCSS source of truth for the design system prefix.
+// It is kept in sync with /ds.config.json
+//
+// To change the prefix, run: node scripts/set-prefix.js <new-prefix>
+// Or edit ds.config.json and run: node scripts/sync-prefix.js
+// ─────────────────────────────────────────────────────────────────
+
+$prefix: 'vcds' !default;

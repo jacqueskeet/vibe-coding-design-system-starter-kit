@@ -1,0 +1,6 @@
+{
+  "$schema": "./ds.config.schema.json",
+  "prefix": "vcds",
+  "name": "Design System Starter Kit",
+  "description": "A design system built with the Design System Starter Kit"
+}

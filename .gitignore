@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+packages/tokens/platforms/
+.svelte-kit/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Coverage
+coverage/
+
+# figma-cli (cloned by setup script)
+tools/figma-cli/
+
+# Storybook build
+storybook-static/
+
+# Init marker
+.ds-initialized
+
+# Claude Code session data
+.claude/
+
+# Zip archives
+*.zip
+
+# Internal planning docs (not for public repo)
+IMPLEMENTATION_PLAN.md
+TASK_*.md

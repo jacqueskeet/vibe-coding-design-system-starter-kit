@@ -1,0 +1,29 @@
+{
+  "elevation": {
+    "none": { "value": "none", "type": "boxShadow" },
+    "sm":   { "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)", "type": "boxShadow" },
+    "md":   { "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)", "type": "boxShadow" },
+    "lg":   { "value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)", "type": "boxShadow" },
+    "xl":   { "value": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)", "type": "boxShadow" }
+  },
+  "opacity": {
+    "0":   { "value": "0",    "type": "opacity" },
+    "5":   { "value": "0.05", "type": "opacity" },
+    "10":  { "value": "0.1",  "type": "opacity" },
+    "25":  { "value": "0.25", "type": "opacity" },
+    "50":  { "value": "0.5",  "type": "opacity" },
+    "75":  { "value": "0.75", "type": "opacity" },
+    "100": { "value": "1",    "type": "opacity" }
+  },
+  "z-index": {
+    "hide":    { "value": "-1",   "type": "other" },
+    "base":    { "value": "0",    "type": "other" },
+    "raised":  { "value": "1",    "type": "other" },
+    "dropdown":{ "value": "1000", "type": "other" },
+    "sticky":  { "value": "1100", "type": "other" },
+    "overlay": { "value": "1300", "type": "other" },
+    "modal":   { "value": "1400", "type": "other" },
+    "toast":   { "value": "1500", "type": "other" },
+    "tooltip": { "value": "1600", "type": "other" }
+  }
+}

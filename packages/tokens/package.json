@@ -1,0 +1,26 @@
+{
+  "name": "@ds/tokens",
+  "version": "0.0.1",
+  "description": "Design tokens for the design system",
+  "type": "module",
+  "main": "platforms/web/tokens.js",
+  "types": "platforms/web/tokens.d.ts",
+  "exports": {
+    ".": "./platforms/web/tokens.js",
+    "./css": "./platforms/web/tokens.css",
+    "./css/dark": "./platforms/web/tokens-dark.css",
+    "./css/high-contrast": "./platforms/web/tokens-high-contrast.css",
+    "./scss": "./platforms/web/_tokens.scss"
+  },
+  "scripts": {
+    "build": "node style-dictionary.config.js",
+    "clean": "rm -rf platforms/"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.0.0"
+  },
+  "files": [
+    "platforms/",
+    "src/"
+  ]
+}

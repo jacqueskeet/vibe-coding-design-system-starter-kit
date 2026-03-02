@@ -1,0 +1,10 @@
+{
+  "name": "@ds/html",
+  "version": "0.0.1",
+  "description": "HTML reference markup for the design system — no framework required",
+  "private": true,
+  "dependencies": {
+    "@ds/css-components": "workspace:*",
+    "@ds/tokens": "workspace:*"
+  }
+}

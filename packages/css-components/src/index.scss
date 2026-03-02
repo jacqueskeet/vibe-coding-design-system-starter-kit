@@ -1,0 +1,28 @@
+// ────────────────────────────────────────────────────────────────
+// @ds/css-components — Design System CSS Component Library
+//
+// This is the visual foundation of the design system.
+// All framework packages (React, Vue, Svelte) consume these
+// classes. Pure HTML projects can use this stylesheet directly.
+//
+// Architecture:
+//   @ds/tokens (CSS custom properties)
+//     └── @ds/css-components (BEM classes using those properties)
+//           ├── @ds/react (thin wrapper)
+//           ├── @ds/vue (thin wrapper)
+//           ├── @ds/svelte (thin wrapper)
+//           └── Plain HTML (direct usage)
+//
+// Prefix: Configurable via _config.scss ($prefix).
+//         Change with: node scripts/set-prefix.js <new-prefix>
+// ────────────────────────────────────────────────────────────────
+
+// Configuration (prefix, etc.)
+@use 'config';
+
+// Base / Reset
+@use 'base/reset';
+@use 'base/utilities';
+
+// Components
+@use 'components/button';

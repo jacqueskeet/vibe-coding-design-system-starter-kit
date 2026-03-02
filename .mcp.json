@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "figma-console": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-console-mcp@latest"
+      ],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "YOUR_FIGMA_TOKEN_HERE",
+        "ENABLE_MCP_APPS": "true"
+      },
+      "_setup": "PREFERRED. 56+ tools: extract tokens, create designs, debug plugins, manage variables. Get your token at https://www.figma.com/developers/api#access-tokens. Install Desktop Bridge Plugin in Figma Desktop for full capabilities. Docs: https://docs.figma-console-mcp.southleft.com/setup"
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic/figma-mcp-server"
+      ],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "YOUR_FIGMA_TOKEN_HERE"
+      },
+      "_setup": "Official Figma Dev Mode MCP. Read-only code generation from Figma designs. Get your token at https://www.figma.com/developers/api#access-tokens"
+    },
+    "storybook": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic/storybook-mcp-server"
+      ],
+      "env": {
+        "STORYBOOK_URL": "http://localhost:6006"
+      },
+      "_setup": "Start Storybook first with: pnpm --filter @ds/docs dev"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "_setup": "Official Playwright MCP. Browser automation via accessibility snapshots. Used for QA verification of Storybook components and HTML reference pages. Auto-installs Chromium on first use."
+    }
+  }
+}

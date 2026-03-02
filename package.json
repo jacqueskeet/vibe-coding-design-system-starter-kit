@@ -1,0 +1,62 @@
+{
+  "name": "design-system-starter",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "A vibe coding-ready design system starter kit with multi-framework support, design tokens, and AI agent integration",
+  "license": "MIT",
+  "author": "Vibe Coding Design System Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit.git"
+  },
+  "homepage": "https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit#readme",
+  "bugs": {
+    "url": "https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit/issues"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "style-dictionary",
+    "react",
+    "vue",
+    "svelte",
+    "storybook",
+    "accessibility",
+    "wcag",
+    "bem",
+    "scss",
+    "vibe-coding",
+    "ai-agents",
+    "mcp"
+  ],
+  "scripts": {
+    "init": "node scripts/init.js",
+    "build": "pnpm --filter @ds/tokens build && pnpm --filter @ds/css-components build && pnpm --filter @ds/css build && pnpm -r --filter='!@ds/tokens' --filter='!@ds/css-components' --filter='!@ds/css' build",
+    "build:tokens": "pnpm --filter @ds/tokens build",
+    "build:css": "pnpm --filter @ds/css-components build",
+    "build:react": "pnpm --filter @ds/react build",
+    "build:vue": "pnpm --filter @ds/vue build",
+    "build:svelte": "pnpm --filter @ds/svelte build",
+    "dev": "pnpm --filter @ds/docs dev",
+    "test": "vitest run",
+    "lint": "pnpm -r lint",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "setup:figma-cli": "node scripts/setup-figma-cli.js",
+    "set-prefix": "node scripts/set-prefix.js"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "@inquirer/prompts": "^8.3.0",
+    "sass": "^1.80.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

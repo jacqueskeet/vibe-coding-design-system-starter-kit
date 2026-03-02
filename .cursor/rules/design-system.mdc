@@ -1,0 +1,48 @@
+---
+description: Core design system conventions for all tasks
+globs: ["**/*"]
+---
+
+# Design System Conventions
+
+> **Start here:** Read `docs/ARCHITECTURE.md` for the full architectural context —
+> design principles, layer model, token system, prefix mechanics, Figma integration,
+> build chain, and decision log.
+
+You are working in a multi-framework design system monorepo. All components are built for React, Vue, and Svelte with shared design tokens and a **CSS-first base layer**.
+
+## CSS-First Architecture — CRITICAL
+
+- ALL visual styles live in `packages/css-components/` as BEM SCSS
+- Framework components are THIN WRAPPERS — they map props to BEM class names
+- Framework components MUST NOT define their own `<style>` blocks or CSS Modules
+- BEM naming: `.{prefix}-{component}`, `.{prefix}-{component}--{variant}`, `.{prefix}-{component}__{element}`
+
+## Token Usage — CRITICAL
+
+- NEVER use hardcoded color, spacing, or typography values
+- ALWAYS use CSS custom properties: `var(--vcds-{category}-{name})`
+- Components use SEMANTIC tokens, never primitive tokens
+- Examples: `var(--vcds-color-action-primary)`, `var(--vcds-spacing-md)`, `var(--vcds-font-size-body)`
+
+## Component Rules
+
+- Every component must be accessible (WCAG 2.2 AA)
+- Include keyboard navigation and ARIA attributes
+- Export TypeScript types for all props
+- Write unit tests with axe-core a11y checks
+- Create Storybook stories for all variants
+
+## Decision Capture
+
+Read `DECISIONS.md` before starting any task. Apply every documented decision to your output. After completing a task that established a new repeatable pattern (variant naming, token scale, accessibility convention, etc.), suggest the user document it in `DECISIONS.md` so it's applied consistently going forward.
+
+## When Creating a Component — Order matters:
+
+1. Check `/blueprints/scss/` for the SCSS template (start here)
+2. Create SCSS in `packages/css-components/src/components/`
+3. Create HTML reference in `packages/html/examples/`
+4. Check `/blueprints/{framework}/` for the wrapper template
+5. Create thin wrappers in React, Vue, Svelte (props → BEM classes)
+6. Check `/a11y/checklists/component.md` for accessibility requirements
+7. Add Storybook stories in `packages/docs/stories/`

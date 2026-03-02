@@ -1,0 +1,72 @@
+// ─── {{ComponentName}} ───────────────────────────────────────────
+// Shared BEM styles consumed by all framework packages.
+//
+// Prefix: Reads from _config.scss — configurable via ds.config.json.
+// Naming: .{prefix}-{{component-name}}, .{prefix}-{{component-name}}--variant
+// Tokens: All values MUST come from CSS custom properties (--{prefix}-*).
+//
+// Usage (HTML, assuming prefix is 'vcds'):
+//   <div class="vcds-{{component-name}}">
+//     <div class="vcds-{{component-name}}__header">Title</div>
+//     <div class="vcds-{{component-name}}__body">Content</div>
+//   </div>
+//
+// After creating this file:
+//   1. Add `@use 'components/{{component-name}}';` to src/index.scss
+//   2. Build: pnpm --filter @ds/css-components build
+//   3. Create framework wrappers in react/, vue/, svelte/
+//   4. Create HTML reference in packages/html/examples/
+// ─────────────────────────────────────────────────────────────────
+
+@use '../config' as cfg;
+
+// ─── Base ────────────────────────────────────────────────────────
+
+.#{cfg.$prefix}-{{component-name}} {
+  // Layout
+  display: flex;
+
+  // Spacing — use semantic tokens
+  padding: var(--#{cfg.$prefix}-spacing-md);
+  gap: var(--#{cfg.$prefix}-spacing-sm);
+
+  // Visual — use semantic tokens
+  background-color: var(--#{cfg.$prefix}-color-surface-primary);
+  border: var(--#{cfg.$prefix}-border-width-1) solid var(--#{cfg.$prefix}-color-border-default);
+  border-radius: var(--#{cfg.$prefix}-radius-md);
+
+  // Typography
+  font-family: var(--#{cfg.$prefix}-font-family-sans);
+  color: var(--#{cfg.$prefix}-color-text-primary);
+
+  // Focus
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--#{cfg.$prefix}-focus-ring);
+  }
+}
+
+// ─── Variants ────────────────────────────────────────────────────
+
+// .#{cfg.$prefix}-{{component-name}}--variant {
+//   // Override base styles for this variant
+// }
+
+// ─── Sizes ───────────────────────────────────────────────────────
+
+// .#{cfg.$prefix}-{{component-name}}--sm { ... }
+// .#{cfg.$prefix}-{{component-name}}--md { ... }
+// .#{cfg.$prefix}-{{component-name}}--lg { ... }
+
+// ─── Sub-elements ────────────────────────────────────────────────
+
+// .#{cfg.$prefix}-{{component-name}}__header { ... }
+// .#{cfg.$prefix}-{{component-name}}__body { ... }
+// .#{cfg.$prefix}-{{component-name}}__footer { ... }
+
+// ─── States ──────────────────────────────────────────────────────
+
+// .#{cfg.$prefix}-{{component-name}}[aria-disabled='true'] {
+//   cursor: not-allowed;
+//   opacity: var(--#{cfg.$prefix}-opacity-50);
+// }

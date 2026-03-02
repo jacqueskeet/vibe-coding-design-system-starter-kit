@@ -1,0 +1,12 @@
+{
+  "name": "@ds/shared",
+  "version": "0.0.1",
+  "description": "Shared configuration — prefix constant and BEM class helper",
+  "main": "prefix.ts",
+  "types": "prefix.ts",
+  "exports": {
+    ".": "./prefix.ts",
+    "./prefix": "./prefix.ts"
+  },
+  "files": ["prefix.ts"]
+}

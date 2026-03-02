@@ -1,0 +1,42 @@
+// ─── Minimal Reset ───────────────────────────────────────────────
+// Normalizes browser defaults for design system components.
+// Token-aware — uses CSS custom properties from @ds/tokens.
+
+@use '../config' as cfg;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+// Screen reader only utility (used by all components)
+.#{cfg.$prefix}-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

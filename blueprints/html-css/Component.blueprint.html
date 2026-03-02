@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ComponentName}} — Design System HTML Reference</title>
+
+  <!-- Token CSS custom properties -->
+  <link rel="stylesheet" href="../../tokens/platforms/web/variables.css" />
+  <!-- Component CSS (BEM classes) -->
+  <link rel="stylesheet" href="../../css-components/dist/index.css" />
+
+  <!--
+    NOTE: Class names use the configured prefix from /ds.config.json.
+    Default prefix is 'vcds'. If you change it, update all class names
+    in this file accordingly, or regenerate HTML examples.
+  -->
+
+  <style>
+    /* Example page layout only — NOT part of the design system */
+    body { font-family: system-ui, sans-serif; padding: 2rem; }
+    .example-section { margin-bottom: 2rem; }
+    .example-section h2 { font-size: 1.25rem; margin-bottom: 1rem; color: #666; }
+    .example-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+
+  <h1>{{ComponentName}} — HTML Reference</h1>
+  <p>
+    Pure HTML + CSS usage. All styling from <code>@ds/css-components</code>.
+    Class prefix: <code>vcds-</code> (configurable in ds.config.json).
+  </p>
+
+  <!-- ─── Default ─────────────────────────────────────────────── -->
+  <div class="example-section">
+    <h2>Default</h2>
+    <div class="example-row">
+      <div class="vcds-{{component-name}}">
+        Default {{component-name}}
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
