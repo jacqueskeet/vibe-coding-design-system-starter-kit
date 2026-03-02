@@ -1,8 +1,46 @@
-# Design System Starter Kit
+<div align="center">
 
-> A vibe coding-ready design system monorepo — AI agent rules, tokens, components, and accessibility baked in.
+<pre>
+                              ██╗   ██╗ ██████╗██████╗ ███████╗
+                              ██║   ██║██╔════╝██╔══██╗██╔════╝
+                              ██║   ██║██║     ██║  ██║███████╗
+                              ╚██╗ ██╔╝██║     ██║  ██║╚════██║
+                               ╚████╔╝ ╚██████╗██████╔╝███████║
+                                ╚═══╝   ╚═════╝╚═════╝ ╚══════╝
+███████╗████████╗ █████╗ ██████╗ ████████╗███████╗██████╗       ██╗  ██╗██╗████████╗
+██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔══██╗      ██║ ██╔╝██║╚══██╔══╝
+███████╗   ██║   ███████║██████╔╝   ██║   █████╗  ██████╔╝      █████╔╝ ██║   ██║
+╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ██╔══╝  ██╔══██╗      ██╔═██╗ ██║   ██║
+███████║   ██║   ██║  ██║██║  ██║   ██║   ███████╗██║  ██║      ██║  ██╗██║   ██║
+╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝      ╚═╝  ╚═╝╚═╝   ╚═╝
+</pre>
 
-Pull this repo into **Cursor**, **Claude Code**, **Windsurf**, **GitHub Copilot**, **Google Antigravity**, or **OpenCode** and start building your design system immediately. The repo includes pre-configured agent rules, component blueprints, design tokens, accessibility patterns, and tested prompts so AI agents understand your system from the first keystroke.
+[![Vibe Coding](https://img.shields.io/badge/Vibe_Coding-Design_System-blueviolet?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
+[![Frameworks](https://img.shields.io/badge/React_|_Vue_|_Svelte-blue?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
+[![AI Agent Ready](https://img.shields.io/badge/AI_Agent-Ready-brightgreen?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
+[![WCAG 2.2 AA](https://img.shields.io/badge/WCAG_2.2-AA-gold?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
+
+**Build your design system with AI agents.**
+
+Multi-framework. Token-driven. Accessible by default.
+
+Works with Cursor, Claude Code, Windsurf, Copilot, Antigravity, and OpenCode.
+
+</div>
+
+---
+
+## What is This?
+
+A **vibe coding-ready design system monorepo** — everything you need to build, maintain, and scale a production design system with AI agents:
+
+- **🎨 Design Tokens** — Style Dictionary v4 compiles to CSS, SCSS, JS/TS, Swift, Kotlin, and Android XML from a single source
+- **⚛️ Multi-Framework** — Shared component libraries for React, Vue, and Svelte, all driven by the same tokens and CSS
+- **🏗️ CSS-First Architecture** — BEM-structured SCSS is the single source of truth; framework packages are thin wrappers
+- **🤖 AI Agent Integration** — Pre-configured rules for Cursor, Claude Code, Windsurf, GitHub Copilot, Google Antigravity, and OpenCode
+- **♿ Accessibility** — WCAG 2.2 AA baked in with checklists, patterns, axe-core testing, and focus management
+- **🧙 Interactive Setup** — Run `npm run init` and a setup wizard configures naming, prefix, frameworks, Figma, and IDE integration
 
 ---
 
