@@ -1,8 +1,10 @@
 name: Deploy Storybook
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+  # Uncomment below once Storybook builds and GitHub Pages is enabled:
+  # push:
+  #   branches: [main]
 
 permissions:
   pages: write
