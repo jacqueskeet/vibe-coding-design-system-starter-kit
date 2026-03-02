@@ -146,31 +146,55 @@ install_node_linux() {
 
 install_pnpm() {
   echo ""
+
+  # 1. Try corepack first — built into Node 20+, no permission issues
+  if has_command corepack; then
+    echo -e "  ${CYAN}Enabling pnpm via corepack (built into Node 20+)...${RESET}"
+    echo ""
+    if corepack enable 2>/dev/null && corepack prepare pnpm@latest --activate 2>/dev/null; then
+      return 0
+    fi
+    # corepack failed (might need sudo) — fall through to other methods
+    echo -e "  ${DIM}corepack needs elevated permissions, trying other methods...${RESET}"
+    echo ""
+  fi
+
+  # 2. Try npm install -g, with sudo fallback for EACCES
   if has_command npm; then
     echo -e "  ${CYAN}Installing pnpm via npm...${RESET}"
     echo ""
-    npm install -g pnpm@9
-    return $?
-  elif has_command corepack; then
-    echo -e "  ${CYAN}Enabling pnpm via corepack...${RESET}"
+    if npm install -g pnpm@9 2>/dev/null; then
+      return 0
+    fi
+
+    # npm failed — likely EACCES permissions error
     echo ""
-    corepack enable
-    corepack prepare pnpm@latest --activate
-    return $?
-  else
-    echo -e "  ${BOLD}How to install pnpm:${RESET}"
+    echo -e "  ${YELLOW}Permission denied.${RESET} Global npm installs need elevated access."
     echo ""
-    echo -e "  ${CYAN}Option 1: Via npm${RESET}"
-    echo -e "    ${DIM}npm install -g pnpm@9${RESET}"
+    read -p "  Retry with sudo? [Y/n] " -n 1 -r
     echo ""
-    echo -e "  ${CYAN}Option 2: Via corepack (built into Node 20+)${RESET}"
-    echo -e "    ${DIM}corepack enable${RESET}"
-    echo ""
-    echo -e "  ${CYAN}Option 3: Standalone install${RESET}"
-    echo -e "    ${DIM}curl -fsSL https://get.pnpm.io/install.sh | sh -${RESET}"
-    echo ""
-    return 1
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+      echo ""
+      sudo npm install -g pnpm@9
+      return $?
+    fi
   fi
+
+  # 3. Offer standalone installer as last resort
+  echo ""
+  echo -e "  ${CYAN}Standalone install (no sudo needed):${RESET}"
+  echo -e "    ${DIM}curl -fsSL https://get.pnpm.io/install.sh | sh -${RESET}"
+  echo ""
+  read -p "  Install pnpm via standalone installer? [Y/n] " -n 1 -r
+  echo ""
+  if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+    echo ""
+    curl -fsSL https://get.pnpm.io/install.sh | sh -
+    return $?
+  fi
+
+  echo ""
+  return 1
 }
 
 # ── Main ─────────────────────────────────────────────────────────
