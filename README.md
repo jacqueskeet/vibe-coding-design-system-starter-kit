@@ -18,7 +18,7 @@
 </pre>
 
 [![Vibe Coding](https://img.shields.io/badge/Vibe_Coding-Design_System-blueviolet?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
-[![Frameworks](https://img.shields.io/badge/React_|_Vue_|_Svelte-blue?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
+[![Frameworks](https://img.shields.io/badge/React_|_Vue_|_Svelte_|_Angular-blue?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
 [![AI Agent Ready](https://img.shields.io/badge/AI_Agent-Ready-brightgreen?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
 [![WCAG 2.2 AA](https://img.shields.io/badge/WCAG_2.2-AA-gold?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
@@ -38,11 +38,12 @@ Works with Cursor, Claude Code, Windsurf, Copilot, Antigravity, and OpenCode.
 A **vibe coding-ready design system monorepo** — everything you need to build, maintain, and scale a production design system with AI agents:
 
 - **🎨 Design Tokens** — Style Dictionary v4 compiles to CSS, SCSS, JS/TS, Swift, Kotlin, and Android XML from a single source
-- **⚛️ Multi-Framework** — Shared component libraries for React, Vue, and Svelte, all driven by the same tokens and CSS
+- **⚛️ Multi-Framework** — Shared component libraries for React, Vue, Svelte, and Angular, all driven by the same tokens and CSS
 - **🏗️ CSS-First Architecture** — BEM-structured SCSS is the single source of truth; framework packages are thin wrappers
 - **🤖 AI Agent Integration** — Pre-configured rules for Cursor, Claude Code, Windsurf, GitHub Copilot, Google Antigravity, and OpenCode
 - **♿ Accessibility** — WCAG 2.2 AA baked in with checklists, patterns, axe-core testing, and focus management
-- **🧙 Interactive Setup** — Run `./setup.sh` and a setup wizard detects prerequisites, installs what's missing, then configures naming, prefix, frameworks, Figma, and IDE integration
+- **🧩 Headless Library Support** — Optional step during setup to add Radix UI, Base UI, Headless UI, Ark UI, Angular Primitives, or Zag.js as behaviour primitives
+- **🧙 Interactive Setup** — Run `./setup.sh` and a setup wizard detects prerequisites, installs what's missing, then configures naming, prefix, frameworks, headless library, Figma, and IDE integration
 
 ---
 
@@ -59,8 +60,8 @@ cd my-design-system
 
 That's it. The setup script checks for Node.js and pnpm (and helps you install them
 if missing), then launches the interactive wizard for naming, prefix, framework
-selection, Figma integration, and IDE configuration — then installs dependencies
-and builds everything automatically.
+selection, headless UI library, Figma integration, and IDE configuration — then
+installs dependencies and builds everything automatically.
 
 > **Tip:** The folder name you choose (`my-design-system` above) is just your local directory.
 > The setup wizard will ask for your design system's actual name and configure everything for you.
@@ -122,11 +123,13 @@ design-system-starter/
 │   ├── react/           # React — thin wrappers over css-components
 │   ├── vue/             # Vue 3 — thin wrappers over css-components
 │   ├── svelte/          # Svelte — thin wrappers over css-components
+│   ├── angular/         # Angular 17+ — thin wrappers over css-components
 │   └── docs/            # Storybook documentation site
 ├── blueprints/          # Component skeleton templates
 │   ├── react/           # React component blueprint
 │   ├── vue/             # Vue component blueprint
 │   ├── svelte/          # Svelte component blueprint
+│   ├── angular/         # Angular component blueprint
 │   ├── scss/            # SCSS component blueprint (css-components)
 │   └── html-css/        # HTML reference blueprint
 ├── prompts/             # Tested prompts for common DS tasks
@@ -168,8 +171,8 @@ BEM-structured CSS component library. This is the single source of truth for all
 ### `@vcds/css`
 Global CSS generated from tokens, plus a CSS reset, utility classes, and theme files (light / dark / high-contrast).
 
-### `@vcds/react` · `@vcds/vue` · `@vcds/svelte`
-Thin framework wrappers that map props to `@vcds/css-components` BEM classes and add interactivity (events, state, slots/children). Components include accessible markup (WCAG 2.2 AA), TypeScript types / prop validation, unit tests, and Storybook stories.
+### `@vcds/react` · `@vcds/vue` · `@vcds/svelte` · `@vcds/angular`
+Thin framework wrappers that map props to `@vcds/css-components` BEM classes and add interactivity (events, state, slots/children). Components include accessible markup (WCAG 2.2 AA), TypeScript types / prop validation, unit tests, and Storybook stories. Angular uses standalone components (17+) with `@Input()` props and `[ngClass]` bindings, built via ng-packagr.
 
 ### `@vcds/html`
 Reference HTML markup showing how to use `@vcds/css-components` directly — no JavaScript framework required. Perfect for static sites, CMSs, email templates, or server-rendered pages.
@@ -218,6 +221,7 @@ Layer 2: @vcds/css-components      ← Web base layer. BEM classes from tokens.
             ├── @vcds/react        ← Props → BEM classes + React interactivity
             ├── @vcds/vue          ← Props → BEM classes + Vue interactivity
             ├── @vcds/svelte       ← Props → BEM classes + Svelte interactivity
+            ├── @vcds/angular      ← Props → BEM classes + Angular interactivity
             └── @vcds/html         ← Use BEM classes directly (no framework)
 
 Mobile:  @vcds/tokens → iOS / Android / React Native (skip CSS layer)
@@ -241,13 +245,13 @@ See [packages/tokens/README.md](./packages/tokens/README.md) for the full taxono
 ## Vibe Coding Workflows
 
 ### Generate a new component (CSS-first)
-> "Create a new Badge component. Start with the SCSS in css-components following the blueprint in /blueprints/scss/. Then create React, Vue, and Svelte wrappers using the framework blueprints. Support variants: default, success, warning, error. Include an HTML reference page."
+> "Create a new Badge component. Start with the SCSS in css-components following the blueprint in /blueprints/scss/. Then create React, Vue, Svelte, and Angular wrappers using the framework blueprints. Support variants: default, success, warning, error. Include an HTML reference page."
 
 ### Add to HTML/CSS only
 > "I need a Card component for our Magento site. Create the SCSS in css-components and an HTML reference page with all variants. I don't need framework wrappers."
 
 ### Generate a new component (framework wrappers)
-> "Create React, Vue, and Svelte wrappers for the existing Badge css-component. Map variants and sizes to BEM classes. Include TypeScript types and a11y attributes."
+> "Create React, Vue, Svelte, and Angular wrappers for the existing Badge css-component. Map variants and sizes to BEM classes. Include TypeScript types and a11y attributes."
 
 ### Add a token
 > "Add a semantic token `color-feedback-info` mapped to `blue-400` in light and `blue-300` in dark theme. Rebuild tokens and css-components."
@@ -259,18 +263,21 @@ See [prompts/](./prompts/) for a full library of tested prompts.
 
 ---
 
-## Framework Integration
+## Headless UI Libraries
 
-Optional guides for layering headless component libraries on top of this design system:
+During setup, you can optionally choose a headless UI library to add behaviour primitives on top of the design system. The wizard filters options based on your selected frameworks and installs the relevant packages automatically.
 
 | Library | Frameworks | Guide |
 |---------|-----------|-------|
-| **Ark UI** | React, Vue, Svelte | [guides/framework-integration/ark-ui.md](./guides/framework-integration/ark-ui.md) |
-| **Headless UI** | React, Vue | [guides/framework-integration/headless-ui.md](./guides/framework-integration/headless-ui.md) |
 | **Radix UI** | React | [guides/framework-integration/radix.md](./guides/framework-integration/radix.md) |
-| **shadcn/ui** | React | [guides/framework-integration/shadcn.md](./guides/framework-integration/shadcn.md) |
 | **Base UI** | React | [guides/framework-integration/base-ui.md](./guides/framework-integration/base-ui.md) |
-| **Zag.js** | Framework-agnostic | [guides/framework-integration/zag.md](./guides/framework-integration/zag.md) |
+| **Headless UI** | React, Vue | [guides/framework-integration/headless-ui.md](./guides/framework-integration/headless-ui.md) |
+| **Ark UI** | React, Vue, Svelte | [guides/framework-integration/ark-ui.md](./guides/framework-integration/ark-ui.md) |
+| **Angular Primitives** | Angular | [guides/framework-integration/angular-primitives.md](./guides/framework-integration/angular-primitives.md) |
+| **Zag.js** | All frameworks | [guides/framework-integration/zag.md](./guides/framework-integration/zag.md) |
+| **shadcn/ui** | React (reference) | [guides/framework-integration/shadcn.md](./guides/framework-integration/shadcn.md) |
+
+> **Note:** shadcn/ui is a CLI-based copy-paste tool, so it isn't offered as a setup wizard option. Its guide is kept as reference documentation.
 
 ---
 
