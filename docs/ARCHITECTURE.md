@@ -38,7 +38,7 @@ It is not a component library itself. It is the scaffolding, conventions, toolin
 and golden examples that a team or individual clones and builds upon. Think of it
 as a blueprint for the blueprint.
 
-The core idea: you clone this repo, set your prefix (e.g., `acme`), and
+The core idea: you clone this repo, set your prefix, and
 immediately have a working foundation with design tokens, a CSS component library,
 framework wrappers for React/Vue/Svelte, Storybook documentation, accessibility
 standards, CI/CD pipelines, and — critically — agent configuration files that
@@ -406,14 +406,13 @@ The prefix is defined in one place and read by three systems:
 ### The `set-prefix.js` script
 
 ```bash
-node scripts/set-prefix.js acme
+node scripts/set-prefix.js <your-prefix>
 ```
 
 This script:
 1. Validates the prefix (lowercase alphanumeric, optional hyphens, no leading/trailing hyphens)
-2. Updates `ds.config.json` → `{ "prefix": "acme" }`
-3. Updates `_config.scss` → `$prefix: 'acme' !default;`
-4. Updates `prefix.ts` → `export const DS_PREFIX = 'acme';`
+2. Updates `ds.config.json`, `_config.scss`, `prefix.ts` (the 3 source-of-truth files)
+3. Propagates the prefix across all text files — HTML examples, docs, agent configs, etc.
 
 After running, `pnpm build` recompiles everything with the new prefix. No manual
 find-and-replace. No missed references.

@@ -189,8 +189,8 @@ Variables:  --vcds-color-action-primary, --vcds-spacing-md
 Change it anytime:
 
 ```bash
-node scripts/set-prefix.js acme     # → .acme-button, --acme-color-*
-pnpm build                           # Rebuild everything with new prefix
+node scripts/set-prefix.js <your-prefix>   # e.g. acme, myds, your-brand
+pnpm build                                 # Rebuild everything with new prefix
 ```
 
 This updates three files that propagate to the entire system:

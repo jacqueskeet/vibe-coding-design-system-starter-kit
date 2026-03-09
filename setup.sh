@@ -268,6 +268,54 @@ bash_apply_prefix() {
   fi
 }
 
+bash_propagate_prefix() {
+  local old="$1"
+  local new="$2"
+
+  [ "$old" = "$new" ] && return 0
+
+  # Find all text files, skipping dirs that shouldn't be touched
+  local files
+  files=$(find "${ROOT}" \
+    -not -path '*/node_modules/*' \
+    -not -path '*/.git/*' \
+    -not -path '*/dist/*' \
+    -not -path '*/platforms/*' \
+    -not -path '*/.claude/*' \
+    -not -name 'pnpm-lock.yaml' \
+    \( -name '*.md' -o -name '*.mdc' -o -name '*.html' -o -name '*.scss' \
+       -o -name '*.css' -o -name '*.ts' -o -name '*.tsx' -o -name '*.vue' \
+       -o -name '*.svelte' -o -name '*.json' -o -name '*.yml' -o -name '*.yaml' \
+       -o -name '.windsurfrules' \) \
+    -type f 2>/dev/null)
+
+  local count=0
+  while IFS= read -r file; do
+    [ -z "$file" ] && continue
+
+    # Check if file contains the old prefix before modifying
+    if grep -q "${old}-\|'${old}'\|\"${old}\"" "$file" 2>/dev/null; then
+      # Replace {old}- → {new}- (class names, CSS vars, animations)
+      sed_inplace "s/\\.${old}-/.${new}-/g" "$file"
+      sed_inplace "s/--${old}-/--${new}-/g" "$file"
+      sed_inplace "s/ ${old}-/ ${new}-/g" "$file"
+      sed_inplace "s/(${old}-/(${new}-/g" "$file"
+      sed_inplace "s/@keyframes ${old}-/@keyframes ${new}-/g" "$file"
+      sed_inplace "s/\"${old}-/\"${new}-/g" "$file"
+
+      # Replace quoted prefix strings
+      sed_inplace "s/'${old}'/'${new}'/g" "$file"
+      sed_inplace "s/\"${old}\"/\"${new}\"/g" "$file"
+
+      count=$((count + 1))
+    fi
+  done <<< "$files"
+
+  if [ $count -gt 0 ]; then
+    ok "Updated prefix in ${count} files"
+  fi
+}
+
 bash_update_config() {
   local name="$1"
   local desc="${name} — built with the Design System Starter Kit"
@@ -547,6 +595,8 @@ bash_configure() {
 
   bash_apply_prefix "$prefix"
   ok "Applied prefix: ${prefix}"
+
+  bash_propagate_prefix "vcds" "$prefix"
 
   if [ "$keep_react" = false ] || [ "$keep_vue" = false ] || [ "$keep_svelte" = false ]; then
     echo ""

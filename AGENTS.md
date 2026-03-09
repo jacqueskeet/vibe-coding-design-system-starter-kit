@@ -25,7 +25,7 @@ This is a multi-framework design system monorepo. It produces component librarie
 
 The prefix is defined in `/ds.config.json` (default: `vcds`). It flows to:
 - CSS custom properties: `--vcds-color-action-primary`
-- BEM classes: `.vcds-button`, `.vcvcds-button--primary`
+- BEM classes: `.vcds-button`, `.vcds-button--primary`
 - JS constant: `DS_PREFIX` from `@vcds/shared/prefix`
 
 **Change prefix:** `node scripts/set-prefix.js <new-prefix>` then `pnpm build`

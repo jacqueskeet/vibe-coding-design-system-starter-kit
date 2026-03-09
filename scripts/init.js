@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
 
 // Local lib imports — these only use Node builtins, safe without npm install
-import { validatePrefix, applyPrefix } from './lib/prefix.js';
+import { validatePrefix, applyPrefix, propagatePrefix } from './lib/prefix.js';
 import {
   pruneFrameworks,
   cleanupAgentConfigs,
@@ -449,15 +449,22 @@ async function execute(answers) {
     // A1. Update ds.config.json — name + description + prefix
     const configPath = resolve(ROOT, 'ds.config.json');
     const config = JSON.parse(readFileSync(configPath, 'utf-8'));
+    const oldPrefix = config.prefix; // Capture BEFORE overwriting
     config.name = name;
     config.description = `${name} — built with the Design System Starter Kit`;
     config.prefix = prefix;
     writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n', 'utf-8');
     console.log('  ✓ ds.config.json');
 
-    // A2. Apply prefix to SCSS + TS files
+    // A2. Apply prefix to SCSS + TS config files
     applyPrefix(prefix, ROOT);
     console.log(`  ✓ Prefix: ${prefix}`);
+
+    // A2b. Propagate prefix across all text files (HTML, docs, agent configs, etc.)
+    const prefixLog = propagatePrefix(oldPrefix, prefix, ROOT);
+    if (prefixLog.length > 0) {
+      console.log(`  ✓ Updated prefix in ${prefixLog.length} files`);
+    }
 
     // A3. Update root package.json — name + description
     const pkgPath = resolve(ROOT, 'package.json');

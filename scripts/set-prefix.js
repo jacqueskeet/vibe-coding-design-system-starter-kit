@@ -12,17 +12,13 @@
  *   1. ds.config.json                      (source of truth)
  *   2. packages/css-components/src/_config.scss  (SCSS $prefix)
  *   3. packages/shared/prefix.ts           (JS/TS DS_PREFIX constant)
+ *   4. All text files with prefix references (HTML, docs, agent configs, etc.)
  *
  * After running, rebuild:
  *   pnpm build
- *
- * The prefix flows automatically to:
- *   - Style Dictionary → CSS custom properties (--{prefix}-color-*)
- *   - CSS components → BEM classes (.{prefix}-button)
- *   - Framework wrappers → class strings via @vcds/shared
  */
 
-import { validatePrefix, applyPrefix, readCurrentPrefix } from './lib/prefix.js';
+import { validatePrefix, applyPrefix, readCurrentPrefix, propagatePrefix } from './lib/prefix.js';
 
 // ─── Validate input ──────────────────────────────────────────────
 
@@ -62,6 +58,12 @@ applyPrefix(newPrefix);
 console.log('  ✓ ds.config.json');
 console.log('  ✓ packages/css-components/src/_config.scss');
 console.log('  ✓ packages/shared/prefix.ts');
+
+// Propagate across all text files (HTML examples, docs, agent configs, etc.)
+const updated = propagatePrefix(oldPrefix, newPrefix);
+if (updated.length > 0) {
+  console.log(`  ✓ Updated prefix in ${updated.length} additional files`);
+}
 
 console.log(`
   ✅ Prefix updated to "${newPrefix}"

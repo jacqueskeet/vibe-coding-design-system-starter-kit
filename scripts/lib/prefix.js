@@ -6,8 +6,8 @@
  * callers handle their own UI.
  */
 
-import { readFileSync, writeFileSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import { resolve, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -74,4 +74,127 @@ export function applyPrefix(newPrefix, root = DEFAULT_ROOT) {
   writeFileSync(tsPath, ts, 'utf-8');
 
   return oldPrefix;
+}
+
+// ── Global prefix propagation ──────────────────────────────────────
+
+const SCAN_EXTENSIONS = new Set([
+  '.md', '.mdc', '.html', '.scss', '.css', '.ts', '.tsx',
+  '.vue', '.svelte', '.json', '.yml', '.yaml',
+]);
+
+const SKIP_DIRS = new Set([
+  'node_modules', '.git', 'dist', 'build', 'platforms', '.claude',
+]);
+
+/** Known text files without a recognizable extension */
+const KNOWN_TEXTFILES = new Set(['.windsurfrules']);
+
+/** Files to never modify (too large or not relevant) */
+const SKIP_FILES = new Set(['pnpm-lock.yaml']);
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Recursively collect text files that may contain prefix references.
+ */
+function collectTextFiles(root) {
+  const results = [];
+
+  function walk(dir) {
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const fullPath = resolve(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!SKIP_DIRS.has(entry.name)) walk(fullPath);
+      } else if (entry.isFile()) {
+        if (SKIP_FILES.has(entry.name)) continue;
+        const ext = extname(entry.name);
+        if (SCAN_EXTENSIONS.has(ext) || KNOWN_TEXTFILES.has(entry.name)) {
+          results.push(fullPath);
+        }
+      }
+    }
+  }
+
+  walk(root);
+  return results;
+}
+
+/**
+ * Propagate a prefix change across ALL text files in the repo.
+ *
+ * Replaces:
+ *   - `{old}-` → `{new}-`   (class names, CSS vars, animations)
+ *     but NOT when preceded by [a-z0-9] (avoids partial-word matches)
+ *   - `'{old}'` → `'{new}'`  (single-quoted strings)
+ *   - `"{old}"` → `"{new}"`  (double-quoted strings)
+ *   - `` `{old}` `` → `` `{new}` ``  (backtick-quoted in markdown)
+ *
+ * NEVER replaces `@{old}/` (npm package scope) — the dash pattern
+ * requires a trailing `-` (scopes use `/`) and quoted patterns require
+ * exact quoting (scopes have `@` prefix inside the quotes).
+ *
+ * Call this AFTER applyPrefix() — the 3 config files are already updated
+ * by then, so this handles everything else.
+ *
+ * @param {string} oldPrefix
+ * @param {string} newPrefix
+ * @param {string} [root]
+ * @returns {string[]} List of updated file paths (relative to root).
+ */
+export function propagatePrefix(oldPrefix, newPrefix, root = DEFAULT_ROOT) {
+  const log = [];
+  if (oldPrefix === newPrefix) return log;
+
+  const files = collectTextFiles(root);
+  const esc = escapeRegex(oldPrefix);
+
+  // 1. {old}- → {new}- but not inside a word (e.g. "myvcds-button")
+  const dashPattern = new RegExp(`(?<![a-z0-9])${esc}-`, 'g');
+
+  // 2-4. Quoted variants
+  const singleQ = new RegExp(`'${esc}'`, 'g');
+  const doubleQ = new RegExp(`"${esc}"`, 'g');
+  const backtickQ = new RegExp(`\`${esc}\``, 'g');
+
+  const replacements = [
+    [dashPattern, `${newPrefix}-`],
+    [singleQ, `'${newPrefix}'`],
+    [doubleQ, `"${newPrefix}"`],
+    [backtickQ, `\`${newPrefix}\``],
+  ];
+
+  for (const filePath of files) {
+    try {
+      let content = readFileSync(filePath, 'utf-8');
+      let changed = false;
+
+      for (const [pattern, replacement] of replacements) {
+        // Reset lastIndex for global regexes
+        pattern.lastIndex = 0;
+        const after = content.replace(pattern, replacement);
+        if (after !== content) {
+          content = after;
+          changed = true;
+        }
+      }
+
+      if (changed) {
+        writeFileSync(filePath, content, 'utf-8');
+        log.push(filePath.substring(root.length + 1));
+      }
+    } catch {
+      // Skip files that can't be read/written
+    }
+  }
+
+  return log;
 }

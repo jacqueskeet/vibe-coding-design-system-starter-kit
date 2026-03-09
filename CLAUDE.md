@@ -67,7 +67,7 @@ It flows through every layer automatically:
 
 ```
 ds.config.json  →  Style Dictionary tokens  (--vcds-color-*, --vcds-spacing-*)
-                →  SCSS _config.scss         (.vcds-button, .vcvcds-button--primary)
+                →  SCSS _config.scss         (.vcds-button, .vcds-button--primary)
                 →  JS/TS @vcds/shared          (DS_PREFIX = 'vcds', cls() helper)
 ```
 
@@ -75,8 +75,8 @@ ds.config.json  →  Style Dictionary tokens  (--vcds-color-*, --vcds-spacing-*)
 
 **Where the prefix appears:**
 - CSS custom properties: `--vcds-color-action-primary`
-- BEM class names: `.vcds-button`, `.vcvcds-button--primary`
-- Sub-elements: `.vcvcds-button__icon-left`
+- BEM class names: `.vcds-button`, `.vcds-button--primary`
+- Sub-elements: `.vcds-button__icon-left`
 - Animations: `@keyframes vcds-button-spin`
 
 **Rules for agents:**
@@ -136,10 +136,10 @@ Vue uses `.vue` SFCs, Svelte uses `.svelte` — equivalent structure, no `<style
 
 ```
 .{prefix}-{component}                    → Block    (.vcds-button)
-.{prefix}-{component}--{variant}        → Modifier (.vcvcds-button--primary)
-.{prefix}-{component}--{size}           → Modifier (.vcvcds-button--lg)
-.{prefix}-{component}__{element}        → Element  (.vcvcds-button__icon-left)
-.{prefix}-{component}__{element}--{mod} → Element  (.vcvcds-button__label--hidden)
+.{prefix}-{component}--{variant}        → Modifier (.vcds-button--primary)
+.{prefix}-{component}--{size}           → Modifier (.vcds-button--lg)
+.{prefix}-{component}__{element}        → Element  (.vcds-button__icon-left)
+.{prefix}-{component}__{element}--{mod} → Element  (.vcds-button__label--hidden)
 ```
 
 Where `{prefix}` comes from `ds.config.json` (default: `vcds`).
