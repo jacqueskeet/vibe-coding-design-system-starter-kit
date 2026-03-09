@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-This is a multi-framework design system monorepo. It produces component libraries for React, Vue, and Svelte — all driven by a shared set of design tokens built with Style Dictionary.
+This is a multi-framework design system monorepo. It produces component libraries for React, Vue, Svelte, and Angular — all driven by a shared set of design tokens built with Style Dictionary.
 
 ## Tech Stack
 
@@ -42,12 +42,13 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
         ├── @vcds/react     → Props → class names + interactivity
         ├── @vcds/vue       → Props → class names + interactivity
         ├── @vcds/svelte    → Props → class names + interactivity
+        ├── @vcds/angular   → Props → class names + interactivity
         └── @vcds/html      → Use classes directly
 ```
 
 **Rules:**
 - ALL component visual styles go in `packages/css-components/src/components/`
-- Framework components (React/Vue/Svelte) MUST NOT define their own styles
+- Framework components (React/Vue/Svelte/Angular) MUST NOT define their own styles
 - Framework components use BEM class strings: `ds-button`, `vcds-button--primary`
 - HTML package provides copy-paste reference markup
 
@@ -61,6 +62,7 @@ pnpm --filter @vcds/css build              # Generate CSS from tokens
 pnpm --filter @vcds/react build            # Build React component library
 pnpm --filter @vcds/vue build              # Build Vue component library
 pnpm --filter @vcds/svelte build           # Build Svelte component library
+pnpm --filter @vcds/angular build          # Build Angular component library
 pnpm --filter @vcds/docs dev               # Start Storybook dev server
 pnpm build                               # Build everything (tokens → CSS → frameworks)
 pnpm test                                # Run all tests
@@ -98,7 +100,7 @@ Token files live in `packages/tokens/src/`:
 2. **Register** → Add `@use 'components/component-name';` to index.scss
 3. **Build CSS** → `pnpm --filter @vcds/css-components build`
 4. **HTML reference** → `packages/html/examples/component-name.html`
-5. **Framework wrappers** → React, Vue, Svelte (apply BEM classes, no styles)
+5. **Framework wrappers** → React, Vue, Svelte, Angular (apply BEM classes, no styles)
 6. **Tests + Stories**
 
 ### File Structure
@@ -129,7 +131,7 @@ packages/react/src/components/Button/
 - Props: camelCase (`isDisabled`, `ariaLabel`, `colorScheme`)
 - BEM classes: `ds-` prefix, kebab-case (`vcds-button--primary`, `ds-card__header`)
 - Tokens in CSS: `var(--vcds-color-action-primary)`
-- Events: `on` prefix in React (`onClick`), `emit` in Vue, `on:` in Svelte
+- Events: `on` prefix in React (`onClick`), `emit` in Vue, `on:` in Svelte, `@Output()` in Angular
 
 ### Required for Every Component
 

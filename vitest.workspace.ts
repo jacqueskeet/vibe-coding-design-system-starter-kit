@@ -1,1 +1,1 @@
-export default ['packages/react'];
+export default ['packages/react', 'packages/angular'];

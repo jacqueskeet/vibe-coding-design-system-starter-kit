@@ -38,6 +38,7 @@
     "build:react": "pnpm --filter @vcds/react build",
     "build:vue": "pnpm --filter @vcds/vue build",
     "build:svelte": "pnpm --filter @vcds/svelte build",
+    "build:angular": "pnpm --filter @vcds/angular build",
     "dev": "pnpm --filter @vcds/docs dev",
     "test": "vitest run",
     "lint": "pnpm -r lint",

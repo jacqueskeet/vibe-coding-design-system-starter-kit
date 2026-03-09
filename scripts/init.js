@@ -29,6 +29,11 @@ import {
 import { configureMcp } from './lib/mcp.js';
 import { runSetup } from './lib/build-runner.js';
 import {
+  buildHeadlessChoices,
+  installHeadlessLib,
+  pruneHeadlessGuides,
+} from './lib/headless.js';
+import {
   readWorkspaceYaml,
   writeWorkspaceYaml,
   writeDefaultWorkspaceYaml,
@@ -146,7 +151,7 @@ if (!existsSync(resolve(ROOT, 'node_modules', '@inquirer', 'prompts'))) {
 
 const { input, select, checkbox, password, confirm } = await import('@inquirer/prompts');
 
-const ALL_JS_FWS = ['react', 'vue', 'svelte'];
+const ALL_JS_FWS = ['react', 'vue', 'svelte', 'angular'];
 
 // ─── Helpers ──────────────────────────────────────────────────────
 
@@ -275,6 +280,12 @@ async function gatherAnswers() {
         description: 'Svelte 5 components with TypeScript',
       },
       {
+        name: 'Angular',
+        value: 'angular',
+        checked: true,
+        description: 'Angular 17+ standalone components with TypeScript',
+      },
+      {
         name: 'HTML/CSS only (always included)',
         value: 'html',
         disabled: '(always included)',
@@ -282,7 +293,20 @@ async function gatherAnswers() {
     ],
   });
 
-  // 4. IDE (asked before Figma so we can show DS CLI for Claude/OpenCode)
+  // 4. Headless UI library (optional)
+  const selectedFwsForHeadless = frameworks.filter((f) => ALL_JS_FWS.includes(f));
+  const headlessChoices = buildHeadlessChoices(selectedFwsForHeadless);
+
+  console.log('\n  Headless libraries provide behavior primitives (keyboard nav, ARIA,');
+  console.log('  focus management). Your design tokens handle all visual styling.');
+  console.log('  Choose "None" to skip — integration guides are kept for reference.\n');
+
+  const headlessLib = await select({
+    message: 'Headless UI library (optional)',
+    choices: headlessChoices,
+  });
+
+  // 5. IDE (asked before Figma so we can show DS CLI for Claude/OpenCode)
   console.log('\n  Your IDE choice determines which agent config files to keep.');
   console.log('  Unused IDE configs are removed to keep the project clean.');
   console.log('  Choose "Other / multiple" to keep all configs.\n');
@@ -388,19 +412,29 @@ async function gatherAnswers() {
     });
   }
 
-  return { name, prefix, frameworks, figma, figmaToken, ide };
+  return { name, prefix, frameworks, headlessLib, figma, figmaToken, ide };
 }
 
 // ─── Confirmation summary ─────────────────────────────────────────
 
 function printSummary(answers) {
-  const { name, prefix, frameworks, figma, ide } = answers;
+  const { name, prefix, frameworks, headlessLib, figma, ide } = answers;
   const selectedFws = frameworks.filter((f) => ALL_JS_FWS.includes(f));
   const removingAll = selectedFws.length === 0;
 
   const fwLabel = selectedFws.length
     ? selectedFws.map(capitalize).join(', ') + ', HTML/CSS'
     : 'HTML/CSS only';
+
+  const headlessLabels = {
+    radix: 'Radix UI',
+    'base-ui': 'Base UI',
+    'headless-ui': 'Headless UI',
+    'ark-ui': 'Ark UI',
+    'angular-primitives': 'Angular Primitives',
+    zag: 'Zag.js',
+    none: 'None',
+  };
 
   const figmaLabels = {
     console: 'Console MCP',
@@ -424,6 +458,7 @@ function printSummary(answers) {
   console.log(`  Design system:  ${name}`);
   console.log(`  Prefix:         ${prefix}`);
   console.log(`  Frameworks:     ${fwLabel}`);
+  console.log(`  Headless UI:    ${headlessLabels[headlessLib] || headlessLib}`);
   if (removingAll) {
     console.log(
       '  Note:           Storybook will be removed (requires React)'
@@ -437,7 +472,7 @@ function printSummary(answers) {
 // ─── Execute ──────────────────────────────────────────────────────
 
 async function execute(answers) {
-  const { name, prefix, frameworks, figma, figmaToken, ide } = answers;
+  const { name, prefix, frameworks, headlessLib, figma, figmaToken, ide } = answers;
   const selectedFws = frameworks.filter((f) => ALL_JS_FWS.includes(f));
   const toRemove = ALL_JS_FWS.filter((f) => !selectedFws.includes(f));
   const removingAll = selectedFws.length === 0;
@@ -540,7 +575,21 @@ async function execute(answers) {
     }
   }
 
-  // ── Phase B3: Update workspace to match selected frameworks ────
+  // ── Phase B3: Headless UI library ────────────────────────────────
+  if (headlessLib !== 'none') {
+    console.log('\n  Setting up headless UI library...\n');
+    try {
+      const headlessLog = installHeadlessLib(headlessLib, selectedFws, ROOT);
+      for (const entry of headlessLog) console.log(`  ✓ ${entry}`);
+
+      const guideLog = pruneHeadlessGuides(headlessLib, ROOT);
+      for (const entry of guideLog) console.log(`  ✓ ${entry}`);
+    } catch (err) {
+      console.error(`\n  ⚠  Headless library setup partially failed: ${err.message}`);
+    }
+  }
+
+  // ── Phase B4: Update workspace to match selected frameworks ────
   const finalPackages = buildWorkspacePackageList(selectedFws);
   try {
     writeWorkspaceYaml(ROOT, finalPackages);
@@ -556,6 +605,7 @@ async function execute(answers) {
     name,
     prefix,
     frameworks: selectedFws,
+    headlessLib,
     figma,
     ide,
     workspacePackages: finalPackages,
@@ -589,12 +639,12 @@ async function execute(answers) {
   }
 
   // ── Phase E: Success summary ──────────────────────────────────
-  printSuccess({ name, prefix, selectedFws, figma, ide, removingAll });
+  printSuccess({ name, prefix, selectedFws, headlessLib, figma, ide, removingAll });
 }
 
 // ─── Success summary ──────────────────────────────────────────────
 
-function printSuccess({ name, prefix, selectedFws, figma, ide, removingAll }) {
+function printSuccess({ name, prefix, selectedFws, headlessLib, figma, ide, removingAll }) {
   const IDE_CONFIG = {
     cursor: { label: 'Cursor', path: '.cursor/rules/' },
     'cursor-claude': { label: 'Cursor + Claude Code', path: '.cursor/rules/ + CLAUDE.md' },
@@ -617,6 +667,15 @@ function printSuccess({ name, prefix, selectedFws, figma, ide, removingAll }) {
   console.log(`  Classes:     .${prefix}-button, .${prefix}-button--primary`);
   console.log(`  Variables:   --${prefix}-color-action-primary\n`);
   console.log(`  Frameworks:  ${fwLabel}`);
+
+  if (headlessLib && headlessLib !== 'none') {
+    const headlessNames = {
+      radix: 'Radix UI', 'base-ui': 'Base UI', 'headless-ui': 'Headless UI',
+      'ark-ui': 'Ark UI', 'angular-primitives': 'Angular Primitives', zag: 'Zag.js',
+    };
+    console.log(`  Headless UI: ${headlessNames[headlessLib] || headlessLib}`);
+    console.log(`  Setup guide: guides/framework-integration/${headlessLib}.md`);
+  }
 
   if (!removingAll) {
     console.log('  Storybook:   pnpm dev (opens at localhost:6006)');

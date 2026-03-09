@@ -21,9 +21,13 @@ const FRAMEWORK_MAP = {
     dirs: ['packages/svelte', 'blueprints/svelte'],
     scripts: ['build:svelte'],
   },
+  angular: {
+    dirs: ['packages/angular', 'blueprints/angular'],
+    scripts: ['build:angular'],
+  },
 };
 
-const ALL_JS_FRAMEWORKS = ['react', 'vue', 'svelte'];
+const ALL_JS_FRAMEWORKS = ['react', 'vue', 'svelte', 'angular'];
 
 /**
  * Framework integration guides and the frameworks they require.
@@ -36,6 +40,7 @@ const GUIDE_REQUIREMENTS = {
   'guides/framework-integration/base-ui.md': ['react'],
   'guides/framework-integration/headless-ui.md': ['react', 'vue'],
   'guides/framework-integration/ark-ui.md': ['react', 'vue', 'svelte'],
+  'guides/framework-integration/angular-primitives.md': ['angular'],
   // zag.md is framework-agnostic — never pruned
 };
 
@@ -46,6 +51,7 @@ const GUIDE_TABLE_NAMES = {
   'base-ui.md': 'Base UI',
   'headless-ui.md': 'Headless UI',
   'ark-ui.md': 'Ark UI',
+  'angular-primitives.md': 'Angular Primitives',
 };
 
 const AGENT_CONFIG_FILES = [
@@ -331,6 +337,11 @@ export function cleanupReadme(toRemove, root) {
   if (remaining.length > 0) {
     const newParts = remaining.map((f) => `\`@vcds/${f}\``);
     const newHeading = `### ${newParts.join(' · ')}`;
+    updated = updated.replace(
+      /^### `@vcds\/react`\s*·?\s*`@vcds\/vue`\s*·?\s*`@vcds\/svelte`\s*·?\s*`@vcds\/angular`/m,
+      newHeading
+    );
+    // Fallback for old format without angular
     updated = updated.replace(
       /^### `@vcds\/react`\s*·?\s*`@vcds\/vue`\s*·?\s*`@vcds\/svelte`/m,
       newHeading

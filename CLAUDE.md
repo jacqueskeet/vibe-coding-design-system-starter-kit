@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-This is a multi-framework design system monorepo. It produces component libraries for React, Vue, and Svelte — all driven by a shared set of design tokens built with Style Dictionary.
+This is a multi-framework design system monorepo. It produces component libraries for React, Vue, Svelte, and Angular — all driven by a shared set of design tokens built with Style Dictionary.
 
 ## Tech Stack
 
@@ -16,6 +16,7 @@ This is a multi-framework design system monorepo. It produces component librarie
 - **React**: TypeScript, CSS Modules consuming token CSS vars
 - **Vue**: Vue 3 Composition API + SFC, TypeScript, CSS vars
 - **Svelte**: Svelte 5, TypeScript, CSS vars
+- **Angular**: Angular 17+ standalone components, TypeScript, ng-packagr
 - **Docs**: Storybook 8
 - **Testing**: Vitest (unit), axe-core (a11y), Playwright (visual regression)
 - **CI**: GitHub Actions
@@ -31,6 +32,7 @@ pnpm --filter @vcds/css build              # Build global CSS from tokens
 pnpm --filter @vcds/react build            # Build React component library
 pnpm --filter @vcds/vue build              # Build Vue component library
 pnpm --filter @vcds/svelte build           # Build Svelte component library
+pnpm --filter @vcds/angular build          # Build Angular component library
 pnpm --filter @vcds/docs dev               # Start Storybook dev server
 pnpm build                               # Build everything (tokens → CSS → frameworks)
 pnpm test                                # Run all tests
@@ -95,12 +97,13 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
         ├── @vcds/react     → Props → class names + interactivity
         ├── @vcds/vue       → Props → class names + interactivity
         ├── @vcds/svelte    → Props → class names + interactivity
+        ├── @vcds/angular   → Props → class names + interactivity
         └── @vcds/html      → Use classes directly
 ```
 
 **Rules:**
 - ALL component visual styles go in `packages/css-components/src/components/`
-- Framework components (React/Vue/Svelte) MUST NOT define their own styles
+- Framework components (React/Vue/Svelte/Angular) MUST NOT define their own styles
 - Framework components use BEM class strings: `ds-button`, `vcds-button--primary`
 - HTML package provides copy-paste reference markup
 
@@ -112,7 +115,7 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
 2. **Register** → Add `@use 'components/component-name';` to `packages/css-components/src/index.scss`
 3. **Build CSS** → `pnpm --filter @vcds/css-components build`
 4. **HTML reference** → Create `packages/html/examples/component-name.html`
-5. **Framework wrappers** → Create thin React, Vue, Svelte wrappers that apply BEM classes
+5. **Framework wrappers** → Create thin React, Vue, Svelte, Angular wrappers that apply BEM classes
 6. **Tests** → Unit + axe-core for each framework wrapper
 7. **Stories** → Storybook stories
 
@@ -130,7 +133,7 @@ packages/react/src/components/Button/
 └── index.ts             # Public exports
 ```
 
-Vue uses `.vue` SFCs, Svelte uses `.svelte` — equivalent structure, no `<style>` blocks.
+Vue uses `.vue` SFCs, Svelte uses `.svelte`, Angular uses standalone `.component.ts` — equivalent structure, no `<style>` blocks.
 
 ### BEM Naming Convention
 
@@ -149,7 +152,7 @@ Where `{prefix}` comes from `ds.config.json` (default: `vcds`).
 - Props: camelCase (`isDisabled`, `ariaLabel`, `colorScheme`)
 - BEM classes: `ds-` prefix, kebab-case (`vcds-button--primary`, `vcds-card__header`)
 - Tokens in CSS: `var(--vcds-color-action-primary)`
-- Events: `on` prefix in React (`onClick`), `emit` in Vue, `on:` in Svelte
+- Events: `on` prefix in React (`onClick`), `emit` in Vue, `on:` in Svelte, `@Output()` in Angular
 
 ### Required for Every Component
 1. **SCSS in css-components** — BEM-structured, using only semantic tokens
@@ -174,7 +177,7 @@ Where `{prefix}` comes from `ds.config.json` (default: `vcds`).
 Before creating a new component, reference the blueprints:
 - `/blueprints/scss/` — SCSS component template (start here — CSS-first)
 - `/blueprints/html-css/` — HTML reference page template
-- `/blueprints/{react,vue,svelte}/` — Framework wrapper templates
+- `/blueprints/{react,vue,svelte,angular}/` — Framework wrapper templates
 
 ## Prompts
 

@@ -40,7 +40,7 @@ as a blueprint for the blueprint.
 
 The core idea: you clone this repo, set your prefix, and
 immediately have a working foundation with design tokens, a CSS component library,
-framework wrappers for React/Vue/Svelte, Storybook documentation, accessibility
+framework wrappers for React/Vue/Svelte/Angular, Storybook documentation, accessibility
 standards, CI/CD pipelines, and — critically — agent configuration files that
 teach AI coding assistants how your system works from the first keystroke.
 
@@ -100,7 +100,7 @@ the full component library.
 
 ### 3.3 Frameworks add interactivity, not appearance
 
-React, Vue, and Svelte packages provide developer experience (typed props,
+React, Vue, Svelte, and Angular packages provide developer experience (typed props,
 events, state management, slots/children) and accessibility behaviour (keyboard
 handling, ARIA attributes, focus management). They never define visual styles.
 If you delete all framework code, the CSS component library still works.
@@ -155,7 +155,7 @@ and Storybook stories. New components are created by following this example.
 │  Web-only. The visual source of truth for all web UI.       │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 3: Framework packages                                │
-│  @vcds/react, @vcds/vue, @vcds/svelte, @vcds/html                  │
+│  @vcds/react, @vcds/vue, @vcds/svelte, @vcds/angular, @vcds/html           │
 │  Thin wrappers. Props → BEM classes. No styles.             │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 4: @vcds/docs                                          │
@@ -169,7 +169,7 @@ Each layer depends only on the layers above it. Tokens know nothing about CSS
 components. CSS components know nothing about React. This means:
 
 - Changing a token value automatically updates every component on rebuild
-- Adding a new framework (e.g., Angular, Solid) only requires a new Layer 3
+- Adding a new framework (e.g., Solid, Web Components) only requires a new Layer 3
   package — no changes to Layers 0–2
 - HTML/CSS teams can use Layers 0–2 directly and skip Layer 3 entirely
 - Mobile platforms (iOS, Android, React Native) use Layer 1 directly and skip
@@ -184,11 +184,12 @@ ds.config.json (prefix)
   │      │
   │      ├──→ @vcds/css-components (imports _config.scss with $prefix)
   │      │      │
-  │      │      ├──→ @vcds/react   (imports @vcds/shared for cls() helper)
-  │      │      ├──→ @vcds/vue     (imports @vcds/shared for DS_PREFIX)
-  │      │      ├──→ @vcds/svelte  (imports @vcds/shared for DS_PREFIX)
-  │      │      ├──→ @vcds/html    (uses literal prefix in markup)
-  │      │      └──→ @vcds/docs    (imports @vcds/react + @vcds/css-components)
+  │      │      ├──→ @vcds/react    (imports @vcds/shared for cls() helper)
+  │      │      ├──→ @vcds/vue      (imports @vcds/shared for DS_PREFIX)
+  │      │      ├──→ @vcds/svelte   (imports @vcds/shared for DS_PREFIX)
+  │      │      ├──→ @vcds/angular  (imports @vcds/shared for cls() helper)
+  │      │      ├──→ @vcds/html     (uses literal prefix in markup)
+  │      │      └──→ @vcds/docs     (imports @vcds/react + @vcds/css-components)
   │      │
   │      └──→ @vcds/css (global reset, themes, utilities from tokens)
   │
@@ -346,7 +347,7 @@ All classes follow Block-Element-Modifier with a configurable prefix:
 **Why BEM?**
 - Flat specificity (single class selectors, no nesting wars)
 - Self-documenting (class name tells you the component, element, and state)
-- Framework-agnostic (works identically in React, Vue, Svelte, or plain HTML)
+- Framework-agnostic (works identically in React, Vue, Svelte, Angular, or plain HTML)
 - No build tooling required to consume (unlike CSS Modules or CSS-in-JS)
 
 ### SCSS prefix interpolation
@@ -401,7 +402,7 @@ The prefix is defined in one place and read by three systems:
 |------|---------------|-----------------|
 | `ds.config.json` | Style Dictionary (at build time) | `--vcds-color-*` CSS custom properties |
 | `packages/css-components/src/_config.scss` | SCSS compiler | `.vcds-button` class names |
-| `packages/shared/prefix.ts` | React, Vue, Svelte (at compile time) | `cls('button', 'primary')` → `'vcds-button--primary'` |
+| `packages/shared/prefix.ts` | React, Vue, Svelte, Angular (at compile time) | `cls('button', 'primary')` → `'vcds-button--primary'` |
 
 ### The `set-prefix.js` script
 
@@ -448,7 +449,7 @@ keeping the HTML examples dependency-free.
 
 Framework packages provide:
 - **Typed props** — TypeScript interfaces for all component APIs
-- **Event handling** — onClick (React), @click (Vue), onclick (Svelte)
+- **Event handling** — onClick (React), @click (Vue), onclick (Svelte), @Output() (Angular)
 - **State management** — loading, disabled, controlled/uncontrolled patterns
 - **Slot/children composition** — iconLeft, iconRight, default slot
 - **Accessibility behaviour** — aria-disabled, aria-busy, keyboard handlers
@@ -494,6 +495,21 @@ return <button className={classNames} {...rest}>{children}</button>;
   let buttonClass = $derived(`${p}-button ${p}-button--${variant}`);
 </script>
 <button class={buttonClass}>{@render children()}</button>
+```
+
+**Angular** uses standalone components with `[ngClass]` and `cls()`:
+
+```typescript
+@Component({
+  selector: 'ds-button',
+  standalone: true,
+  imports: [NgClass],
+  template: `<button [ngClass]="buttonClasses"><ng-content></ng-content></button>`,
+})
+export class DsButtonComponent {
+  @Input() variant = 'primary';
+  get buttonClasses() { return [cls('button'), cls('button', this.variant)].join(' '); }
+}
 ```
 
 ### How consumers use it
@@ -563,7 +579,8 @@ blueprints/
 ├── html-css/    Component.blueprint.html     ← HTML reference page
 ├── react/       Component.blueprint.tsx      ← React wrapper
 ├── vue/         Component.blueprint.vue      ← Vue wrapper
-└── svelte/      Component.blueprint.svelte   ← Svelte wrapper
+├── svelte/      Component.blueprint.svelte   ← Svelte wrapper
+└── angular/     Component.blueprint.ts       ← Angular wrapper
 ```
 
 These are not abstract templates. They contain working placeholder code with
@@ -754,7 +771,7 @@ Step 2: @vcds/css-components
 Step 3: @vcds/css
         Compiles global CSS from token variables
 
-Step 4: @vcds/react, @vcds/vue, @vcds/svelte (parallel)
+Step 4: @vcds/react, @vcds/vue, @vcds/svelte, @vcds/angular (parallel)
         TypeScript compilation, bundling
         Each imports @vcds/shared for the prefix constant
 
@@ -787,7 +804,7 @@ before anything else. Steps 4 can run in parallel.
 2. Register in `src/index.scss`
 3. Run `pnpm build:css` — new component classes are in `dist/index.css`
 4. Create HTML example in `packages/html/examples/`
-5. Create React/Vue/Svelte wrappers (import `cls()` from `@vcds/shared`)
+5. Create React/Vue/Svelte/Angular wrappers (import `cls()` from `@vcds/shared`)
 6. Create Storybook stories
 7. Run `pnpm build` to verify everything compiles
 
@@ -795,7 +812,7 @@ before anything else. Steps 4 can run in parallel.
 
 ## 12. How to Extend This System
 
-### Adding a new framework (e.g., Angular, Solid, Web Components)
+### Adding a new framework (e.g., Solid, Web Components)
 
 1. Create `packages/{framework}/` with a `package.json`
 2. Add `@vcds/css-components`, `@vcds/shared`, and `@vcds/tokens` as dependencies
@@ -847,7 +864,7 @@ The consuming project imports the CSS and uses components normally:
 A record of key architectural decisions and their reasoning.
 
 ### D1: Multi-framework over single-framework
-**Decision:** Support React, Vue, and Svelte from day one.
+**Decision:** Support React, Vue, Svelte, and Angular from day one.
 **Reasoning:** Design systems serve diverse teams. Locking into one framework
 limits adoption. The CSS-first approach makes multi-framework support cheap
 since visual styles are shared.

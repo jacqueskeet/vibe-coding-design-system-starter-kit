@@ -1,0 +1,35 @@
+{
+  "name": "@vcds/angular",
+  "version": "0.0.1",
+  "description": "Angular component library — thin wrappers over @vcds/css-components",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "test": "echo 'No tests configured yet — see guides for testing Angular libraries'",
+    "lint": "echo 'No lint configured yet'"
+  },
+  "dependencies": {
+    "@vcds/css-components": "workspace:*",
+    "@vcds/shared": "workspace:*",
+    "@vcds/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "ng-packagr": "^19.0.0",
+    "typescript": "^5.5.0",
+    "zone.js": "^0.15.0"
+  }
+}

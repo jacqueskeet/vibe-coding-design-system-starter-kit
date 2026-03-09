@@ -1,6 +1,6 @@
 ---
 description: Rules for building components — CSS-first, then framework wrappers
-globs: ["packages/css-components/**/*", "packages/html/**/*", "packages/react/**/*", "packages/vue/**/*", "packages/svelte/**/*"]
+globs: ["packages/css-components/**/*", "packages/html/**/*", "packages/react/**/*", "packages/vue/**/*", "packages/svelte/**/*", "packages/angular/**/*"]
 ---
 
 # Component Development Rules — CSS-First Architecture
@@ -94,6 +94,36 @@ defineOptions({ name: 'DsComponent' });
   {@render children?.()}
 </element>
 <!-- No <style> — all styles come from @vcds/css-components -->
+```
+
+### Angular (`packages/angular/`)
+
+```typescript
+// Thin wrapper — standalone component, NO styles: []
+import { Component, Input } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { cls } from '@vcds/shared/prefix';
+
+@Component({
+  selector: 'ds-component',
+  standalone: true,
+  imports: [NgClass],
+  template: `
+    <element [ngClass]="componentClasses">
+      <ng-content></ng-content>
+    </element>
+  `,
+})
+export class DsComponentComponent {
+  @Input() variant: 'default' | 'primary' = 'default';
+  @Input() size: 'sm' | 'md' | 'lg' = 'md';
+
+  get componentClasses(): string {
+    return [cls('component'), cls('component', this.variant), cls('component', this.size)]
+      .filter(Boolean).join(' ');
+  }
+}
+// No styles — all styles come from @vcds/css-components
 ```
 
 ## Shared Rules (All Frameworks)

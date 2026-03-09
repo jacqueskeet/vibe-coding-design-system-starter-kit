@@ -4,7 +4,7 @@
 > design principles, layer model, token system, prefix mechanics, Figma integration,
 > build chain, and decision log. Read it first for the "why" behind these rules.
 
-You are working in a multi-framework design system monorepo producing component libraries for React, Vue, and Svelte, driven by shared design tokens built with Style Dictionary.
+You are working in a multi-framework design system monorepo producing component libraries for React, Vue, Svelte, and Angular, driven by shared design tokens built with Style Dictionary.
 
 ## Tech Stack
 
@@ -13,6 +13,7 @@ You are working in a multi-framework design system monorepo producing component 
 - React: TypeScript, CSS Modules consuming token CSS vars
 - Vue: Vue 3 Composition API + SFC, TypeScript, CSS vars
 - Svelte: Svelte 5, TypeScript, CSS vars
+- Angular: Angular 17+ standalone components, TypeScript, ng-packagr
 - Docs: Storybook 8
 - Testing: Vitest (unit), axe-core (a11y), Playwright (visual regression)
 - CI: GitHub Actions with Changesets versioning
@@ -42,7 +43,7 @@ space-4                 →  spacing-md                  →  input-padding-x
 All visual styles live in `packages/css-components/` as BEM-structured SCSS. Framework packages are thin wrappers — they map props to BEM classes and add interactivity. They MUST NOT define their own styles.
 
 ```
-@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/angular / @vcds/html
 ```
 
 ### Creating a New Component — ALWAYS follow this order:
@@ -51,7 +52,7 @@ All visual styles live in `packages/css-components/` as BEM-structured SCSS. Fra
 2. Register → Add `@use 'components/name';` to index.scss
 3. Build CSS → `pnpm --filter @vcds/css-components build`
 4. HTML reference → `packages/html/examples/name.html`
-5. Framework wrappers → React, Vue, Svelte (BEM classes, no styles)
+5. Framework wrappers → React, Vue, Svelte, Angular (BEM classes, no styles)
 6. Tests + Stories
 
 ### BEM Naming
@@ -77,7 +78,7 @@ packages/react/src/components/Button/
 ├── index.ts             # Public exports
 ```
 
-Vue uses `.vue` SFCs, Svelte uses `.svelte` — no `<style>` blocks.
+Vue uses `.vue` SFCs, Svelte uses `.svelte`, Angular uses standalone `.component.ts` — no `<style>` blocks.
 
 ### Every Component Requires
 
@@ -112,7 +113,7 @@ pnpm changeset                           # Create a changeset for versioning
 ## Before Creating a Component
 
 1. Read the SCSS blueprint in `/blueprints/scss/`
-2. Read the framework blueprint in `/blueprints/{react,vue,svelte}/`
+2. Read the framework blueprint in `/blueprints/{react,vue,svelte,angular}/`
 3. Check `/a11y/checklists/component.md`
 4. Reference the golden Button in `packages/css-components/src/components/_button.scss`
 5. Use semantic tokens from `packages/tokens/src/semantic/`

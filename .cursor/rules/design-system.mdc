@@ -9,7 +9,7 @@ globs: ["**/*"]
 > design principles, layer model, token system, prefix mechanics, Figma integration,
 > build chain, and decision log.
 
-You are working in a multi-framework design system monorepo. All components are built for React, Vue, and Svelte with shared design tokens and a **CSS-first base layer**.
+You are working in a multi-framework design system monorepo. All components are built for React, Vue, Svelte, and Angular with shared design tokens and a **CSS-first base layer**.
 
 ## CSS-First Architecture — CRITICAL
 
@@ -43,6 +43,6 @@ Read `DECISIONS.md` before starting any task. Apply every documented decision to
 2. Create SCSS in `packages/css-components/src/components/`
 3. Create HTML reference in `packages/html/examples/`
 4. Check `/blueprints/{framework}/` for the wrapper template
-5. Create thin wrappers in React, Vue, Svelte (props → BEM classes)
+5. Create thin wrappers in React, Vue, Svelte, Angular (props → BEM classes)
 6. Check `/a11y/checklists/component.md` for accessibility requirements
 7. Add Storybook stories in `packages/docs/stories/`

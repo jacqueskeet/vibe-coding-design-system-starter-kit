@@ -6,7 +6,7 @@
 
 ## Context
 
-Multi-framework design system monorepo with a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. React, Vue, and Svelte packages are thin wrappers that map props to BEM class names. HTML/CSS teams use the classes directly. Design tokens (Style Dictionary) are the universal foundation.
+Multi-framework design system monorepo with a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. React, Vue, Svelte, and Angular packages are thin wrappers that map props to BEM class names. HTML/CSS teams use the classes directly. Design tokens (Style Dictionary) are the universal foundation.
 
 
 ## Configurable Prefix
@@ -16,7 +16,7 @@ All class names and CSS variables use a configurable prefix (default: `vcds`). D
 ## Architecture
 
 ```
-@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/angular / @vcds/html
 ```
 
 ## Code Generation Rules
@@ -38,6 +38,7 @@ All class names and CSS variables use a configurable prefix (default: `vcds`). D
 - Skip accessibility attributes
 - Use `any` type in TypeScript
 - Create a component in only one framework — always create SCSS, HTML reference, then all framework wrappers
+- Put `styles:` in Angular components — all visuals come from the shared CSS layer
 
 ### React
 
@@ -59,6 +60,14 @@ All class names and CSS variables use a configurable prefix (default: `vcds`). D
 - Use `{@render children?.()}` for slot content
 - NO `<style>` block — all styles come from @vcds/css-components
 
+### Angular
+
+- Use standalone components (`standalone: true`, no NgModule)
+- Prefix component selectors with `ds-` (e.g., `ds-button`)
+- Use `@Input()` for props, `@Output()` EventEmitter for events
+- Use `[ngClass]` for BEM class binding with `cls()` helper
+- NO `styles:` — all styles come from @vcds/css-components
+
 ## Token Pattern
 
 ```
@@ -77,6 +86,6 @@ Read `DECISIONS.md` before starting any task. Apply every documented decision to
 1. SCSS → `packages/css-components/src/components/_name.scss`
 2. Register → `@use 'components/name';` in index.scss
 3. HTML → `packages/html/examples/name.html`
-4. Wrappers → React, Vue, Svelte (props → BEM classes only)
+4. Wrappers → React, Vue, Svelte, Angular (props → BEM classes only)
 5. Tests → Vitest + axe-core
 6. Stories → Storybook

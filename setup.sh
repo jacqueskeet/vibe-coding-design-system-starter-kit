@@ -334,6 +334,7 @@ bash_prune_frameworks() {
   local keep_react="$1"
   local keep_vue="$2"
   local keep_svelte="$3"
+  local keep_angular="$4"
 
   if [ "$keep_react" = false ]; then
     rm -rf "${ROOT}/packages/react" "${ROOT}/blueprints/react"
@@ -353,15 +354,25 @@ bash_prune_frameworks() {
     ok "Removed packages/svelte/ + blueprints/svelte/"
   fi
 
+  if [ "$keep_angular" = false ]; then
+    rm -rf "${ROOT}/packages/angular" "${ROOT}/blueprints/angular"
+    ok "Removed packages/angular/ + blueprints/angular/"
+    rm -f "${ROOT}/guides/framework-integration/angular-primitives.md"
+  fi
+
   # Headless UI guide needs react OR vue
   if [ "$keep_react" = false ] && [ "$keep_vue" = false ]; then
     rm -f "${ROOT}/guides/framework-integration/headless-ui.md"
   fi
 
-  # If ALL JS frameworks removed → also remove Storybook + Ark UI guide
+  # Ark UI guide needs react, vue, OR svelte
   if [ "$keep_react" = false ] && [ "$keep_vue" = false ] && [ "$keep_svelte" = false ]; then
-    rm -rf "${ROOT}/packages/docs"
     rm -f "${ROOT}/guides/framework-integration/ark-ui.md"
+  fi
+
+  # If ALL JS frameworks removed → also remove Storybook
+  if [ "$keep_react" = false ] && [ "$keep_vue" = false ] && [ "$keep_svelte" = false ] && [ "$keep_angular" = false ]; then
+    rm -rf "${ROOT}/packages/docs"
     ok "Removed packages/docs/ (Storybook requires a JS framework)"
   fi
 
@@ -373,10 +384,11 @@ bash_prune_frameworks() {
     echo "  - 'packages/css'"
     echo "  - 'packages/shared'"
     echo "  - 'packages/html'"
-    [ "$keep_react" = true ]  && echo "  - 'packages/react'"
-    [ "$keep_vue" = true ]    && echo "  - 'packages/vue'"
-    [ "$keep_svelte" = true ] && echo "  - 'packages/svelte'"
-    ( [ "$keep_react" = true ] || [ "$keep_vue" = true ] || [ "$keep_svelte" = true ] ) && echo "  - 'packages/docs'"
+    [ "$keep_react" = true ]   && echo "  - 'packages/react'"
+    [ "$keep_vue" = true ]     && echo "  - 'packages/vue'"
+    [ "$keep_svelte" = true ]  && echo "  - 'packages/svelte'"
+    [ "$keep_angular" = true ] && echo "  - 'packages/angular'"
+    ( [ "$keep_react" = true ] || [ "$keep_vue" = true ] || [ "$keep_svelte" = true ] || [ "$keep_angular" = true ] ) && echo "  - 'packages/docs'"
   } > "${ROOT}/pnpm-workspace.yaml"
   ok "Updated pnpm-workspace.yaml"
 
@@ -384,9 +396,10 @@ bash_prune_frameworks() {
   local vitest="${ROOT}/vitest.workspace.ts"
   if [ -f "$vitest" ]; then
     local entries=""
-    [ "$keep_react" = true ]  && entries="${entries}'packages/react', "
-    [ "$keep_vue" = true ]    && entries="${entries}'packages/vue', "
-    [ "$keep_svelte" = true ] && entries="${entries}'packages/svelte', "
+    [ "$keep_react" = true ]   && entries="${entries}'packages/react', "
+    [ "$keep_vue" = true ]     && entries="${entries}'packages/vue', "
+    [ "$keep_svelte" = true ]  && entries="${entries}'packages/svelte', "
+    [ "$keep_angular" = true ] && entries="${entries}'packages/angular', "
     entries=$(echo "$entries" | sed 's/, $//')
     echo "export default [${entries}];" > "$vitest"
     ok "Updated vitest.workspace.ts"
@@ -444,18 +457,127 @@ bash_prune_ide() {
   done
 }
 
+bash_install_headless() {
+  local headless_lib="$1"
+  local keep_react="$2"
+  local keep_vue="$3"
+  local keep_svelte="$4"
+  local keep_angular="$5"
+
+  [ "$headless_lib" = "none" ] && return 0
+
+  # Add packages as dependencies to the relevant framework package.json files
+  # Uses node -e for reliable JSON manipulation
+  local add_dep='
+    var fs = require("fs");
+    var path = process.argv[1];
+    var dep = process.argv[2];
+    if (!fs.existsSync(path)) process.exit(0);
+    var pkg = JSON.parse(fs.readFileSync(path, "utf-8"));
+    if (!pkg.dependencies) pkg.dependencies = {};
+    pkg.dependencies[dep] = "latest";
+    var sorted = {};
+    Object.keys(pkg.dependencies).sort().forEach(function(k) { sorted[k] = pkg.dependencies[k]; });
+    pkg.dependencies = sorted;
+    fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + "\n");
+  '
+
+  case "$headless_lib" in
+    radix)
+      if [ "$keep_react" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@radix-ui/react-dialog"
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@radix-ui/react-dropdown-menu"
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@radix-ui/react-tooltip"
+        ok "Added Radix UI packages to packages/react/package.json"
+      fi
+      ;;
+    base-ui)
+      if [ "$keep_react" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@base-ui-components/react"
+        ok "Added Base UI to packages/react/package.json"
+      fi
+      ;;
+    headless-ui)
+      if [ "$keep_react" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@headlessui/react"
+        ok "Added Headless UI to packages/react/package.json"
+      fi
+      if [ "$keep_vue" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/vue/package.json" "@headlessui/vue"
+        ok "Added Headless UI to packages/vue/package.json"
+      fi
+      ;;
+    ark-ui)
+      if [ "$keep_react" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@ark-ui/react"
+        ok "Added Ark UI to packages/react/package.json"
+      fi
+      if [ "$keep_vue" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/vue/package.json" "@ark-ui/vue"
+        ok "Added Ark UI to packages/vue/package.json"
+      fi
+      if [ "$keep_svelte" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/svelte/package.json" "@ark-ui/svelte"
+        ok "Added Ark UI to packages/svelte/package.json"
+      fi
+      ;;
+    angular-primitives)
+      if [ "$keep_angular" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/angular/package.json" "ng-primitives"
+        ok "Added Angular Primitives to packages/angular/package.json"
+      fi
+      ;;
+    zag)
+      if [ "$keep_react" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/react/package.json" "@zag-js/react"
+        ok "Added Zag.js to packages/react/package.json"
+      fi
+      if [ "$keep_vue" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/vue/package.json" "@zag-js/vue"
+        ok "Added Zag.js to packages/vue/package.json"
+      fi
+      if [ "$keep_svelte" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/svelte/package.json" "@zag-js/svelte"
+        ok "Added Zag.js to packages/svelte/package.json"
+      fi
+      if [ "$keep_angular" = true ]; then
+        node -e "$add_dep" "${ROOT}/packages/angular/package.json" "@zag-js/core"
+        ok "Added Zag.js to packages/angular/package.json"
+      fi
+      ;;
+  esac
+
+  # Prune other headless library guides (keep selected + shadcn.md + zag.md)
+  local guides_dir="${ROOT}/guides/framework-integration"
+  local all_hl_guides=("radix.md" "base-ui.md" "headless-ui.md" "ark-ui.md" "angular-primitives.md" "zag.md")
+  local keep_guide="${headless_lib}.md"
+
+  for guide in "${all_hl_guides[@]}"; do
+    # Always keep: selected library guide, shadcn.md, zag.md
+    [ "$guide" = "$keep_guide" ] && continue
+    [ "$guide" = "zag.md" ] && continue
+    if [ -f "${guides_dir}/${guide}" ]; then
+      rm -f "${guides_dir}/${guide}"
+      ok "Removed guides/framework-integration/${guide}"
+    fi
+  done
+}
+
 bash_write_marker() {
   local name="$1"
   local prefix="$2"
   local keep_react="$3"
   local keep_vue="$4"
   local keep_svelte="$5"
-  local ide="${6:-other}"
+  local keep_angular="$6"
+  local ide="${7:-other}"
+  local headless_lib="${8:-none}"
 
   local fws=""
-  [ "$keep_react" = true ]  && fws="${fws}\"react\", "
-  [ "$keep_vue" = true ]    && fws="${fws}\"vue\", "
-  [ "$keep_svelte" = true ] && fws="${fws}\"svelte\", "
+  [ "$keep_react" = true ]   && fws="${fws}\"react\", "
+  [ "$keep_vue" = true ]     && fws="${fws}\"vue\", "
+  [ "$keep_svelte" = true ]  && fws="${fws}\"svelte\", "
+  [ "$keep_angular" = true ] && fws="${fws}\"angular\", "
   fws=$(echo "$fws" | sed 's/, $//')
 
   cat > "${ROOT}/.ds-initialized" << MARKER
@@ -464,6 +586,7 @@ bash_write_marker() {
   "name": "${name}",
   "prefix": "${prefix}",
   "frameworks": [${fws}],
+  "headlessLib": "${headless_lib}",
   "figma": "skip",
   "ide": "${ide}",
   "configuredBy": "bash",
@@ -520,21 +643,73 @@ bash_configure() {
   echo -e "    ${BOLD}1)${RESET} React"
   echo -e "    ${BOLD}2)${RESET} Vue"
   echo -e "    ${BOLD}3)${RESET} Svelte"
+  echo -e "    ${BOLD}4)${RESET} Angular"
   echo -e "    ${DIM}(HTML/CSS is always included)${RESET}"
   echo ""
-  read -p "  Which frameworks to keep? (e.g. 1,2,3 or 1) [1,2,3]: " fw_input
-  fw_input="${fw_input:-1,2,3}"
+  read -p "  Which frameworks to keep? (e.g. 1,2,3,4 or 1) [1,2,3,4]: " fw_input
+  fw_input="${fw_input:-1,2,3,4}"
 
-  local keep_react=false keep_vue=false keep_svelte=false
+  local keep_react=false keep_vue=false keep_svelte=false keep_angular=false
   [[ "$fw_input" == *"1"* ]] && keep_react=true
   [[ "$fw_input" == *"2"* ]] && keep_vue=true
   [[ "$fw_input" == *"3"* ]] && keep_svelte=true
+  [[ "$fw_input" == *"4"* ]] && keep_angular=true
 
   local fw_label=""
-  [ "$keep_react" = true ]  && fw_label="${fw_label}React, "
-  [ "$keep_vue" = true ]    && fw_label="${fw_label}Vue, "
-  [ "$keep_svelte" = true ] && fw_label="${fw_label}Svelte, "
+  [ "$keep_react" = true ]   && fw_label="${fw_label}React, "
+  [ "$keep_vue" = true ]     && fw_label="${fw_label}Vue, "
+  [ "$keep_svelte" = true ]  && fw_label="${fw_label}Svelte, "
+  [ "$keep_angular" = true ] && fw_label="${fw_label}Angular, "
   fw_label="${fw_label}HTML/CSS"
+
+  # ── 3b. Headless UI library ──
+  echo ""
+  echo -e "  ${BOLD}Headless UI library${RESET} ${DIM}(adds behavior primitives — optional)${RESET}"
+  echo ""
+
+  # Build dynamic menu based on selected frameworks
+  local hl_options=() hl_keys=() hl_n=0
+
+  if [ "$keep_react" = true ]; then
+    hl_n=$((hl_n + 1)); hl_keys+=("radix");    hl_options+=("${hl_n}) Radix UI (React)")
+    hl_n=$((hl_n + 1)); hl_keys+=("base-ui");  hl_options+=("${hl_n}) Base UI (React)")
+  fi
+  if [ "$keep_react" = true ] || [ "$keep_vue" = true ]; then
+    hl_n=$((hl_n + 1)); hl_keys+=("headless-ui"); hl_options+=("${hl_n}) Headless UI (React, Vue)")
+  fi
+  if [ "$keep_react" = true ] || [ "$keep_vue" = true ] || [ "$keep_svelte" = true ]; then
+    hl_n=$((hl_n + 1)); hl_keys+=("ark-ui"); hl_options+=("${hl_n}) Ark UI (React, Vue, Svelte)")
+  fi
+  if [ "$keep_angular" = true ]; then
+    hl_n=$((hl_n + 1)); hl_keys+=("angular-primitives"); hl_options+=("${hl_n}) Angular Primitives (Angular)")
+  fi
+  hl_n=$((hl_n + 1)); hl_keys+=("zag"); hl_options+=("${hl_n}) Zag.js (all frameworks)")
+  local hl_none_n=$((hl_n + 1))
+  hl_keys+=("none"); hl_options+=("${hl_none_n}) None / decide later")
+
+  for opt in "${hl_options[@]}"; do
+    echo -e "    ${BOLD}${opt%%)*}${RESET})${opt#*)}"
+  done
+  echo ""
+  read -p "  Headless library? [${hl_none_n}]: " hl_input
+  hl_input="${hl_input:-$hl_none_n}"
+
+  local headless_lib="none"
+  local headless_label="None"
+  local hl_idx=$((hl_input - 1))
+  if [ "$hl_idx" -ge 0 ] 2>/dev/null && [ "$hl_idx" -lt "${#hl_keys[@]}" ] 2>/dev/null; then
+    headless_lib="${hl_keys[$hl_idx]}"
+  fi
+
+  case "$headless_lib" in
+    radix)               headless_label="Radix UI" ;;
+    base-ui)             headless_label="Base UI" ;;
+    headless-ui)         headless_label="Headless UI" ;;
+    ark-ui)              headless_label="Ark UI" ;;
+    angular-primitives)  headless_label="Angular Primitives" ;;
+    zag)                 headless_label="Zag.js" ;;
+    *)                   headless_label="None"; headless_lib="none" ;;
+  esac
 
   # ── 4. IDE ──
   echo ""
@@ -572,6 +747,7 @@ bash_configure() {
   echo -e "  Design system:  ${ds_name}"
   echo -e "  Prefix:         ${prefix}"
   echo -e "  Frameworks:     ${fw_label}"
+  echo -e "  Headless lib:   ${headless_label}"
   echo -e "  IDE:            ${ide_label}"
   echo -e "  ${BOLD}─────────────────────────────────${RESET}"
   echo ""
@@ -598,11 +774,18 @@ bash_configure() {
 
   bash_propagate_prefix "vcds" "$prefix"
 
-  if [ "$keep_react" = false ] || [ "$keep_vue" = false ] || [ "$keep_svelte" = false ]; then
+  if [ "$keep_react" = false ] || [ "$keep_vue" = false ] || [ "$keep_svelte" = false ] || [ "$keep_angular" = false ]; then
     echo ""
     echo -e "  ${BOLD}Pruning unused frameworks...${RESET}"
     echo ""
-    bash_prune_frameworks "$keep_react" "$keep_vue" "$keep_svelte"
+    bash_prune_frameworks "$keep_react" "$keep_vue" "$keep_svelte" "$keep_angular"
+  fi
+
+  if [ "$headless_lib" != "none" ]; then
+    echo ""
+    echo -e "  ${BOLD}Setting up ${headless_label}...${RESET}"
+    echo ""
+    bash_install_headless "$headless_lib" "$keep_react" "$keep_vue" "$keep_svelte" "$keep_angular"
   fi
 
   if [ "$ide_choice" != "other" ]; then
@@ -612,7 +795,7 @@ bash_configure() {
     bash_prune_ide "$ide_choice"
   fi
 
-  bash_write_marker "$ds_name" "$prefix" "$keep_react" "$keep_vue" "$keep_svelte" "$ide_choice"
+  bash_write_marker "$ds_name" "$prefix" "$keep_react" "$keep_vue" "$keep_svelte" "$keep_angular" "$ide_choice" "$headless_lib"
 
   # ── Success ──
   echo ""
@@ -623,6 +806,10 @@ bash_configure() {
   echo -e "  Variables:   --${prefix}-color-action-primary"
   echo ""
   echo -e "  Frameworks:  ${fw_label}"
+  if [ "$headless_lib" != "none" ]; then
+    echo -e "  Headless:    ${headless_label}"
+    echo -e "               ${DIM}See guides/framework-integration/${headless_lib}.md${RESET}"
+  fi
   echo ""
   echo -e "  ${YELLOW}${BOLD}Next steps:${RESET}"
   echo -e "  ${BOLD}1.${RESET} Install Node.js 20+ → ${BLUE}https://nodejs.org${RESET}"

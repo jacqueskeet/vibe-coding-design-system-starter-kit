@@ -6,12 +6,12 @@
 
 ## Project Context
 
-Multi-framework design system monorepo (React + Vue + Svelte + HTML/CSS) with a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. Framework packages are thin wrappers. Design tokens built via Style Dictionary. Target: WCAG 2.2 AA.
+Multi-framework design system monorepo (React + Vue + Svelte + Angular + HTML/CSS) with a **CSS-first base layer**. All visual styles live in `packages/css-components/` as BEM SCSS. Framework packages are thin wrappers. Design tokens built via Style Dictionary. Target: WCAG 2.2 AA.
 
 ## Architecture
 
 ```
-@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/html
+@vcds/tokens → @vcds/css-components → @vcds/react / @vcds/vue / @vcds/svelte / @vcds/angular / @vcds/html
 ```
 
 
@@ -35,7 +35,7 @@ CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@vcds/shared
 2. Register → Add `@use 'components/name';` to `src/index.scss`
 3. Build → `pnpm --filter @vcds/css-components build`
 4. HTML → `packages/html/examples/name.html` (reference markup)
-5. Wrappers → React, Vue, Svelte (props → BEM classes, NO styles)
+5. Wrappers → React, Vue, Svelte, Angular (props → BEM classes, NO styles)
 6. Tests + Stories
 
 ## Framework Patterns
@@ -43,6 +43,7 @@ CSS vars: `--vcds-*`. BEM classes: `.vcds-*`. JS: `DS_PREFIX` from `@vcds/shared
 - **React**: forwardRef, string class names (`'{prefix}-button vcds-button--primary'`), NO CSS Modules
 - **Vue**: `<script setup lang="ts">`, array class binding, NO scoped styles, `Ds` prefix
 - **Svelte**: Svelte 5 runes (`$props()`), `class:` directives, NO `<style>` block
+- **Angular**: standalone components (`standalone: true`), `@Input()` props, `[ngClass]`, NO `styles:`
 
 ## Key Commands
 
@@ -62,7 +63,7 @@ Read `DECISIONS.md` before starting any task. Apply every documented decision to
 ## Resources
 
 - SCSS Blueprint: `/blueprints/scss/`
-- Framework Blueprints: `/blueprints/{react,vue,svelte}/`
+- Framework Blueprints: `/blueprints/{react,vue,svelte,angular}/`
 - HTML Blueprint: `/blueprints/html-css/`
 - Prompts: `/prompts/`
 - A11y checklists: `/a11y/checklists/`

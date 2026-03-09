@@ -26,6 +26,7 @@ const FRAMEWORK_PACKAGES = {
   react: ['packages/react'],
   vue: ['packages/vue'],
   svelte: ['packages/svelte'],
+  angular: ['packages/angular'],
 };
 
 /** Storybook docs — only included when React is selected (it depends on React) */
