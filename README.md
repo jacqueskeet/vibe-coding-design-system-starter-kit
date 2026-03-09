@@ -23,7 +23,7 @@
 [![WCAG 2.2 AA](https://img.shields.io/badge/WCAG_2.2-AA-gold?style=for-the-badge)](https://github.com/jacqueskeet/vibe-coding-design-system-starter-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
 
-**Build your design system with AI agents.**
+**Vibe-Coding Design System Starter Kit. Build your design system with AI agents.**
 
 Multi-framework. Token-driven. Accessible by default.
 
