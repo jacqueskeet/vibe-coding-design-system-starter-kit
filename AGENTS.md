@@ -1,4 +1,4 @@
-# AGENTS.md — Design System Starter Kit
+# AGENTS.md — Design System Starter Kit (OpenCode · Antigravity · Codex)
 
 > **Start here:** `docs/ARCHITECTURE.md` contains the full architectural context —
 > design principles, layer model, token system, prefix mechanics, Figma integration,
@@ -181,7 +181,9 @@ Three Figma integration paths are pre-configured in `.mcp.json`:
 
 **Figma Dev Mode MCP (official):** Read-only code generation from designs.
 
-**Figma CLI (Claude Code + OpenCode only):** Direct binary access to Figma Desktop. See `skills/figma-cli.md`.
+**Figma CLI (Claude Code, OpenCode + Codex only):** Direct binary access to Figma Desktop. See `skills/figma-cli.md`.
+
+> **Codex users:** MCP servers are also configured in `.codex/config.toml` (TOML format). See `guides/figma-setup.md` for Codex-specific setup.
 
 See `docs/ARCHITECTURE.md` Section 10 for the full comparison.
 

@@ -8,7 +8,7 @@ This guide covers connecting Figma to your vibe coding workflow. There are two i
 
 | | **Figma MCP Servers** | **Figma Desktop CLI** |
 |---|---|---|
-| **Works with** | All IDEs (Cursor, Claude Code, Windsurf, Copilot, Antigravity, OpenCode) | Claude Code and OpenCode only |
+| **Works with** | All IDEs (Cursor, Claude Code, Windsurf, Copilot, Antigravity, OpenCode, Codex) | Claude Code, OpenCode, and Codex only |
 | **Access type** | Read-only (API) | Read + Write (local) |
 | **Requires** | Figma access token (API key) | Figma Desktop app |
 | **Figma account** | Any plan | Free plan works |
@@ -16,7 +16,9 @@ This guide covers connecting Figma to your vibe coding workflow. There are two i
 
 **Using Cursor, Windsurf, Copilot, or Antigravity?** → Go to [Option A: MCP Servers](#option-a-figma-mcp-servers-all-ides)
 
-**Using Claude Code or OpenCode?** → You can use Option A, or also consider [Option B: Figma Desktop CLI](#option-b-figma-desktop-cli-claude-code--opencode-only) for a more powerful local workflow. You can use both together.
+**Using Claude Code, OpenCode, or Codex?** → You can use Option A, or also consider [Option B: Figma Desktop CLI](#option-b-figma-desktop-cli-claude-code--opencode--codex-only) for a more powerful local workflow. You can use both together.
+
+**Using OpenAI Codex specifically?** → See also [Codex MCP Setup](#codex-mcp-setup-codexconfigtoml) for the TOML configuration format.
 
 ---
 
@@ -103,9 +105,51 @@ What are its exact padding, border-radius, and font properties?
 
 ---
 
-## Option B: Figma Desktop CLI (Claude Code & OpenCode Only)
+## Codex MCP Setup (`.codex/config.toml`)
 
-> **This option is only available if you are using Claude Code or OpenCode as your coding agent.**
+OpenAI Codex uses **TOML** for MCP configuration instead of JSON. The `.codex/config.toml` file at the repo root is pre-configured with the same MCP servers as `.mcp.json`.
+
+### Quick Setup
+
+Replace the placeholder tokens in `.codex/config.toml`:
+
+```toml
+[mcp_servers.figma-console]
+command = "npx"
+args = ["-y", "figma-console-mcp@latest"]
+
+[mcp_servers.figma-console.env]
+FIGMA_ACCESS_TOKEN = "paste-your-token-here"
+ENABLE_MCP_APPS = "true"
+
+[mcp_servers.figma]
+command = "npx"
+args = ["-y", "@anthropic/figma-mcp-server"]
+
+[mcp_servers.figma.env]
+FIGMA_ACCESS_TOKEN = "paste-your-token-here"
+```
+
+### Alternative: Use the Codex CLI
+
+You can also add MCP servers via the Codex CLI:
+
+```bash
+codex mcp add figma-console -- npx -y figma-console-mcp@latest
+codex mcp add figma -- npx -y @anthropic/figma-mcp-server
+```
+
+### Important Notes
+
+- **Trust required:** Codex only loads project-scoped `.codex/config.toml` from trusted projects. Run `codex trust add .` in the repo root first.
+- **Verify servers:** Run `codex` and type `/mcp` to see active MCP servers.
+- **Docs:** https://developers.openai.com/codex/mcp/
+
+---
+
+## Option B: Figma Desktop CLI (Claude Code, OpenCode & Codex Only)
+
+> **This option is only available if you are using Claude Code, OpenCode, or Codex as your coding agent.**
 
 The [figma-cli](https://github.com/silships/figma-cli) by Sil Bormüller connects directly to Figma Desktop via Chrome DevTools Protocol (CDP), giving Claude Code full read/write access to your Figma files — no API key required.
 
@@ -239,9 +283,9 @@ sudo codesign --force --deep --sign - /Applications/Figma.app
 | **Windows** | Supported (run as Administrator) | Fully supported |
 | **Linux** | Supported | Fully supported |
 
-### Using figma-cli with Claude Code or OpenCode
+### Using figma-cli with Claude Code, OpenCode, or Codex
 
-Once connected, start your agent from the **repo root** (not from the figma-cli folder). Claude Code reads `CLAUDE.md` and OpenCode reads `AGENTS.md` — both include figma-cli context. The CLI's own `CLAUDE.md` teaches the agent all available commands automatically.
+Once connected, start your agent from the **repo root** (not from the figma-cli folder). Claude Code reads `CLAUDE.md`, while OpenCode and Codex read `AGENTS.md` — all include figma-cli context. The CLI's own `CLAUDE.md` teaches the agent all available commands automatically.
 
 **Example prompts:**
 
@@ -319,16 +363,17 @@ Regardless of which integration you choose, the recommended workflow is:
 | Works in browser Figma | ✅ | ❌ |
 | Works without Desktop app | ✅ | ❌ |
 | No app modification needed | ✅ | ✅ (Safe Mode) |
-| Works with all IDEs | ✅ | ❌ (Claude Code & OpenCode only) |
+| Works with all IDEs | ✅ | ❌ (Claude Code, OpenCode & Codex only) |
 
-**Power users on Claude Code or OpenCode:** Use both. MCP servers for quick reads and URL-based queries, figma-cli for batch operations, linting, and write access.
+**Power users on Claude Code, OpenCode, or Codex:** Use both. MCP servers for quick reads and URL-based queries, figma-cli for batch operations, linting, and write access.
 
 ## Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
 | "Token expired" (MCP) | Generate a new token in Figma settings |
-| MCP not connecting | Ensure `.mcp.json` is at the repo root |
+| MCP not connecting | Ensure `.mcp.json` (or `.codex/config.toml` for Codex) is at the repo root |
+| Codex MCP not loading | Run `codex trust add .` to trust the project first |
 | "File not found" (MCP) | Check the Figma URL format — use the full URL with file key |
 | Slow responses (MCP) | Large Figma files may take time; try targeting specific frames |
 | figma-cli can't connect | Make sure Figma Desktop is open with a design file (not home screen) |

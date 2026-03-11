@@ -438,10 +438,14 @@ bash_prune_ide() {
     opencode)
       keep_files="AGENTS.md"
       ;;
+    codex)
+      keep_dirs=".codex"
+      keep_files="AGENTS.md"
+      ;;
   esac
 
   # Remove IDE dirs not in keep list
-  for dir in .cursor .antigravity; do
+  for dir in .cursor .antigravity .codex; do
     if [[ "$keep_dirs" != *"$dir"* ]] && [ -d "${ROOT}/${dir}" ]; then
       rm -rf "${ROOT}/${dir}"
       ok "Removed ${dir}/"
@@ -714,7 +718,7 @@ bash_configure() {
   # ── 4. IDE ──
   echo ""
   echo -e "  Unused IDE configs are removed to keep the project clean."
-  echo -e "  Choose ${BOLD}8${RESET} to keep all configs."
+  echo -e "  Choose ${BOLD}9${RESET} to keep all configs."
   echo ""
   echo -e "    ${BOLD}1)${RESET} Cursor"
   echo -e "    ${BOLD}2)${RESET} Cursor + Claude Code"
@@ -723,7 +727,8 @@ bash_configure() {
   echo -e "    ${BOLD}5)${RESET} VS Code (Copilot)"
   echo -e "    ${BOLD}6)${RESET} Google Antigravity"
   echo -e "    ${BOLD}7)${RESET} OpenCode"
-  echo -e "    ${BOLD}8)${RESET} Other / multiple (keep all)"
+  echo -e "    ${BOLD}8)${RESET} OpenAI Codex"
+  echo -e "    ${BOLD}9)${RESET} Other / multiple (keep all)"
   echo ""
   read -p "  Which IDE? [2]: " ide_input
   ide_input="${ide_input:-2}"
@@ -738,7 +743,8 @@ bash_configure() {
     5) ide_choice="copilot";       ide_label="VS Code (Copilot)" ;;
     6) ide_choice="antigravity";   ide_label="Google Antigravity" ;;
     7) ide_choice="opencode";      ide_label="OpenCode" ;;
-    8) ide_choice="other";         ide_label="Other / multiple (keep all)" ;;
+    8) ide_choice="codex";         ide_label="OpenAI Codex" ;;
+    9) ide_choice="other";         ide_label="Other / multiple (keep all)" ;;
   esac
 
   # ── Confirm ──

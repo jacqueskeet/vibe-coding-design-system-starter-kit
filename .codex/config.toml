@@ -1,0 +1,51 @@
+# ─────────────────────────────────────────────────────────────────────
+# Codex MCP Server Configuration (project-scoped)
+# ─────────────────────────────────────────────────────────────────────
+# This file configures MCP servers for OpenAI Codex at the project level.
+# It mirrors the MCP servers defined in .mcp.json (used by Claude Code,
+# Cursor, Windsurf, etc.) but in TOML format for Codex compatibility.
+#
+# Requirements:
+#   - Project must be trusted: codex trust add .
+#   - Figma token: https://www.figma.com/developers/api#access-tokens
+#
+# Docs: https://developers.openai.com/codex/mcp/
+# ─────────────────────────────────────────────────────────────────────
+
+# ── Figma Console MCP (recommended — 56+ tools) ─────────────────────
+# Full read/write: extract tokens, create designs, debug plugins,
+# manage variables. Requires Desktop Bridge Plugin in Figma Desktop.
+# Docs: https://docs.figma-console-mcp.southleft.com/setup
+[mcp_servers.figma-console]
+command = "npx"
+args = ["-y", "figma-console-mcp@latest"]
+
+[mcp_servers.figma-console.env]
+FIGMA_ACCESS_TOKEN = "YOUR_FIGMA_TOKEN_HERE"
+ENABLE_MCP_APPS = "true"
+
+# ── Figma Dev Mode MCP (official — read-only) ───────────────────────
+# Read-only code generation from Figma designs. No plugin needed.
+[mcp_servers.figma]
+command = "npx"
+args = ["-y", "@anthropic/figma-mcp-server"]
+
+[mcp_servers.figma.env]
+FIGMA_ACCESS_TOKEN = "YOUR_FIGMA_TOKEN_HERE"
+
+# ── Storybook MCP ───────────────────────────────────────────────────
+# Lets Codex read component docs from Storybook.
+# Start Storybook first: pnpm --filter @vcds/docs dev
+[mcp_servers.storybook]
+command = "npx"
+args = ["-y", "@anthropic/storybook-mcp-server"]
+
+[mcp_servers.storybook.env]
+STORYBOOK_URL = "http://localhost:6006"
+
+# ── Playwright MCP ──────────────────────────────────────────────────
+# Browser automation for QA verification of components.
+# Auto-installs Chromium on first use.
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]

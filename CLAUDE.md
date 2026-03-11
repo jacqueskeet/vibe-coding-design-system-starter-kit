@@ -209,7 +209,7 @@ This repo supports three Figma integration paths (pre-configured in `.mcp.json`)
 
 **Figma Dev Mode MCP (official):** Read-only code generation from Figma designs. Good for quick component spec extraction but cannot export tokens or create/modify designs.
 
-**Figma CLI (Claude Code + OpenCode only):** Direct binary access to Figma Desktop for terminal-based read/write workflows. Requires setup via `scripts/setup-figma-cli.js`. See `skills/figma-cli.md`.
+**Figma CLI (Claude Code, OpenCode + Codex only):** Direct binary access to Figma Desktop for terminal-based read/write workflows. Requires setup via `scripts/setup-figma-cli.js`. See `skills/figma-cli.md`.
 
 See `guides/figma-setup.md` for setup options and `docs/ARCHITECTURE.md` Section 10 for the full comparison.
 
@@ -236,8 +236,9 @@ If the user agrees, append the decision using the format in `DECISIONS.md` (Deci
 This repo includes agent rules for multiple IDEs. The content is kept consistent across all files:
 - `docs/ARCHITECTURE.md` — Deep-context document: design principles, architecture rationale, decision log (read first)
 - `CLAUDE.md` — Claude Code (this file)
-- `AGENTS.md` — OpenCode (also read by Google Antigravity)
+- `AGENTS.md` — OpenCode (also read by Google Antigravity and OpenAI Codex)
 - `.cursor/rules/` — Cursor (3 rule files)
 - `.windsurfrules` — Windsurf
 - `.antigravity/rules.md` — Google Antigravity
+- `.codex/config.toml` — OpenAI Codex (MCP servers; reads `AGENTS.md` for project rules)
 - `.github/copilot-instructions.md` — GitHub Copilot

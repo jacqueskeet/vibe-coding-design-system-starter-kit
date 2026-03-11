@@ -44,7 +44,7 @@ framework wrappers for React/Vue/Svelte/Angular, Storybook documentation, access
 standards, CI/CD pipelines, and — critically — agent configuration files that
 teach AI coding assistants how your system works from the first keystroke.
 
-The repo is designed to be opened in any of six supported AI IDEs. Each IDE
+The repo is designed to be opened in any of seven supported AI IDEs. Each IDE
 reads its respective config file and understands the full design system context
 without being told anything.
 
@@ -122,7 +122,7 @@ to be forked and branded.
 ### 3.6 Agents are first-class users
 
 This repo is built for AI-assisted development. Agent configuration files are
-not an afterthought — they are a core part of the architecture. Six IDEs are
+not an afterthought — they are a core part of the architecture. Seven IDEs are
 supported with consistent, detailed rules. The rules teach the agent the full
 context: architecture, conventions, token hierarchy, BEM naming, accessibility
 standards, build order, and component creation workflow.
@@ -543,7 +543,7 @@ build order.
 Without agent configuration, every AI interaction starts from zero. With it,
 the AI is an informed contributor from the first prompt.
 
-### Six IDEs, consistent rules
+### Seven IDEs, consistent rules
 
 | IDE | Config file | Format |
 |-----|------------|--------|
@@ -553,6 +553,7 @@ the AI is an informed contributor from the first prompt.
 | GitHub Copilot | `.github/copilot-instructions.md` | Markdown |
 | Google Antigravity | `.antigravity/rules.md` | Markdown (also reads `AGENTS.md`) |
 | OpenCode | `AGENTS.md` | Markdown (falls back to `CLAUDE.md` if absent) |
+| OpenAI Codex | `AGENTS.md` + `.codex/config.toml` | Markdown for rules, TOML for MCP servers |
 
 The content across these files is kept consistent. They all teach:
 - The CSS-first architecture and why it matters
@@ -726,13 +727,13 @@ can't create or modify designs.
 - No console log debugging
 - No variable management
 
-### 10.3 Figma CLI (Claude Code + OpenCode only — direct binary access)
+### 10.3 Figma CLI (Claude Code, OpenCode + Codex only — direct binary access)
 
 **What it is:** A direct binary interface to Figma Desktop that enables
 read/write operations from terminal-based AI tools. Installed via
 `scripts/setup-figma-cli.js`.
 
-**When to use it:** For terminal-based workflows in Claude Code or OpenCode
+**When to use it:** For terminal-based workflows in Claude Code, OpenCode, or Codex
 where you need direct file access outside of the MCP protocol. Useful for
 batch operations and scripting.
 
@@ -748,7 +749,7 @@ batch operations and scripting.
 |------------|----------|----------|
 | **Figma Console MCP** | Full design system workflows: token extraction, component implementation, design creation, variable management | All MCP-compatible IDEs (Cursor, Claude Code, Windsurf, Claude Desktop, VS Code Copilot, etc.) |
 | **Figma Dev Mode MCP** | Quick code generation from design specs | All MCP-compatible IDEs |
-| **Figma CLI** | Direct binary access, batch scripting, terminal workflows | Claude Code, OpenCode |
+| **Figma CLI** | Direct binary access, batch scripting, terminal workflows | Claude Code, OpenCode, Codex |
 
 For most design system work, **Figma Console MCP alone covers everything you
 need.** The other two are complementary options for specific workflows.
@@ -888,11 +889,12 @@ work for non-JS consumers.
 is a one-command operation. The alternative (manual find-and-replace) is error-prone
 and doesn't scale.
 
-### D5: Six IDE configs over "just Cursor"
-**Decision:** Support Cursor, Claude Code, Windsurf, Copilot, Antigravity, and OpenCode.
+### D5: Seven IDE configs over "just Cursor"
+**Decision:** Support Cursor, Claude Code, Windsurf, Copilot, Antigravity, OpenCode, and OpenAI Codex.
 **Reasoning:** The starter kit should work for any team regardless of their IDE
 choice. Each config file is small and low-maintenance. The content is consistent
-so keeping them in sync is straightforward.
+so keeping them in sync is straightforward. Codex reuses `AGENTS.md` (same as
+OpenCode) and adds `.codex/config.toml` for MCP server configuration in TOML format.
 
 ### D6: One golden component over many starter components
 **Decision:** Ship one deeply-considered Button over a dozen shallow components.

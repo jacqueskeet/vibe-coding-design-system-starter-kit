@@ -26,7 +26,7 @@ import {
   cleanupCursorRules,
   pruneIdeConfigs,
 } from './lib/prune.js';
-import { configureMcp } from './lib/mcp.js';
+import { configureMcp, configureCodexMcp } from './lib/mcp.js';
 import { runSetup } from './lib/build-runner.js';
 import {
   buildHeadlessChoices,
@@ -350,6 +350,11 @@ async function gatherAnswers() {
         description: 'Reads AGENTS.md — build and plan agents follow conventions',
       },
       {
+        name: 'OpenAI Codex',
+        value: 'codex',
+        description: 'Reads AGENTS.md — project rules and .codex/config.toml for MCP',
+      },
+      {
         name: 'Other / multiple',
         value: 'other',
         description: 'All config files included — works with any IDE',
@@ -361,7 +366,7 @@ async function gatherAnswers() {
   console.log('\n  Figma integration lets AI agents read your designs directly.');
   console.log('  MCP options need a Figma account and Personal Access Token.\n');
 
-  const supportsCliIntegration = ide === 'claude' || ide === 'opencode' || ide === 'cursor-claude';
+  const supportsCliIntegration = ide === 'claude' || ide === 'opencode' || ide === 'cursor-claude' || ide === 'codex';
   const figmaChoices = [
     {
       name: 'Figma Console MCP (recommended — 56+ tools)',
@@ -526,6 +531,12 @@ async function execute(answers) {
     // DS CLI doesn't use MCP servers — treat same as 'skip' for .mcp.json
     configureMcp(figma === 'cli' ? 'skip' : figma, figmaToken, ROOT, removingAll);
     console.log('  ✓ .mcp.json');
+
+    // A6. Configure .codex/config.toml (only when Codex is the selected IDE)
+    if (ide === 'codex') {
+      configureCodexMcp(figma === 'cli' ? 'skip' : figma, figmaToken, ROOT, removingAll);
+      console.log('  ✓ .codex/config.toml');
+    }
   } catch (err) {
     console.error(`\n  ✗ Configuration failed: ${err.message}`);
     console.error(
@@ -653,6 +664,7 @@ function printSuccess({ name, prefix, selectedFws, headlessLib, figma, ide, remo
     copilot: { label: 'GitHub Copilot', path: '.github/copilot-instructions.md' },
     antigravity: { label: 'Google Antigravity', path: '.antigravity/rules.md' },
     opencode: { label: 'OpenCode', path: 'AGENTS.md' },
+    codex: { label: 'OpenAI Codex', path: 'AGENTS.md + .codex/config.toml' },
     other: { label: 'your IDE', path: 'docs/ARCHITECTURE.md' },
   };
 

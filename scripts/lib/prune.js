@@ -72,7 +72,7 @@ const AGENT_CONFIG_FILES = [
  *
  * Note: .github/ dir is NEVER deleted because it contains CI workflows.
  *       Only .github/copilot-instructions.md is removed when Copilot isn't chosen.
- * Note: AGENTS.md is read by both OpenCode and Google Antigravity.
+ * Note: AGENTS.md is read by OpenCode, Google Antigravity, and OpenAI Codex.
  */
 const IDE_KEEP_MAP = {
   cursor: {
@@ -103,11 +103,15 @@ const IDE_KEEP_MAP = {
     dirs: [],
     files: ['AGENTS.md'],
   },
+  codex: {
+    dirs: ['.codex'],
+    files: ['AGENTS.md'],
+  },
   other: null, // keep everything
 };
 
 /** All IDE-specific directories (that are ONLY for IDE config) */
-const ALL_IDE_DIRS = ['.cursor', '.antigravity'];
+const ALL_IDE_DIRS = ['.cursor', '.antigravity', '.codex'];
 
 /** All IDE-specific files */
 const ALL_IDE_FILES = [

@@ -121,7 +121,7 @@ pnpm changeset                           # Create a changeset for versioning
 
 ## Figma Integration
 
-This repo supports Figma MCP servers (pre-configured in `.mcp.json`). Share a Figma URL and the agent can inspect components, extract token values, and generate code from designs.
+This repo supports Figma MCP servers (pre-configured in `.mcp.json` and `.codex/config.toml`). Share a Figma URL and the agent can inspect components, extract token values, and generate code from designs.
 
 ## Prompts and Skills
 

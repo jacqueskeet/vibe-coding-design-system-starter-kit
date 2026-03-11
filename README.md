@@ -27,7 +27,7 @@
 
 Multi-framework. Token-driven. Accessible by default.
 
-Works with Cursor, Claude Code, Windsurf, Copilot, Antigravity, and OpenCode.
+Works with Cursor, Claude Code, Windsurf, Copilot, Antigravity, OpenCode, and OpenAI Codex.
 
 </div>
 
@@ -40,7 +40,7 @@ A **vibe coding-ready design system monorepo** — everything you need to build,
 - **🎨 Design Tokens** — Style Dictionary v4 compiles to CSS, SCSS, JS/TS, Swift, Kotlin, and Android XML from a single source
 - **⚛️ Multi-Framework** — Shared component libraries for React, Vue, Svelte, and Angular, all driven by the same tokens and CSS
 - **🏗️ CSS-First Architecture** — BEM-structured SCSS is the single source of truth; framework packages are thin wrappers
-- **🤖 AI Agent Integration** — Pre-configured rules for Cursor, Claude Code, Windsurf, GitHub Copilot, Google Antigravity, and OpenCode
+- **🤖 AI Agent Integration** — Pre-configured rules for Cursor, Claude Code, Windsurf, GitHub Copilot, Google Antigravity, OpenCode, and OpenAI Codex
 - **♿ Accessibility** — WCAG 2.2 AA baked in with checklists, patterns, axe-core testing, and focus management
 - **🧩 Headless Library Support** — Optional step during setup to add Radix UI, Base UI, Headless UI, Ark UI, Angular Primitives, or Zag.js as behaviour primitives
 - **🧙 Interactive Setup** — Run `./setup.sh` and a setup wizard detects prerequisites, installs what's missing, then configures naming, prefix, frameworks, headless library, Figma, and IDE integration
@@ -95,10 +95,11 @@ pnpm dev
 | **GitHub Copilot** | Reads `.github/copilot-instructions.md` — suggestions follow your patterns |
 | **Google Antigravity** | Reads `.antigravity/rules.md` — agents get design system context across all surfaces |
 | **OpenCode** | Reads `AGENTS.md` — build and plan agents follow your conventions |
+| **OpenAI Codex** | Reads `AGENTS.md` + `.codex/config.toml` — full rules and MCP server config |
 
 ### MCP Servers
 
-The `.mcp.json` at the repo root pre-configures:
+The `.mcp.json` (and `.codex/config.toml` for OpenAI Codex) at the repo root pre-configures:
 - **Figma Console MCP** (preferred) — 56+ tools: extract design tokens, create components, manage variables, debug plugins. Your design system as a queryable API.
 - **Figma Dev Mode MCP** — Official read-only code generation from Figma designs
 - **Storybook MCP** — AI can read and reference your component docs
@@ -148,7 +149,8 @@ design-system-starter/
 ├── .cursor/rules/       # Cursor agent rules
 ├── .antigravity/        # Google Antigravity agent rules
 ├── CLAUDE.md            # Claude Code project context
-├── AGENTS.md            # OpenCode agent rules (also read by Antigravity)
+├── AGENTS.md            # OpenCode agent rules (also read by Antigravity + Codex)
+├── .codex/              # OpenAI Codex MCP config (.codex/config.toml)
 ├── .windsurfrules       # Windsurf Cascade rules
 └── .github/
     ├── copilot-instructions.md
