@@ -1,9 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@vcds/react';
+import buttonMeta from '../../css-components/src/components/button.meta.json';
 
 const meta = {
   title: 'Components/Button',
   component: Button,
+  parameters: {
+    componentMetadata: buttonMeta,
+    docs: {
+      description: {
+        component: buttonMeta.description,
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: 'select',

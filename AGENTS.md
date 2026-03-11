@@ -106,9 +106,10 @@ Token files live in `packages/tokens/src/`:
 ### File Structure
 
 ```
-packages/css-components/src/components/_button.scss  ← Visual source of truth
+packages/css-components/src/components/_button.scss       ← Visual source of truth
+packages/css-components/src/components/button.meta.json   ← Machine-readable metadata
 
-packages/html/examples/button.html                   ← HTML reference
+packages/html/examples/button.html                        ← HTML reference
 
 packages/react/src/components/Button/
 ├── Button.tsx           # Maps props to BEM classes
@@ -136,12 +137,26 @@ packages/react/src/components/Button/
 ### Required for Every Component
 
 1. **SCSS in css-components** — BEM-structured, using only semantic tokens
-2. **HTML reference** — copy-paste example in `packages/html/examples/`
-3. **TypeScript types** — exported interface for all props
-4. **Default props** — sensible defaults for optional props
-5. **Accessibility** — ARIA attributes, keyboard handling, focus management
-6. **Stories** — Storybook story covering all variants and states
-7. **Tests** — unit tests + axe-core a11y checks
+2. **Component metadata** — `.meta.json` alongside the SCSS (see Component Metadata below)
+3. **HTML reference** — copy-paste example in `packages/html/examples/`
+4. **TypeScript types** — exported interface for all props
+5. **Default props** — sensible defaults for optional props
+6. **Accessibility** — ARIA attributes, keyboard handling, focus management
+7. **Stories** — Storybook story covering all variants and states
+8. **Tests** — unit tests + axe-core a11y checks
+
+## Component Metadata (Machine-Readable)
+
+Every component SHOULD have a `.meta.json` file co-located with its SCSS in `packages/css-components/src/components/`. This structured metadata describes intent, composition rules, variant logic, relationships, and accessibility — making components self-describing for AI agents and documentation.
+
+**Schema:** `packages/css-components/src/component.schema.json`
+**Golden exemplar:** `packages/css-components/src/components/button.meta.json`
+**Blueprint:** `blueprints/scss/Component.meta.blueprint.json`
+**Validation:** `pnpm validate:metadata`
+
+The 7 sections: **intent** (purpose, task contexts), **composition** (requires/allows/forbids), **variants** (use_when/avoid_when per variant), **context** (density, modality, mode), **relationships** (related/escalates_to/degrades_to), **observability** (track events, health metrics), **accessibility** (role, keyboard, WAI-ARIA pattern).
+
+Only `name`, `description`, and `intent` are required — teams adopt incrementally. Start with metadata before SCSS when creating new components.
 
 ## Accessibility Standards
 

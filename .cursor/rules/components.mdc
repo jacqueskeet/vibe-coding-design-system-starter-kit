@@ -1,6 +1,6 @@
 ---
 description: Rules for building components — CSS-first, then framework wrappers
-globs: ["packages/css-components/**/*", "packages/html/**/*", "packages/react/**/*", "packages/vue/**/*", "packages/svelte/**/*", "packages/angular/**/*"]
+globs: ["packages/css-components/**/*", "packages/html/**/*", "packages/react/**/*", "packages/vue/**/*", "packages/svelte/**/*", "packages/angular/**/*", "**/*.meta.json"]
 ---
 
 # Component Development Rules — CSS-First Architecture
@@ -126,9 +126,13 @@ export class DsComponentComponent {
 // No styles — all styles come from @vcds/css-components
 ```
 
+## Component Metadata
+
+Every component SHOULD have a `.meta.json` file alongside its SCSS. This describes intent, composition rules, variant logic, relationships, and accessibility. Schema: `packages/css-components/src/component.schema.json`. Golden exemplar: `button.meta.json`. Blueprint: `blueprints/scss/Component.meta.blueprint.json`.
+
 ## Shared Rules (All Frameworks)
 
-- ALWAYS start with SCSS in `packages/css-components/` — CSS-first
+- ALWAYS start with metadata (`.meta.json`) then SCSS in `packages/css-components/` — metadata-first, CSS-first
 - ALWAYS create HTML reference page before framework wrappers
 - Framework wrappers MUST NOT contain `<style>` blocks, CSS Modules, or style imports
 - ALWAYS use BEM classes: `.{prefix}-{component}`, `.{prefix}-{component}--{variant}`

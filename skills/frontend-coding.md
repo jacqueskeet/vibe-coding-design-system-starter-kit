@@ -47,9 +47,23 @@ This repo uses a CSS-first base layer. All visual styles live in `packages/css-c
 
 Component creation order: SCSS → register in index.scss → build CSS → HTML reference → framework wrappers → tests → stories.
 
+## Component Metadata
+
+Every component SHOULD have a `.meta.json` file alongside its SCSS. This structured metadata describes intent, composition rules, variant logic, relationships, and accessibility — making components self-describing for AI agents and docs.
+
+- **Schema:** `packages/css-components/src/component.schema.json`
+- **Golden exemplar:** `packages/css-components/src/components/button.meta.json`
+- **Blueprint:** `blueprints/scss/Component.meta.blueprint.json`
+- **Validation:** `pnpm validate:metadata`
+
+When creating or modifying a component, always create/update the `.meta.json` file alongside the SCSS. The metadata forces you to think about intent and relationships before visual design.
+
 ## Key Files
 
 - SCSS components: `packages/css-components/src/components/`
+- Component metadata: `packages/css-components/src/components/*.meta.json`
+- Metadata schema: `packages/css-components/src/component.schema.json`
 - Blueprints: `blueprints/{scss,html-css,react,vue,svelte}/`
+- Metadata blueprint: `blueprints/scss/Component.meta.blueprint.json`
 - Golden components: `packages/{react,vue,svelte}/src/components/Button/`
 - Prompts: `prompts/component-generation.md`

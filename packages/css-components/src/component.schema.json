@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component Metadata",
+  "description": "Machine-readable component metadata for AI agents, documentation tools, and design system consumers. Describes intent, composition rules, variant logic, relationships, and accessibility — not just props and visuals.",
+  "type": "object",
+  "required": ["name", "description", "intent"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "PascalCase component name matching the SCSS file (e.g. 'Button' for _button.scss)"
+    },
+    "description": {
+      "type": "string",
+      "description": "One-paragraph summary of the component's role in the design system"
+    },
+    "intent": {
+      "type": "object",
+      "description": "Why this component exists — the problem it solves and when to reach for it",
+      "required": ["purpose"],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "description": "One sentence: what problem does this component solve for the user?"
+        },
+        "task_context": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Scenarios where this component is the right choice (e.g. 'form submission', 'destructive confirmation')"
+        },
+        "sentiment": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Emotional tones the component can carry (e.g. 'urgency', 'neutral', 'reassurance')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "composition": {
+      "type": "object",
+      "description": "What elements MUST, CAN, and MUST NOT appear inside this component",
+      "properties": {
+        "requires": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Elements that MUST be present (e.g. 'label text')"
+        },
+        "allows": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Elements that CAN be present (e.g. 'leading icon', 'trailing icon')"
+        },
+        "forbids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Elements that MUST NOT be present (e.g. 'nested interactive elements')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "variants": {
+      "type": "object",
+      "description": "Decision logic for each variant — when to use it, when to avoid it, and what pairs well",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "use_when": {
+            "type": "string",
+            "description": "The scenario where this variant is the right choice"
+          },
+          "avoid_when": {
+            "type": "string",
+            "description": "The scenario where this variant is wrong — what to use instead"
+          },
+          "pair_with": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Components or elements that work well alongside this variant"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Environmental conditions that affect how the component renders or behaves",
+      "properties": {
+        "density": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Layout density contexts (e.g. 'compact', 'comfortable', 'spacious')"
+        },
+        "modality": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Device/interaction modes (e.g. 'touch', 'pointer', 'keyboard-only')"
+        },
+        "mode": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Appearance modes (e.g. 'light', 'dark', 'high-contrast')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationships": {
+      "type": "object",
+      "description": "How this component connects to other components in the system",
+      "properties": {
+        "related": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Components with overlapping purpose — agents should consider these alternatives"
+        },
+        "escalates_to": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What this component upgrades to for heavier or more complex flows"
+        },
+        "degrades_to": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What replaces this component in simpler or more constrained contexts"
+        },
+        "groups_with": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Container or layout components this typically lives inside"
+        }
+      },
+      "additionalProperties": false
+    },
+    "observability": {
+      "type": "object",
+      "description": "What to track in analytics and what signals indicate healthy usage",
+      "properties": {
+        "track": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User interaction events worth capturing (e.g. 'click', 'submit', 'dismiss')"
+        },
+        "health": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Metrics that signal the component is being used correctly (e.g. 'primary variant used <=1 per view')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "accessibility": {
+      "type": "object",
+      "description": "ARIA semantics, keyboard interaction, and screen reader behavior",
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "The ARIA role this component maps to (e.g. 'button', 'dialog', 'tablist')"
+        },
+        "wai_aria_pattern": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to the WAI-ARIA Authoring Practices Guide pattern"
+        },
+        "keyboard": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Key-to-action mapping (e.g. { \"Enter\": \"activate\", \"Space\": \"activate\" })"
+        },
+        "announces": {
+          "type": "string",
+          "description": "What the screen reader announces for this component (e.g. 'button label + loading state')"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

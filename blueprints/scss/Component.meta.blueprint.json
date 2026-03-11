@@ -1,0 +1,59 @@
+{
+  "name": "TODO: PascalCase component name (e.g. 'Badge', 'Card', 'TextInput')",
+  "description": "TODO: One-paragraph summary of what this component does and its role in the design system.",
+  "intent": {
+    "purpose": "TODO: One sentence — what problem does this component solve for the user?",
+    "task_context": [
+      "TODO: Scenario where this component is the right choice",
+      "TODO: Another scenario"
+    ],
+    "sentiment": [
+      "TODO: Emotional tone (e.g. 'informational', 'success', 'warning', 'neutral')"
+    ]
+  },
+  "composition": {
+    "requires": [
+      "TODO: Element that MUST be present (e.g. 'heading text', 'label')"
+    ],
+    "allows": [
+      "TODO: Element that CAN be present (e.g. 'icon', 'description', 'action area')"
+    ],
+    "forbids": [
+      "TODO: Element that MUST NOT be present (e.g. 'nested interactive elements')"
+    ]
+  },
+  "variants": {
+    "TODO-variant-name": {
+      "use_when": "TODO: The scenario where this variant is the right choice.",
+      "avoid_when": "TODO: When this variant is wrong — and what to use instead.",
+      "pair_with": ["TODO: Components or elements that work well with this variant"]
+    }
+  },
+  "context": {
+    "density": ["compact", "comfortable", "spacious"],
+    "modality": ["pointer", "touch", "keyboard-only"],
+    "mode": ["light", "dark", "high-contrast"]
+  },
+  "relationships": {
+    "related": ["TODO: Components with overlapping purpose"],
+    "escalates_to": ["TODO: What this upgrades to for heavier flows"],
+    "degrades_to": ["TODO: What replaces this in simpler contexts"],
+    "groups_with": ["TODO: Container components this lives inside"]
+  },
+  "observability": {
+    "track": [
+      "TODO: User interaction events to capture (e.g. 'click', 'expand', 'dismiss')"
+    ],
+    "health": [
+      "TODO: Metrics for healthy usage (e.g. 'variant X used in context Y')"
+    ]
+  },
+  "accessibility": {
+    "role": "TODO: ARIA role (e.g. 'button', 'dialog', 'alert', 'tablist')",
+    "wai_aria_pattern": "TODO: https://www.w3.org/WAI/ARIA/apg/patterns/TODO/",
+    "keyboard": {
+      "TODO-Key": "TODO: What this key does"
+    },
+    "announces": "TODO: What the screen reader announces for this component."
+  }
+}

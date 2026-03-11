@@ -46,7 +46,8 @@
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
     "setup:figma-cli": "node scripts/setup-figma-cli.js",
-    "set-prefix": "node scripts/set-prefix.js"
+    "set-prefix": "node scripts/set-prefix.js",
+    "validate:metadata": "node scripts/validate-metadata.js"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",

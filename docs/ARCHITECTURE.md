@@ -832,8 +832,26 @@ before anything else. Steps 4 can run in parallel.
 
 ### Adding a new component
 
-Follow the CSS-first creation order documented in CONTRIBUTING.md:
+Follow the metadata-first, CSS-first creation order documented in CONTRIBUTING.md:
+0. Metadata → `packages/css-components/src/components/component-name.meta.json`
 1. SCSS → 2. HTML → 3. Framework wrappers → 4. Tests → 5. Stories
+
+### Component Metadata System
+
+Every component SHOULD have a `.meta.json` file co-located with its SCSS. This structured metadata makes components machine-readable — agents and documentation tools can reason about intent, composition rules, variant logic, and relationships, not just props.
+
+**Why it exists:** AI agents often need to choose between components (Button vs. Link, Modal vs. Drawer). Without metadata, the only signals are prop names and CSS classes. With metadata, agents can read that Button's purpose is "trigger a single user action" and its primary variant should appear at most once per view — enabling context-aware recommendations.
+
+**Where it lives:** `packages/css-components/src/components/{component-name}.meta.json` — same directory as the SCSS source of truth.
+
+**The 7 sections:** intent (purpose, task contexts, sentiment), composition (requires/allows/forbids), variants (use_when/avoid_when/pair_with per variant), context (density, modality, mode), relationships (related/escalates_to/degrades_to/groups_with), observability (track events, health metrics), accessibility (role, WAI-ARIA pattern, keyboard map).
+
+**Key files:**
+- Schema: `packages/css-components/src/component.schema.json`
+- Golden exemplar: `packages/css-components/src/components/button.meta.json`
+- Blueprint: `blueprints/scss/Component.meta.blueprint.json`
+- Validation: `pnpm validate:metadata`
+- Guide: `guides/component-metadata.md`
 
 ### Integrating with an existing project
 

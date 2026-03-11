@@ -81,8 +81,13 @@ Components only use semantic or component-level tokens.
 
 Read `DECISIONS.md` before starting any task. Apply every documented decision to your output. After completing a task that established a new repeatable pattern (variant naming, token scale, accessibility convention, etc.), suggest the user document it in `DECISIONS.md` so it's applied consistently going forward.
 
+## Component Metadata
+
+Every component SHOULD have a `.meta.json` alongside its SCSS in `packages/css-components/src/components/`. Describes intent, composition rules, variant logic, relationships, and accessibility. Schema: `component.schema.json`. Blueprint: `blueprints/scss/Component.meta.blueprint.json`. Validate: `pnpm validate:metadata`.
+
 ## Creating a Component — Order Matters
 
+0. Metadata → `packages/css-components/src/components/name.meta.json`
 1. SCSS → `packages/css-components/src/components/_name.scss`
 2. Register → `@use 'components/name';` in index.scss
 3. HTML → `packages/html/examples/name.html`

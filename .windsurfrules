@@ -60,9 +60,14 @@ pnpm changeset                           # Version changes
 
 Read `DECISIONS.md` before starting any task. Apply every documented decision to your output. After completing a task that established a new repeatable pattern (variant naming, token scale, accessibility convention, etc.), suggest the user document it in `DECISIONS.md` so it's applied consistently going forward.
 
+## Component Metadata
+
+Every component SHOULD have a `.meta.json` file alongside its SCSS in `packages/css-components/src/components/`. This describes intent, composition rules, variant logic, relationships, and accessibility — making components machine-readable for agents and docs. Schema: `packages/css-components/src/component.schema.json`. Golden exemplar: `button.meta.json`. Blueprint: `blueprints/scss/Component.meta.blueprint.json`. Validate: `pnpm validate:metadata`.
+
 ## Resources
 
 - SCSS Blueprint: `/blueprints/scss/`
+- Metadata Blueprint: `/blueprints/scss/Component.meta.blueprint.json`
 - Framework Blueprints: `/blueprints/{react,vue,svelte,angular}/`
 - HTML Blueprint: `/blueprints/html-css/`
 - Prompts: `/prompts/`

@@ -1,0 +1,93 @@
+{
+  "name": "Button",
+  "description": "An interactive control that triggers a single user action. The primary building block for calls-to-action, form submissions, and destructive confirmations. Supports four semantic variants (primary, secondary, ghost, danger), three sizes, loading state, and icon slots.",
+  "intent": {
+    "purpose": "Trigger a discrete user action with clear visual affordance and accessible feedback.",
+    "task_context": [
+      "form submission",
+      "destructive confirmation (delete, remove, revoke)",
+      "navigation to a new workflow step",
+      "toggling a process (start/stop, enable/disable)",
+      "dismissing or cancelling a dialog"
+    ],
+    "sentiment": [
+      "urgency (danger variant)",
+      "confidence (primary variant)",
+      "neutral (secondary variant)",
+      "subtle (ghost variant)"
+    ]
+  },
+  "composition": {
+    "requires": [
+      "label text (visible or sr-only)"
+    ],
+    "allows": [
+      "leading icon (iconLeft slot)",
+      "trailing icon (iconRight slot)",
+      "loading spinner (replaces content when isLoading)"
+    ],
+    "forbids": [
+      "nested interactive elements (links, other buttons, inputs)",
+      "long-form content (paragraphs, lists)",
+      "images or media"
+    ]
+  },
+  "variants": {
+    "primary": {
+      "use_when": "The action is the main call-to-action on the page or in a form. Use at most once per distinct view or dialog.",
+      "avoid_when": "There are multiple equally weighted actions — use secondary instead to avoid competing focal points.",
+      "pair_with": ["secondary Button (as cancel/dismiss)", "Form", "Dialog footer"]
+    },
+    "secondary": {
+      "use_when": "The action is important but not the primary call-to-action. Good for 'Cancel', 'Back', or alternative paths.",
+      "avoid_when": "The action is truly the main next step — use primary. If the action is purely navigational, consider a TextLink.",
+      "pair_with": ["primary Button", "Card actions", "Toolbar"]
+    },
+    "ghost": {
+      "use_when": "The action should be visually minimal — inline with content, in a toolbar, or as a tertiary option that doesn't compete for attention.",
+      "avoid_when": "The action is critical or destructive — use primary or danger. Ghost buttons lack visual weight and can be overlooked.",
+      "pair_with": ["Table row actions", "Toolbar", "Breadcrumb", "icon-only usage"]
+    },
+    "danger": {
+      "use_when": "The action is destructive or irreversible (delete, remove, revoke access). Requires visual warning.",
+      "avoid_when": "The action is reversible or non-destructive — use primary or secondary. Overusing danger dilutes its signal.",
+      "pair_with": ["Confirmation Dialog", "secondary Button (as cancel escape hatch)", "Alert"]
+    }
+  },
+  "context": {
+    "density": ["compact (sm size)", "comfortable (md size, default)", "spacious (lg size)"],
+    "modality": ["pointer (default)", "touch (ensure min 44px tap target)", "keyboard-only (focus ring visible)"],
+    "mode": ["light", "dark", "high-contrast"]
+  },
+  "relationships": {
+    "related": ["TextLink", "IconButton"],
+    "escalates_to": ["SplitButton", "ButtonGroup", "Menu"],
+    "degrades_to": ["TextLink (for inline navigation)", "Chip (for toggle selection)"],
+    "groups_with": ["Form", "Dialog", "Card", "Toolbar", "ButtonGroup"]
+  },
+  "observability": {
+    "track": [
+      "click (with variant and label context)",
+      "submit (when inside a form)",
+      "loading-start / loading-end (measure async action duration)",
+      "disabled-click (user attempted action on disabled button)"
+    ],
+    "health": [
+      "primary variant used at most once per view",
+      "danger variant always inside a confirmation flow",
+      "no more than 3 buttons in a single button group",
+      "loading state resolves within 10 seconds"
+    ]
+  },
+  "accessibility": {
+    "role": "button",
+    "wai_aria_pattern": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+    "keyboard": {
+      "Enter": "activate the button",
+      "Space": "activate the button",
+      "Tab": "move focus to next focusable element",
+      "Shift+Tab": "move focus to previous focusable element"
+    },
+    "announces": "Button label. When loading: 'Loading, please wait' via aria-busy and sr-only text. When disabled: conveyed via aria-disabled (not HTML disabled, to keep button in tab order)."
+  }
+}

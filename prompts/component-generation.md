@@ -1,6 +1,6 @@
 # Prompt: Generate a New Component
 
-Use these prompts to generate new components following the CSS-first architecture.
+Use these prompts to generate new components following the metadata-first, CSS-first architecture.
 
 ---
 
@@ -9,7 +9,16 @@ Use these prompts to generate new components following the CSS-first architectur
 ```
 Create a new [ComponentName] component for this design system.
 
-IMPORTANT: Follow the CSS-first architecture. Start with SCSS, then HTML, then frameworks.
+IMPORTANT: Follow the metadata-first, CSS-first architecture. Start with metadata, then SCSS, then HTML, then frameworks.
+
+Step 0 — Component metadata (machine-readable):
+- Create packages/css-components/src/components/[component-name].meta.json
+- Follow the blueprint in /blueprints/scss/Component.meta.blueprint.json
+- Reference the golden Button: packages/css-components/src/components/button.meta.json
+- Define: intent (purpose + task_context), composition (requires/allows/forbids),
+  variant logic (use_when/avoid_when for each), relationships (related/escalates/degrades),
+  and accessibility (role, keyboard, WAI-ARIA pattern)
+- Validate: pnpm validate:metadata
 
 Step 1 — SCSS (visual source of truth):
 - Create packages/css-components/src/components/_[component-name].scss
@@ -38,12 +47,49 @@ Step 4 — Tests and docs:
 - Reference /a11y/checklists/component.md
 
 File locations:
+- Metadata: packages/css-components/src/components/[component-name].meta.json
 - SCSS: packages/css-components/src/components/_[component-name].scss
 - HTML: packages/html/examples/[component-name].html
 - React: packages/react/src/components/[ComponentName]/
 - Vue: packages/vue/src/components/[ComponentName]/
 - Svelte: packages/svelte/src/components/[ComponentName]/
 - Stories: packages/docs/stories/[ComponentName].stories.tsx
+```
+
+---
+
+## Add Metadata to Existing Component
+
+```
+Add machine-readable metadata to the existing [ComponentName] component.
+
+Step 1 — Read the existing implementation:
+- Read packages/css-components/src/components/_[component-name].scss
+- Read one framework wrapper (e.g., React) to understand props and behavior
+- Read any existing tests or stories for accessibility patterns
+
+Step 2 — Create metadata file:
+- Create packages/css-components/src/components/[component-name].meta.json
+- Follow the blueprint in /blueprints/scss/Component.meta.blueprint.json
+- Reference the golden Button: packages/css-components/src/components/button.meta.json
+
+Step 3 — Fill in all 7 sections:
+- intent: purpose, task_context, sentiment
+- composition: requires, allows, forbids
+- variants: use_when, avoid_when, pair_with for each BEM --variant in the SCSS
+- context: density, modality, mode
+- relationships: related, escalates_to, degrades_to, groups_with
+- observability: track events, health metrics
+- accessibility: role, wai_aria_pattern link, keyboard map, announces
+
+Step 4 — Validate:
+- Run: pnpm validate:metadata
+- Verify variant names match BEM modifiers in the SCSS
+- Verify accessibility.role matches the rendered HTML element
+
+Step 5 — Update the Storybook story:
+- Import the metadata in the component's story file
+- Add parameters.componentMetadata to the story meta
 ```
 
 ---
@@ -116,9 +162,11 @@ followed by React (Context), Vue (provide/inject), and Svelte (context) wrappers
 
 ## Tips for Best Results
 
-1. Always say "CSS-first" — this reminds the agent to start with SCSS, not framework code
-2. Reference the SCSS blueprint — `/blueprints/scss/Component.blueprint.scss`
-3. Reference the golden Button — `packages/css-components/src/components/_button.scss`
-4. Include the a11y checklist reference — this catches most accessibility gaps
-5. Mention the frameworks explicitly if you want all three, or say "HTML/CSS only"
-6. For HTML-only teams, say you don't need framework wrappers — this saves time
+1. Always say "metadata-first, CSS-first" — this reminds the agent to start with `.meta.json`, then SCSS
+2. Reference the metadata blueprint — `/blueprints/scss/Component.meta.blueprint.json`
+3. Reference the SCSS blueprint — `/blueprints/scss/Component.blueprint.scss`
+4. Reference the golden Button — `_button.scss` + `button.meta.json` in `packages/css-components/src/components/`
+5. Include the a11y checklist reference — this catches most accessibility gaps
+6. Mention the frameworks explicitly if you want all three, or say "HTML/CSS only"
+7. For HTML-only teams, say you don't need framework wrappers — this saves time
+8. For existing components, use the "Add Metadata to Existing Component" prompt to retrofit

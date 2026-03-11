@@ -9,6 +9,14 @@ Use these prompts to run quality checks after component creation, token changes,
 ```
 Run a full QA check on the [ComponentName] component.
 
+Step 0 — Component metadata:
+1. Verify packages/css-components/src/components/[component-name].meta.json exists
+2. Run: pnpm validate:metadata — verify it passes schema validation
+3. Check that all variant names in the SCSS have matching entries in variants section
+4. Check that intent.purpose is filled in (not a TODO placeholder)
+5. Check that accessibility.role matches the rendered HTML element role
+6. Check that composition.requires matches actual required children/slots
+
 Step 1 — SCSS:
 1. Build: pnpm --filter @vcds/css-components build
 2. Lint: pnpm --filter @vcds/css-components lint
@@ -59,6 +67,7 @@ Step 7 — Story:
 2. Check it has stories for each variant, size, and special states
 
 Reference the golden Button component for expected patterns:
+- Metadata: packages/css-components/src/components/button.meta.json
 - SCSS: packages/css-components/src/components/_button.scss
 - React: packages/react/src/components/Button/Button.tsx
 - Vue: packages/vue/src/components/Button/DsButton.vue

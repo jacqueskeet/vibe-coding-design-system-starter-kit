@@ -110,14 +110,19 @@ pnpm changeset                           # Create a changeset for versioning
 
 **Build order matters:** tokens → css-components → framework packages
 
+## Component Metadata
+
+Every component SHOULD have a `.meta.json` file alongside its SCSS in `packages/css-components/src/components/`. This describes intent, composition rules, variant logic, relationships, and accessibility — making components machine-readable for agents and docs. Schema: `component.schema.json`. Golden exemplar: `button.meta.json`. Blueprint: `blueprints/scss/Component.meta.blueprint.json`. Validate: `pnpm validate:metadata`.
+
 ## Before Creating a Component
 
-1. Read the SCSS blueprint in `/blueprints/scss/`
-2. Read the framework blueprint in `/blueprints/{react,vue,svelte,angular}/`
-3. Check `/a11y/checklists/component.md`
-4. Reference the golden Button in `packages/css-components/src/components/_button.scss`
-5. Use semantic tokens from `packages/tokens/src/semantic/`
-6. Start with SCSS, then HTML reference, then framework wrappers
+1. Read the metadata blueprint in `/blueprints/scss/Component.meta.blueprint.json`
+2. Read the SCSS blueprint in `/blueprints/scss/`
+3. Read the framework blueprint in `/blueprints/{react,vue,svelte,angular}/`
+4. Check `/a11y/checklists/component.md`
+5. Reference the golden Button: `_button.scss` + `button.meta.json` in `packages/css-components/src/components/`
+6. Use semantic tokens from `packages/tokens/src/semantic/`
+7. Start with metadata, then SCSS, then HTML reference, then framework wrappers
 
 ## Figma Integration
 

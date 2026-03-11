@@ -122,9 +122,10 @@ This repo uses a **CSS-first base layer** pattern. All visual styles live in `pa
 ### File Structure (per component)
 
 ```
-packages/css-components/src/components/_button.scss  ← Visual source of truth
+packages/css-components/src/components/_button.scss       ← Visual source of truth
+packages/css-components/src/components/button.meta.json   ← Machine-readable metadata
 
-packages/html/examples/button.html                   ← HTML reference
+packages/html/examples/button.html                        ← HTML reference
 
 packages/react/src/components/Button/
 ├── Button.tsx           # Maps props to BEM classes
@@ -156,12 +157,41 @@ Where `{prefix}` comes from `ds.config.json` (default: `vcds`).
 
 ### Required for Every Component
 1. **SCSS in css-components** — BEM-structured, using only semantic tokens
-2. **HTML reference** — copy-paste example in `packages/html/examples/`
-3. **TypeScript types** — exported interface for all props
-4. **Default props** — sensible defaults for optional props
-5. **Accessibility** — ARIA attributes, keyboard handling, focus management
-6. **Stories** — Storybook story covering all variants and states
-7. **Tests** — unit tests + axe-core a11y checks
+2. **Component metadata** — `.meta.json` alongside the SCSS (see Component Metadata below)
+3. **HTML reference** — copy-paste example in `packages/html/examples/`
+4. **TypeScript types** — exported interface for all props
+5. **Default props** — sensible defaults for optional props
+6. **Accessibility** — ARIA attributes, keyboard handling, focus management
+7. **Stories** — Storybook story covering all variants and states
+8. **Tests** — unit tests + axe-core a11y checks
+
+## Component Metadata (Machine-Readable)
+
+Every component SHOULD have a `.meta.json` file co-located with its SCSS in `packages/css-components/src/components/`. This structured metadata makes components self-describing for AI agents, documentation tools, and design system consumers — it answers "why use this component?" not just "what props does it accept?".
+
+**Schema:** `packages/css-components/src/component.schema.json`
+**Golden exemplar:** `packages/css-components/src/components/button.meta.json`
+**Blueprint:** `blueprints/scss/Component.meta.blueprint.json`
+**Validation:** `pnpm validate:metadata`
+**Guide:** `guides/component-metadata.md`
+
+### The 7 Metadata Sections
+
+| Section | Purpose |
+|---------|---------|
+| **intent** | Why this component exists — purpose, task contexts, sentiment |
+| **composition** | What elements MUST / CAN / MUST NOT appear inside |
+| **variants** | Decision logic: use_when, avoid_when, pair_with for each variant |
+| **context** | Environmental conditions: density, modality (touch/pointer), mode (light/dark) |
+| **relationships** | How it connects: related, escalates_to, degrades_to, groups_with |
+| **observability** | What to track in analytics, health metrics for correct usage |
+| **accessibility** | ARIA role, WAI-ARIA pattern link, keyboard map, screen reader behavior |
+
+Only `name`, `description`, and `intent` are required — teams can adopt incrementally.
+
+**When creating a new component:** Start with metadata (Step 0) before writing SCSS. The metadata forces you to think about intent and relationships before visual design.
+
+**When building with existing components:** Read `.meta.json` files to understand intent, variant logic, and composition rules before choosing a component.
 
 ## Accessibility Standards
 
